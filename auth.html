@@ -271,17 +271,14 @@ async function signupEmail() {
   }
 }
 
-// ── Google Login/Signup ──
+// ── Google Login/Signup (redirect — پاپئەپ کێشەی نییە) ──
 async function loginGoogle() {
   clearAlert();
   try {
-    const cred = await auth.signInWithPopup(googleProvider);
-    await afterAuth(cred.user);
+    await auth.signInWithRedirect(googleProvider);
   } catch(e) {
     console.error('google error:', e.code, e.message);
-    if (e.code !== 'auth/popup-closed-by-user') {
-      showAlert(translateError(e.code) + ' [' + e.code + ']');
-    }
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
   }
 }
 
@@ -302,9 +299,29 @@ function translateError(code) {
   return map[code] || 'هەڵەیەک ڕووی دا';
 }
 
-// Already logged in → redirect
+// ── گەڕانەوە لە Google Redirect ──
+auth.getRedirectResult().then(async result => {
+  if (result && result.user) {
+    await afterAuth(result.user);
+  }
+}).catch(e => {
+  console.error('redirect result error:', e.code, e.message);
+  if (e.code) showAlert(translateError(e.code) + ' [' + e.code + ']');
+});
+
+// ── ئەگەر چووبووەتەژوورەوە بتبرێت بۆ داشبۆرد ──
+// بەڵام تەنها ئەگەر redirect result چارەسەر نەکرد (هەڵەی نەبوو)
+let redirectHandled = false;
 auth.onAuthStateChanged(user => {
-  if (user) window.location.href = 'dashboard.html';
+  if (user && !redirectHandled) {
+    redirectHandled = true;
+    // کەمێک چاوەڕێ بکە بۆ ئەوەی redirect result تەواو ببێت
+    setTimeout(() => {
+      if (window.location.pathname.includes('auth.html')) {
+        window.location.href = 'dashboard.html';
+      }
+    }, 500);
+  }
 });
 </script>
 </body>
