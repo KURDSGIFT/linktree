@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub - داشبۆرد</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { padding-bottom: 60px; }
+
+/* Nav */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(7,7,15,0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent2); }
+.topnav-right { display: flex; align-items: center; gap: 10px; }
+.user-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; cursor: pointer; overflow: hidden;
+}
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Layout */
+.page { max-width: 680px; margin: 0 auto; padding: 32px 16px; }
+.section-head { margin-bottom: 20px; }
+.section-head h2 { font-size: 18px; font-weight: 600; }
+.section-head p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.mb-section { margin-bottom: 36px; }
+
+/* Profile photo */
+.photo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.photo-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 600; overflow: hidden; flex-shrink: 0;
+  border: 2px solid var(--border); cursor: pointer; position: relative;
+}
+.photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+.photo-circle .overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s; border-radius: 50%;
+}
+.photo-circle:hover .overlay { opacity: 1; }
+#photo-input { display: none; }
+
+/* Profile grid */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media(max-width:500px) { .form-row { grid-template-columns: 1fr; } }
+.form-group { margin-bottom: 12px; }
+
+/* Platforms */
+.platforms-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px; margin-bottom: 20px;
+}
+.plat-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--card);
+  cursor: pointer; transition: all .2s; font-size: 11px; color: var(--muted);
+}
+.plat-chip i { font-size: 20px; }
+.plat-chip:hover, .plat-chip.selected { border-color: var(--accent); background: rgba(99,102,241,0.1); color: var(--text); }
+
+/* Links list */
+#links-list { display: flex; flex-direction: column; gap: 10px; }
+.link-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+}
+.link-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+.link-info { flex: 1; min-width: 0; }
+.link-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.link-url { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: left; }
+.link-del { color: var(--muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all .2s; border: none; background: transparent; font-size: 14px; }
+.link-del:hover { color: var(--danger); background: rgba(239,68,68,.1); }
+
+/* Add link modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px; width: 100%; max-width: 440px;
+}
+.modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-head h3 { font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+.modal-close:hover { color: var(--text); background: var(--card); }
+
+/* Preview link */
+.preview-url {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+}
+.preview-url a { color: var(--accent2); text-decoration: none; font-size: 14px; flex: 1; direction: ltr; }
+.preview-url a:hover { text-decoration: underline; }
+.copy-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 4px; }
+.copy-btn:hover { color: var(--text); }
+
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--muted); font-size: 14px;
+}
+.empty-state i { font-size: 36px; display: block; margin-bottom: 12px; opacity: .4; }
+</style>
+</head>
+<body>
+<div id="toast"></div>
+
+<div class="topnav">
+  <div class="logo">⚡ LinkHub</div>
+  <div class="topnav-right">
+    <a id="preview-link" href="#" target="_blank" class="btn btn-outline" style="font-size:13px; padding:8px 16px;">
+      <i class="fa-solid fa-eye"></i> بینینی لاپەڕە
+    </a>
+    <div class="user-avatar" id="nav-avatar"></div>
+    <button class="btn btn-outline" style="font-size:13px; padding:8px 14px;" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── Profile Section ── -->
+  <div class="mb-section">
+    <div class="section-head">
+      <h2>پرۆفایل</h2>
+      <p>زانیارییەکانت دیاری بکە</p>
+    </div>
+    <div class="card">
+      <div class="photo-row">
+        <div class="photo-circle" onclick="document.getElementById('photo-input').click()">
+          <div id="photo-display"></div>
+          <div class="overlay"><i class="fa-solid fa-camera" style="color:#fff;font-size:20px"></i></div>
+        </div>
+        <div>
+          <div style="font-size:14px; font-weight:500; margin-bottom:4px;">وێنەی پرۆفایل</div>
+          <div style="font-size:12px; color:var(--muted)">کلیک بکە بۆ گۆڕین</div>
+        </div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" onchange="uploadPhoto(this)">
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>ناوی نمایش</label>
+          <input type="text" id="f-name" class="input" placeholder="کاروان ئەحمەد">
+        </div>
+        <div class="form-group">
+          <label>یوزەرنەیم</label>
+          <input type="text" id="f-username" class="input" placeholder="karwan" dir="ltr" readonly
+            style="opacity:.6; cursor:not-allowed;" title="یوزەرنەیم نادەگۆڕدرێت">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>بیو (خۆت باس بکە)</label>
+        <textarea id="f-bio" class="input" rows="2" placeholder="گەشەپێدەری وێب · دیزاینەر · ..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveProfile()" id="btn-save">
+        <i class="fa-solid fa-check"></i> پاشەکەوتکردن
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Links Section ── -->
+  <div class="mb-section">
+    <div class="section-head">
+      <h2>لینکەکان</h2>
+      <p>سۆشیال مێدیا و ماڵپەرەکانت زیاد بکە</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="openModal()" style="margin-bottom:16px;">
+      <i class="fa-solid fa-plus"></i> زیادکردنی لینکی نوێ
+    </button>
+
+    <div id="links-list"></div>
+  </div>
+
+  <!-- ── Share Section ── -->
+  <div>
+    <div class="section-head">
+      <h2>هاوبەشکردن</h2>
+      <p>ئەم لینکە بنێرە بە کەسانی دیکە</p>
+    </div>
+    <div class="card">
+      <div class="preview-url">
+        <i class="fa-solid fa-link" style="color:var(--accent2)"></i>
+        <a id="share-url" href="#" target="_blank"></a>
+        <button class="copy-btn" onclick="copyUrl()" title="کۆپی">
+          <i class="fa-regular fa-copy"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add Link Modal ── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>زیادکردنی لینکی نوێ</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label>پلاتفۆرم هەڵبژێرە</label>
+      <div class="platforms-grid" id="plat-grid"></div>
+    </div>
+
+    <div class="form-group">
+      <label>سەردێڕ / ناو</label>
+      <input type="text" id="m-title" class="input" placeholder="وێبسایتی من">
+    </div>
+    <div class="form-group">
+      <label>لینک (URL)</label>
+      <input type="url" id="m-url" class="input" placeholder="https://..." dir="ltr">
+    </div>
+    <div style="display:flex; gap:10px; margin-top:4px;">
+      <button class="btn btn-primary" style="flex:1" onclick="addLink()">
+        <i class="fa-solid fa-plus"></i> زیادکردن
+      </button>
+      <button class="btn btn-outline" onclick="closeModal()">هەڵweşاندنەوە</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script>
+const PLATFORMS = [
+  { id:'instagram', name:'Instagram', icon:'fa-brands fa-instagram', color:'#e1306c', prefix:'https://instagram.com/' },
+  { id:'telegram',  name:'Telegram',  icon:'fa-brands fa-telegram',  color:'#229ed9', prefix:'https://t.me/' },
+  { id:'tiktok',    name:'TikTok',    icon:'fa-brands fa-tiktok',    color:'#ff0050', prefix:'https://tiktok.com/@' },
+  { id:'youtube',   name:'YouTube',   icon:'fa-brands fa-youtube',   color:'#ff0000', prefix:'https://youtube.com/' },
+  { id:'github',    name:'GitHub',    icon:'fa-brands fa-github',    color:'#f0f6fc', prefix:'https://github.com/' },
+  { id:'twitter',   name:'X / Twitter',icon:'fa-brands fa-x-twitter',color:'#1da1f2', prefix:'https://x.com/' },
+  { id:'linkedin',  name:'LinkedIn',  icon:'fa-brands fa-linkedin',  color:'#0a66c2', prefix:'https://linkedin.com/in/' },
+  { id:'snapchat',  name:'Snapchat',  icon:'fa-brands fa-snapchat',  color:'#fffc00', prefix:'https://snapchat.com/add/' },
+  { id:'facebook',  name:'Facebook',  icon:'fa-brands fa-facebook',  color:'#1877f2', prefix:'https://facebook.com/' },
+  { id:'whatsapp',  name:'WhatsApp',  icon:'fa-brands fa-whatsapp',  color:'#25d366', prefix:'https://wa.me/' },
+  { id:'website',   name:'ماڵپەر',   icon:'fa-solid fa-globe',      color:'#818cf8', prefix:'https://' },
+];
+
+let userData = null;
+let currentUser = null;
+let selectedPlat = null;
+
+// ── Auth guard ──
+auth.onAuthStateChanged(async user => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  currentUser = user;
+  const snap = await db.collection('users').doc(user.uid).get();
+  if (!snap.exists) { window.location.href = 'auth.html'; return; }
+  userData = snap.data();
+  loadProfile();
+  renderLinks();
+  setupShareUrl();
+  buildPlatGrid();
+});
+
+function loadProfile() {
+  document.getElementById('f-name').value = userData.name || '';
+  document.getElementById('f-username').value = userData.username || '';
+  document.getElementById('f-bio').value = userData.bio || '';
+  // avatar
+  const display = document.getElementById('photo-display');
+  const navAv   = document.getElementById('nav-avatar');
+  if (userData.photo) {
+    display.innerHTML = `<img src="${userData.photo}" alt="photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    navAv.innerHTML   = `<img src="${userData.photo}" alt="photo">`;
+  } else {
+    const initials = (userData.name || 'U').charAt(0).toUpperCase();
+    display.innerHTML = initials;
+    navAv.innerHTML   = initials;
+  }
+}
+
+function setupShareUrl() {
+  const url = `${location.origin}/profile.html?u=${userData.username}`;
+  const el = document.getElementById('share-url');
+  el.href = url; el.textContent = url.replace('https://', '');
+  document.getElementById('preview-link').href = url;
+}
+
+// ── Save Profile ──
+async function saveProfile() {
+  const name = document.getElementById('f-name').value.trim();
+  const bio  = document.getElementById('f-bio').value.trim();
+  if (!name) { showToast('ناوی نمایش پڕ بکەرەوە'); return; }
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    await db.collection('users').doc(currentUser.uid).update({ name, bio });
+    userData.name = name; userData.bio = bio;
+    showToast('✅ پاشەکەوتکرا!');
+    loadProfile();
+  } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> پاشەکەوتکردن';
+}
+
+// ── Upload Photo (Base64 — خۆڕایی، هیچ Storage پێویست نییە) ──
+async function uploadPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('تەنها وێنە قبووڵ دەکرێت'); return; }
+  showToast('⏳ پڕۆسێسکردن...');
+  try {
+    // کەمکردنەوەی قەبارەی وێنە بۆ 200x200 و Base64
+    const base64 = await resizeAndConvert(file, 200, 200, 0.75);
+    await db.collection('users').doc(currentUser.uid).update({ photo: base64 });
+    userData.photo = base64; loadProfile();
+    showToast('✅ وێنەکە گۆڕدرا!');
+  } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
+}
+
+// کوچکردنەوەی وێنە و گۆڕینی بۆ Base64
+function resizeAndConvert(file, maxW, maxH, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        // حیساب کردنی قەبارەی نوێ
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > maxW) { h = h*(maxW/w); w = maxW; } }
+        else        { if (h > maxH) { w = w*(maxH/h); h = maxH; } }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Render Links ──
+function renderLinks() {
+  const list = document.getElementById('links-list');
+  const links = userData.links || [];
+  if (!links.length) {
+    list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-link"></i>هێشتا لینکت زیاد نەکردووە</div>`;
+    return;
+  }
+  list.innerHTML = links.map((lnk, i) => {
+    const p = PLATFORMS.find(x => x.id === lnk.platform) || PLATFORMS[10];
+    return `<div class="link-item">
+      <div class="link-icon"><i class="${p.icon}" style="color:${p.color}"></i></div>
+      <div class="link-info">
+        <div class="link-title">${lnk.title}</div>
+        <div class="link-url">${lnk.url}</div>
+      </div>
+      <button class="link-del" onclick="deleteLink(${i})" title="سڕینەوە">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>`;
+  }).join('');
+}
+
+// ── Add Link ──
+async function addLink() {
+  const title = document.getElementById('m-title').value.trim();
+  const url   = document.getElementById('m-url').value.trim();
+  if (!selectedPlat) { showToast('پلاتفۆرمێک هەڵبژێرە'); return; }
+  if (!title) { showToast('سەردێڕ پڕ بکەرەوە'); return; }
+  if (!url || !url.startsWith('http')) { showToast('لینکی دروست بنووسە (https://...)'); return; }
+  const newLink = { platform: selectedPlat, title, url };
+  const links = [...(userData.links||[]), newLink];
+  await db.collection('users').doc(currentUser.uid).update({ links });
+  userData.links = links;
+  renderLinks(); closeModal();
+  showToast('✅ لینک زیادکرا!');
+}
+
+// ── Delete Link ──
+async function deleteLink(i) {
+  if (!confirm('دڵنیایت؟')) return;
+  const links = userData.links.filter((_,idx) => idx !== i);
+  await db.collection('users').doc(currentUser.uid).update({ links });
+  userData.links = links; renderLinks();
+  showToast('🗑️ سڕایەوە');
+}
+
+// ── Platform Grid ──
+function buildPlatGrid() {
+  const grid = document.getElementById('plat-grid');
+  grid.innerHTML = PLATFORMS.map(p => `
+    <div class="plat-chip" id="chip-${p.id}" onclick="selectPlat('${p.id}')">
+      <i class="${p.icon}" style="color:${p.color}"></i>
+      <span>${p.name}</span>
+    </div>`).join('');
+}
+
+function selectPlat(id) {
+  document.querySelectorAll('.plat-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('chip-'+id).classList.add('selected');
+  selectedPlat = id;
+  const p = PLATFORMS.find(x => x.id===id);
+  if (!document.getElementById('m-title').value)
+    document.getElementById('m-title').value = p.name;
+  if (!document.getElementById('m-url').value)
+    document.getElementById('m-url').value = p.prefix;
+}
+
+function openModal()  { document.getElementById('modal').classList.add('open'); selectedPlat=null; document.getElementById('m-title').value=''; document.getElementById('m-url').value=''; document.querySelectorAll('.plat-chip').forEach(c=>c.classList.remove('selected')); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if(e.target===document.getElementById('modal')) closeModal(); });
+
+function copyUrl() {
+  const url = document.getElementById('share-url').href;
+  navigator.clipboard.writeText(url).then(() => showToast('✅ کۆپیکرا!'));
+}
+
+async function logout() {
+  await auth.signOut();
+  window.location.href = 'index.html';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

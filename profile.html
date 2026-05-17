@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 0 60px;
+  background: #07070f;
+  overflow-x: hidden;
+}
+
+/* animated bg */
+.bg-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.bg-blob {
+  position: absolute; border-radius: 50%; filter: blur(100px);
+  animation: drift 12s ease-in-out infinite alternate;
+}
+.bg-blob1 { width: 500px; height: 500px; background: rgba(99,102,241,0.12); top: -150px; right: -150px; }
+.bg-blob2 { width: 400px; height: 400px; background: rgba(168,85,247,0.1); bottom: -100px; left: -100px; animation-delay: -6s; }
+@keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,30px) scale(1.05); } }
+
+/* Profile card */
+.profile-wrap {
+  width: 100%; max-width: 480px; padding: 48px 20px 0;
+  position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center;
+}
+
+.avatar {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; font-weight: 700; margin-bottom: 16px;
+  border: 3px solid rgba(99,102,241,0.4);
+  box-shadow: 0 0 40px rgba(99,102,241,0.3);
+  overflow: hidden;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.profile-name { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+.profile-bio  { font-size: 14px; color: var(--muted); text-align: center; line-height: 1.6; max-width: 340px; margin-bottom: 32px; }
+
+/* Links */
+.links-container { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+
+.link-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; border-radius: 14px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  text-decoration: none; color: var(--text);
+  transition: all .2s; cursor: pointer;
+  animation: slideUp .4s ease both;
+}
+.link-btn:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(99,102,241,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.link-btn:active { transform: translateY(0) scale(0.98); }
+
+@keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+.link-icon-wrap {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.link-text { flex: 1; }
+.link-title { font-size: 15px; font-weight: 500; }
+.link-arrow { color: rgba(255,255,255,0.2); font-size: 14px; transition: color .2s, transform .2s; }
+.link-btn:hover .link-arrow { color: var(--accent2); transform: translateX(-4px); }
+
+/* Footer */
+.profile-footer {
+  margin-top: 40px; text-align: center;
+  position: relative; z-index: 1;
+}
+.powered-by {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--muted); font-size: 12px; text-decoration: none;
+  padding: 7px 16px; border-radius: 50px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  transition: border-color .2s;
+}
+.powered-by:hover { border-color: var(--accent); color: var(--text); }
+
+/* Not found */
+.not-found {
+  text-align: center; padding: 80px 24px;
+  position: relative; z-index: 1;
+}
+.not-found .big { font-size: 64px; margin-bottom: 16px; }
+.not-found h2 { font-size: 22px; margin-bottom: 8px; }
+.not-found p { color: var(--muted); margin-bottom: 24px; }
+
+/* Loading */
+.loading-dots { display: flex; gap: 8px; margin-top: 60px; position: relative; z-index: 1; }
+.loading-dots span {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: .2s; }
+.loading-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce { 0%,80%,100% { transform:scale(.7); opacity:.5; } 40% { transform:scale(1); opacity:1; } }
+</style>
+</head>
+<body>
+
+<div class="bg-wrap">
+  <div class="bg-blob bg-blob1"></div>
+  <div class="bg-blob bg-blob2"></div>
+</div>
+
+<div id="loading" class="loading-dots">
+  <span></span><span></span><span></span>
+</div>
+
+<div id="not-found" class="not-found" style="display:none">
+  <div class="big">😕</div>
+  <h2>پرۆفایل نەدۆزرایەوە</h2>
+  <p>ئەم بەکارهێنەرە بوونی نییە</p>
+  <a href="index.html" class="btn btn-primary"><i class="fa-solid fa-house"></i> ماڵپەر</a>
+</div>
+
+<div id="profile-wrap" class="profile-wrap" style="display:none"></div>
+
+<div class="profile-footer" id="footer" style="display:none">
+  <a href="index.html" class="powered-by">
+    <i class="fa-solid fa-bolt"></i> دروستکراوە بە LinkHub
+  </a>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script>
+const PLATFORMS = {
+  instagram: { icon:'fa-brands fa-instagram', color:'#e1306c' },
+  telegram:  { icon:'fa-brands fa-telegram',  color:'#229ed9' },
+  tiktok:    { icon:'fa-brands fa-tiktok',    color:'#ff0050' },
+  youtube:   { icon:'fa-brands fa-youtube',   color:'#ff0000' },
+  github:    { icon:'fa-brands fa-github',    color:'#f0f6fc' },
+  twitter:   { icon:'fa-brands fa-x-twitter', color:'#1da1f2' },
+  linkedin:  { icon:'fa-brands fa-linkedin',  color:'#0a66c2' },
+  snapchat:  { icon:'fa-brands fa-snapchat',  color:'#fffc00' },
+  facebook:  { icon:'fa-brands fa-facebook',  color:'#1877f2' },
+  whatsapp:  { icon:'fa-brands fa-whatsapp',  color:'#25d366' },
+  website:   { icon:'fa-solid fa-globe',      color:'#818cf8' },
+};
+
+async function loadProfile() {
+  const username = new URLSearchParams(location.search).get('u');
+  if (!username) { showNotFound(); return; }
+
+  // Find user by username
+  const usnSnap = await db.collection('usernames').doc(username).get();
+  if (!usnSnap.exists) { showNotFound(); return; }
+
+  const uid = usnSnap.data().uid;
+  const userSnap = await db.collection('users').doc(uid).get();
+  if (!userSnap.exists) { showNotFound(); return; }
+
+  const data = userSnap.data();
+  document.title = `${data.name} | LinkHub`;
+  renderProfile(data);
+}
+
+function renderProfile(data) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('footer').style.display = 'block';
+
+  const wrap = document.getElementById('profile-wrap');
+  wrap.style.display = 'flex';
+
+  // Avatar
+  const avatarHtml = data.photo
+    ? `<img src="${data.photo}" alt="${data.name}">`
+    : (data.name || 'U').charAt(0).toUpperCase();
+
+  // Links
+  const links = data.links || [];
+  const linksHtml = links.length
+    ? links.map((lnk, i) => {
+        const p = PLATFORMS[lnk.platform] || PLATFORMS.website;
+        return `<a href="${lnk.url}" target="_blank" rel="noopener" class="link-btn" style="animation-delay:${i*0.07}s">
+          <div class="link-icon-wrap">
+            <i class="${p.icon}" style="color:${p.color}"></i>
+          </div>
+          <div class="link-text">
+            <div class="link-title">${lnk.title}</div>
+          </div>
+          <i class="fa-solid fa-chevron-left link-arrow"></i>
+        </a>`;
+      }).join('')
+    : '<div style="text-align:center;color:var(--muted);padding:20px 0;font-size:14px">هێشتا لینکی نییە</div>';
+
+  wrap.innerHTML = `
+    <div class="avatar">${avatarHtml}</div>
+    <div class="profile-name">${data.name || username}</div>
+    ${data.bio ? `<div class="profile-bio">${data.bio}</div>` : '<div style="margin-bottom:32px"></div>'}
+    <div class="links-container">${linksHtml}</div>
+  `;
+}
+
+function showNotFound() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('not-found').style.display = 'block';
+}
+
+loadProfile().catch(() => showNotFound());
+</script>
+</body>
+</html>

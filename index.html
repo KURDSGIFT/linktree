@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub - لاپەڕەی لینکەکانت</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { overflow-x: hidden; }
+
+/* background blobs */
+.blob {
+  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0;
+}
+.blob1 { width: 500px; height: 500px; background: rgba(99,102,241,0.15); top: -100px; right: -100px; }
+.blob2 { width: 400px; height: 400px; background: rgba(139,92,246,0.1); bottom: -100px; left: -100px; }
+
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(7,7,15,0.8); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 22px; font-weight: 700; color: var(--accent2); letter-spacing: -0.5px; }
+.nav-links { display: flex; gap: 12px; }
+
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 80px 24px 60px;
+  position: relative; z-index: 1;
+}
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
+  color: var(--accent2); padding: 6px 16px; border-radius: 50px;
+  font-size: 13px; margin-bottom: 24px;
+}
+.badge i { font-size: 11px; }
+
+h1 {
+  font-size: clamp(36px, 6vw, 72px); font-weight: 700;
+  line-height: 1.1; margin-bottom: 20px;
+  background: linear-gradient(135deg, #fff 40%, var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: clamp(16px, 2vw, 20px); color: var(--muted);
+  max-width: 560px; line-height: 1.6; margin-bottom: 40px;
+}
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+.btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
+
+/* mock preview */
+.preview-wrap {
+  position: relative; width: 100%; max-width: 320px; margin: 0 auto;
+}
+.phone-frame {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 28px; padding: 20px; box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px var(--accent-glow);
+}
+.phone-notch { width: 80px; height: 6px; background: var(--border); border-radius: 3px; margin: 0 auto 20px; }
+.mock-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #a855f7); margin: 0 auto 10px; }
+.mock-name { text-align: center; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.mock-bio { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.mock-link {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 11px 14px; margin-bottom: 8px;
+  font-size: 13px;
+}
+.mock-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* features */
+.features {
+  padding: 80px 24px; max-width: 1000px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.section-title { text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+.section-sub { text-align: center; color: var(--muted); margin-bottom: 48px; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.feature-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; transition: border-color .2s;
+}
+.feature-card:hover { border-color: var(--accent); }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 16px; color: var(--accent2);
+}
+.feature-card h3 { font-size: 16px; margin-bottom: 8px; }
+.feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+footer {
+  text-align: center; padding: 32px;
+  border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
+  position: relative; z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="logo">⚡ LinkHub</div>
+  <div class="nav-links">
+    <a href="auth.html" class="btn btn-outline">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary">تۆمارکردن</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge"><i class="fa-solid fa-bolt"></i> خێرا · ئاسان · خۆڕایی</div>
+  <h1>هەموو لینکەکانت<br>لە یەک شوێن</h1>
+  <p class="subtitle">لاپەڕەی تایبەتی خۆت دروست بکە و هەموو سۆشیال مێدیاکانت لەسەر بنێ — یەک لینک هەمووی لێی دادێت.</p>
+  <div class="hero-btns">
+    <a href="auth.html?tab=signup" class="btn btn-primary btn-lg">
+      <i class="fa-solid fa-rocket"></i> دەستپێکردن — خۆڕایییە
+    </a>
+    <a href="auth.html" class="btn btn-outline btn-lg">
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە
+    </a>
+  </div>
+
+  <!-- Phone mockup -->
+  <div class="preview-wrap">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="mock-avatar"></div>
+      <div class="mock-name">کاروان ئەحمەد</div>
+      <div class="mock-bio">گەشەپێدەری وێب · دیزاینەر</div>
+      <div class="mock-link"><div class="mock-dot" style="background:#e1306c"></div> Instagram</div>
+      <div class="mock-link"><div class="mock-dot" style="background:#229ed9"></div> Telegram</div>
+      <div class="mock-link"><div class="mock-dot" style="background:#f0f6fc"></div> GitHub</div>
+      <div class="mock-link"><div class="mock-dot" style="background:#ff0000"></div> YouTube</div>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <h2 class="section-title">بۆچی LinkHub؟</h2>
+  <p class="section-sub">هەموو ئەوەی پێویستت هەیە — هیچ زیادەیی نییە</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fa-brands fa-instagram"></i></div>
+      <h3>هەموو سۆشیالەکان</h3>
+      <p>Instagram, Telegram, TikTok, YouTube, GitHub و زیاتر — هەمووی زیاد بکە</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <h3>ئاسان و خێرا</h3>
+      <p>لە ٢ خولەک تۆمار بکە و لاپەڕەکەت ئامادەیە بۆ هاوبەشکردن</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fa-solid fa-link"></i></div>
+      <h3>لینکی تایبەتت</h3>
+      <p>ئادرەسی تایبەتت بەم شێوەیە: linkhub.app/ناوت</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+      <h3>موبایل فرێندلی</h3>
+      <p>لاپەڕەکەت لەسەر هەموو موبایل و کۆمپیوتەرێک باش دەردەکەوێت</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  دروستکراوە بە ❤️ — LinkHub © 2025
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="js/config.js"></script>
+<script>
+  // ئەگەر چووبووەتەژوورەوە، ببەیتەوە بۆ داشبۆرد
+  auth.onAuthStateChanged(user => {
+    if (user) window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

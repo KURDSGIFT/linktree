@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub - چوونەژوورەوە</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+.blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+.blob1 { width: 400px; height: 400px; background: rgba(99,102,241,0.15); top: -100px; right: -100px; }
+.blob2 { width: 300px; height: 300px; background: rgba(139,92,246,0.12); bottom: -80px; left: -80px; }
+
+.auth-box { width: 100%; max-width: 420px; position: relative; z-index: 1; }
+.logo { text-align: center; font-size: 28px; font-weight: 700; color: var(--accent2); margin-bottom: 32px; }
+.logo span { font-size: 13px; color: var(--muted); display: block; font-weight: 400; margin-top: 4px; }
+
+/* Tabs */
+.tabs { display: flex; background: var(--bg2); border-radius: 10px; padding: 4px; margin-bottom: 24px; }
+.tab-btn {
+  flex: 1; padding: 9px; border-radius: 8px; border: none; background: transparent;
+  color: var(--muted); font-size: 14px; font-family: inherit; cursor: pointer; transition: all .2s;
+}
+.tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent-glow); }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { margin-bottom: 6px; }
+
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+.helper { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.username-wrap { position: relative; }
+.username-prefix {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 13px; pointer-events: none;
+}
+.username-input { padding-right: 100px !important; direction: ltr; text-align: left; }
+.avail-check { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; }
+
+.sep { margin: 20px 0; }
+
+.back-home { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; text-decoration: none; }
+.back-home:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div id="toast"></div>
+
+<div class="auth-box">
+  <div class="logo">
+    ⚡ LinkHub
+    <span>لاپەڕەی لینکەکانت دروست بکە</span>
+  </div>
+
+  <div class="card">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">چوونەژوورەوە</button>
+      <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">تۆمارکردن</button>
+    </div>
+
+    <div id="alert" class="alert alert-error"></div>
+
+    <!-- ─── LOGIN ─── -->
+    <div class="form-panel active" id="panel-login">
+      <div class="form-group">
+        <label>ئیمەیل</label>
+        <input type="email" id="login-email" class="input" placeholder="name@example.com" dir="ltr">
+      </div>
+      <div class="form-group">
+        <label>پاسۆرد</label>
+        <input type="password" id="login-pass" class="input" placeholder="••••••••" dir="ltr">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="loginEmail()" id="btn-login">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە
+      </button>
+
+      <div class="divider sep"><span>یان</span></div>
+
+      <button class="btn btn-google" onclick="loginGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        چوونەژوورەوە بە Google
+      </button>
+    </div>
+
+    <!-- ─── SIGNUP ─── -->
+    <div class="form-panel" id="panel-signup">
+      <div class="form-group">
+        <label>ناوی نمایش</label>
+        <input type="text" id="su-name" class="input" placeholder="کاروان ئەحمەد">
+      </div>
+      <div class="form-group">
+        <label>یوزەرنەیم (ناوی لینکت)</label>
+        <div class="username-wrap">
+          <span class="username-prefix">linkhub/</span>
+          <input type="text" id="su-username" class="input username-input"
+            placeholder="karwan" oninput="checkUsername(this.value)" dir="ltr">
+          <span class="avail-check" id="avail-icon"></span>
+        </div>
+        <div class="helper" id="avail-msg">تەنها پیت، ژمارە و - بەکاربێت</div>
+      </div>
+      <div class="form-group">
+        <label>ئیمەیل</label>
+        <input type="email" id="su-email" class="input" placeholder="name@example.com" dir="ltr">
+      </div>
+      <div class="form-group">
+        <label>پاسۆرد</label>
+        <input type="password" id="su-pass" class="input" placeholder="لانیکەم ٦ پیت" dir="ltr">
+      </div>
+      <button class="btn btn-primary btn-full" onclick="signupEmail()" id="btn-signup">
+        <i class="fa-solid fa-user-plus"></i> دروستکردنی هەژمار
+      </button>
+
+      <div class="divider sep"><span>یان</span></div>
+
+      <button class="btn btn-google" onclick="loginGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        تۆمارکردن بە Google
+      </button>
+    </div>
+  </div>
+
+  <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-right"></i> گەڕانەوە بۆ ماڵپەر</a>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+if (params.get('tab') === 'signup') switchTab('signup');
+
+function switchTab(t) {
+  ['login','signup'].forEach(x => {
+    document.getElementById('tab-'+x).classList.toggle('active', x===t);
+    document.getElementById('panel-'+x).classList.toggle('active', x===t);
+  });
+  clearAlert();
+}
+
+function showAlert(msg) {
+  const el = document.getElementById('alert');
+  el.textContent = msg; el.style.display = 'block';
+}
+function clearAlert() {
+  document.getElementById('alert').style.display = 'none';
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<div class="spinner"></div>'
+    : (btnId === 'btn-login'
+        ? '<i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە'
+        : '<i class="fa-solid fa-user-plus"></i> دروستکردنی هەژمار');
+}
+
+// ── Username availability check ──
+let usernameTimeout;
+function checkUsername(val) {
+  clearTimeout(usernameTimeout);
+  const icon = document.getElementById('avail-icon');
+  const msg = document.getElementById('avail-msg');
+  val = val.toLowerCase().replace(/[^a-z0-9\-]/g,'');
+  document.getElementById('su-username').value = val;
+  if (!val) { icon.textContent=''; msg.textContent='تەنها پیت، ژمارە و - بەکاربێت'; msg.style.color=''; return; }
+  if (val.length < 3) { icon.textContent='⚠️'; msg.textContent='لانیکەم ٣ پیت'; msg.style.color='#fca5a5'; return; }
+  icon.textContent='⏳'; msg.textContent='پشکنین...'; msg.style.color='';
+  usernameTimeout = setTimeout(async () => {
+    try {
+      const snap = await db.collection('usernames').doc(val).get();
+      if (snap.exists) {
+        icon.textContent='❌'; msg.textContent='ئەم ناوە پێشتر هەبووە'; msg.style.color='#fca5a5';
+      } else {
+        icon.textContent='✅'; msg.textContent='بەردەستە!'; msg.style.color='#86efac';
+      }
+    } catch { icon.textContent=''; }
+  }, 600);
+}
+
+// ── After login: create user doc if new ──
+async function afterAuth(user, extraData={}) {
+  const ref = db.collection('users').doc(user.uid);
+  const snap = await ref.get();
+  if (!snap.exists) {
+    // Google signup: generate username from email
+    let username = extraData.username || user.email.split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase();
+    // Ensure unique
+    let usn = username, i = 1;
+    while ((await db.collection('usernames').doc(usn).get()).exists) usn = username + i++;
+    await db.collection('usernames').doc(usn).set({ uid: user.uid });
+    await ref.set({
+      uid: user.uid,
+      username: usn,
+      name: extraData.name || user.displayName || usn,
+      bio: '',
+      photo: user.photoURL || '',
+      links: [],
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+  window.location.href = 'dashboard.html';
+}
+
+// ── Email Login ──
+async function loginEmail() {
+  clearAlert();
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
+  setLoading('btn-login', true);
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    await afterAuth(cred.user);
+  } catch(e) {
+    setLoading('btn-login', false);
+    showAlert(translateError(e.code));
+  }
+}
+
+// ── Email Signup ──
+async function signupEmail() {
+  clearAlert();
+  const name     = document.getElementById('su-name').value.trim();
+  const username = document.getElementById('su-username').value.trim();
+  const email    = document.getElementById('su-email').value.trim();
+  const pass     = document.getElementById('su-pass').value;
+  if (!name||!username||!email||!pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
+  if (username.length < 3) { showAlert('یوزەرنەیم لانیکەم ٣ پیت'); return; }
+  if (pass.length < 6) { showAlert('پاسۆرد لانیکەم ٦ پیت'); return; }
+  // Check username free
+  const usnSnap = await db.collection('usernames').doc(username).get();
+  if (usnSnap.exists) { showAlert('ئەم یوزەرنەیمە پێشتر هەبووە'); return; }
+  setLoading('btn-signup', true);
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    await afterAuth(cred.user, { name, username });
+  } catch(e) {
+    setLoading('btn-signup', false);
+    showAlert(translateError(e.code));
+  }
+}
+
+// ── Google Login/Signup ──
+async function loginGoogle() {
+  clearAlert();
+  try {
+    const cred = await auth.signInWithPopup(googleProvider);
+    await afterAuth(cred.user);
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') showAlert(translateError(e.code));
+  }
+}
+
+function translateError(code) {
+  const map = {
+    'auth/user-not-found': 'ئەم ئیمەیلە نەدۆزرایەوە',
+    'auth/wrong-password': 'پاسۆردی هەڵە',
+    'auth/email-already-in-use': 'ئەم ئیمەیلە پێشتر تۆمارکراوە',
+    'auth/invalid-email': 'ئیمەیلی نادروست',
+    'auth/weak-password': 'پاسۆرد زۆر سووک — لانیکەم ٦ پیت',
+    'auth/network-request-failed': 'کێشەی ئینتەرنێت',
+    'auth/too-many-requests': 'زۆر جار هەوڵت دا — کەمێ چاوەڕێ بکە',
+    'auth/invalid-credential': 'ئیمەیل یان پاسۆردی هەڵە'
+  };
+  return map[code] || 'هەڵەیەک ڕووی دا، دووبارە هەوڵ بدەرەوە';
+}
+
+// Already logged in
+auth.onAuthStateChanged(user => { if (user) window.location.href = 'dashboard.html'; });
+</script>
+</body>
+</html>
