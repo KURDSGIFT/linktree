@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #07070f;
+  --bg2: #0f0f1a;
+  --bg3: #16162a;
+  --accent: #6366f1;
+  --accent2: #818cf8;
+  --accent-glow: rgba(99,102,241,0.3);
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.08);
+  --card: rgba(255,255,255,0.04);
+  --danger: #ef4444;
+  --success: #22c55e;
+  --radius: 14px;
+}
+
+body {
+  font-family: 'Vazirmatn', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  direction: rtl;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 22px; border-radius: 10px; font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none; transition: all .2s; font-family: inherit;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.btn-primary:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 0 30px var(--accent-glow); }
+.btn-outline {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-outline:hover { background: var(--card); border-color: var(--accent); }
+.btn-danger { background: rgba(239,68,68,0.15); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+.btn-danger:hover { background: rgba(239,68,68,0.25); }
+.btn-google {
+  background: var(--card); color: var(--text);
+  border: 1px solid var(--border); width: 100%; padding: 12px;
+}
+.btn-google:hover { border-color: var(--accent); background: var(--bg3); }
+.btn-full { width: 100%; }
+
+/* ── Inputs ── */
+.input {
+  width: 100%; padding: 11px 14px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-size: 14px; font-family: inherit;
+  transition: border-color .2s;
+}
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.input::placeholder { color: var(--muted); }
+
+label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+
+/* ── Card ── */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+/* ── Alert ── */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; }
+.alert-error { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #fca5a5; }
+.alert-success { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.3); color: #86efac; }
+
+/* ── Toast ── */
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 20px; border-radius: 50px; font-size: 13px; z-index: 9999;
+  transition: transform .3s, opacity .3s; opacity: 0;
+}
+#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ── Divider ── */
+.divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.divider span { color: var(--muted); font-size: 12px; }
+
+/* ── Spinner ── */
+.spinner {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Link Platform Colors ── */
+.plat-instagram { color: #e1306c; }
+.plat-twitter { color: #1da1f2; }
+.plat-tiktok { color: #ff0050; }
+.plat-youtube { color: #ff0000; }
+.plat-github { color: #f0f6fc; }
+.plat-telegram { color: #229ed9; }
+.plat-linkedin { color: #0a66c2; }
+.plat-snapchat { color: #fffc00; }
+.plat-facebook { color: #1877f2; }
+.plat-whatsapp { color: #25d366; }
+.plat-website { color: var(--accent2); }
