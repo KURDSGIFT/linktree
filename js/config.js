@@ -2,11 +2,11 @@
 // بچۆ: https://console.firebase.google.com → پرۆژەی نوێ دروست بکە → Project Settings → Your Apps → Add Web App
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBhYiFcQeB2r6CWDiFvqV0LUPNVoow1sjM",
+  authDomain: "appmass-f26bd.firebaseapp.com",
+  projectId: "appmass-f26bd",
+  messagingSenderId: "735578268323",
+  appId: "1:735578268323:web:4f5e27ce1307db429bd516"
 };
 
 firebase.initializeApp(firebaseConfig);
