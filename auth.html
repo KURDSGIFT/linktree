@@ -190,28 +190,40 @@ function checkUsername(val) {
   }, 600);
 }
 
-// ── After login: create user doc if new ──
+// ── After login: save user data to Firestore ──
 async function afterAuth(user, extraData={}) {
-  const ref = db.collection('users').doc(user.uid);
-  const snap = await ref.get();
-  if (!snap.exists) {
-    // Google signup: generate username from email
-    let username = extraData.username || user.email.split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase();
-    // Ensure unique
-    let usn = username, i = 1;
-    while ((await db.collection('usernames').doc(usn).get()).exists) usn = username + i++;
-    await db.collection('usernames').doc(usn).set({ uid: user.uid });
-    await ref.set({
-      uid: user.uid,
-      username: usn,
-      name: extraData.name || user.displayName || usn,
-      bio: '',
-      photo: user.photoURL || '',
-      links: [],
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+  try {
+    const ref  = db.collection('users').doc(user.uid);
+    const snap = await ref.get();
+    if (!snap.exists) {
+      let username = extraData.username ||
+        (user.email || user.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20) || 'user';
+      // make sure username is unique
+      let usn = username, i = 1;
+      while ((await db.collection('usernames').doc(usn).get()).exists) usn = username + (i++);
+      await db.collection('usernames').doc(usn).set({ uid: user.uid });
+      await ref.set({
+        uid: user.uid,
+        username: usn,
+        name: extraData.name || user.displayName || usn,
+        bio: '',
+        photo: user.photoURL || '',
+        links: [],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    window.location.href = 'dashboard.html';
+  } catch(e) {
+    console.error('afterAuth error:', e);
+    // ئەگەر Firestore rules کێشەی هەبوو
+    if (e.code === 'permission-denied') {
+      showAlert('❌ Firestore Rules کێشەی هەیە — تکایە rules ەکە لە Firebase Console دابنێ (تێبینی خوارەوە ببینە)');
+    } else {
+      showAlert('هەڵە لە پاشەکەوتکردنی زانیاری: ' + e.message);
+    }
+    // ئەگەر auth ئامادەبوو بەڵام firestore شکست هێنا، باشە — بخاتە dashboard
+    if (auth.currentUser) window.location.href = 'dashboard.html';
   }
-  window.location.href = 'dashboard.html';
 }
 
 // ── Email Login ──
@@ -225,8 +237,9 @@ async function loginEmail() {
     const cred = await auth.signInWithEmailAndPassword(email, pass);
     await afterAuth(cred.user);
   } catch(e) {
+    console.error('login error:', e.code, e.message);
     setLoading('btn-login', false);
-    showAlert(translateError(e.code));
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
   }
 }
 
@@ -240,16 +253,21 @@ async function signupEmail() {
   if (!name||!username||!email||!pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
   if (username.length < 3) { showAlert('یوزەرنەیم لانیکەم ٣ پیت'); return; }
   if (pass.length < 6) { showAlert('پاسۆرد لانیکەم ٦ پیت'); return; }
-  // Check username free
-  const usnSnap = await db.collection('usernames').doc(username).get();
-  if (usnSnap.exists) { showAlert('ئەم یوزەرنەیمە پێشتر هەبووە'); return; }
   setLoading('btn-signup', true);
   try {
+    // پشکنینی یوزەرنەیم
+    const usnSnap = await db.collection('usernames').doc(username).get().catch(() => ({ exists: false }));
+    if (usnSnap.exists) {
+      setLoading('btn-signup', false);
+      showAlert('ئەم یوزەرنەیمە پێشتر هەبووە');
+      return;
+    }
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
     await afterAuth(cred.user, { name, username });
   } catch(e) {
+    console.error('signup error:', e.code, e.message);
     setLoading('btn-signup', false);
-    showAlert(translateError(e.code));
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
   }
 }
 
@@ -260,26 +278,34 @@ async function loginGoogle() {
     const cred = await auth.signInWithPopup(googleProvider);
     await afterAuth(cred.user);
   } catch(e) {
-    if (e.code !== 'auth/popup-closed-by-user') showAlert(translateError(e.code));
+    console.error('google error:', e.code, e.message);
+    if (e.code !== 'auth/popup-closed-by-user') {
+      showAlert(translateError(e.code) + ' [' + e.code + ']');
+    }
   }
 }
 
 function translateError(code) {
   const map = {
-    'auth/user-not-found': 'ئەم ئیمەیلە نەدۆزرایەوە',
-    'auth/wrong-password': 'پاسۆردی هەڵە',
-    'auth/email-already-in-use': 'ئەم ئیمەیلە پێشتر تۆمارکراوە',
-    'auth/invalid-email': 'ئیمەیلی نادروست',
-    'auth/weak-password': 'پاسۆرد زۆر سووک — لانیکەم ٦ پیت',
-    'auth/network-request-failed': 'کێشەی ئینتەرنێت',
-    'auth/too-many-requests': 'زۆر جار هەوڵت دا — کەمێ چاوەڕێ بکە',
-    'auth/invalid-credential': 'ئیمەیل یان پاسۆردی هەڵە'
+    'auth/user-not-found':        'ئەم ئیمەیلە نەدۆزرایەوە',
+    'auth/wrong-password':        'پاسۆردی هەڵە',
+    'auth/invalid-credential':    'ئیمەیل یان پاسۆردی هەڵە',
+    'auth/email-already-in-use':  'ئەم ئیمەیلە پێشتر تۆمارکراوە',
+    'auth/invalid-email':         'ئیمەیلی نادروست',
+    'auth/weak-password':         'پاسۆرد زۆر سووک — لانیکەم ٦ پیت',
+    'auth/network-request-failed':'کێشەی ئینتەرنێت',
+    'auth/too-many-requests':     'زۆر جار هەوڵت دا — کەمێ چاوەڕێ بکە',
+    'auth/operation-not-allowed': '❌ ئەم جۆرە چوونەژوورەوەیە چالاک نەکراوە لە Firebase Console',
+    'auth/popup-blocked':         'پاپئەپ بلۆک کراوە — تکایە پاپئەپ ڕێگەپێبدە',
+    'permission-denied':          'Firestore Rules ڕێگە نەدا',
   };
-  return map[code] || 'هەڵەیەک ڕووی دا، دووبارە هەوڵ بدەرەوە';
+  return map[code] || 'هەڵەیەک ڕووی دا';
 }
 
-// Already logged in
-auth.onAuthStateChanged(user => { if (user) window.location.href = 'dashboard.html'; });
+// Already logged in → redirect
+auth.onAuthStateChanged(user => {
+  if (user) window.location.href = 'dashboard.html';
+});
 </script>
 </body>
 </html>
