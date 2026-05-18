@@ -1,200 +1,120 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkHub - لاپەڕەی لینکەکانت</title>
+<meta name="description" content="LinkHub — Create your personal link page. Share all your social media profiles with one single link.">
+<title>LinkHub — One Link for Everything</title>
+<!-- Google AdSense — replace ca-pub-XXXXXXXX with your Publisher ID after approval -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body { overflow-x: hidden; }
-
-/* background blobs */
-.blob {
-  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0;
-}
-.blob1 { width: 500px; height: 500px; background: rgba(99,102,241,0.15); top: -100px; right: -100px; }
-.blob2 { width: 400px; height: 400px; background: rgba(139,92,246,0.1); bottom: -100px; left: -100px; }
-
-nav {
-  position: fixed; top: 0; width: 100%; z-index: 100;
-  padding: 16px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(7,7,15,0.8); backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-.logo { font-size: 22px; font-weight: 700; color: var(--accent2); letter-spacing: -0.5px; }
-.nav-links { display: flex; gap: 12px; }
-
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 80px 24px 60px;
-  position: relative; z-index: 1;
-}
-
-.badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
-  color: var(--accent2); padding: 6px 16px; border-radius: 50px;
-  font-size: 13px; margin-bottom: 24px;
-}
-.badge i { font-size: 11px; }
-
-h1 {
-  font-size: clamp(36px, 6vw, 72px); font-weight: 700;
-  line-height: 1.1; margin-bottom: 20px;
-  background: linear-gradient(135deg, #fff 40%, var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-
-.subtitle {
-  font-size: clamp(16px, 2vw, 20px); color: var(--muted);
-  max-width: 560px; line-height: 1.6; margin-bottom: 40px;
-}
-
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
-.btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
-
-/* mock preview */
-.preview-wrap {
-  position: relative; width: 100%; max-width: 320px; margin: 0 auto;
-}
-.phone-frame {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 28px; padding: 20px; box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 60px var(--accent-glow);
-}
-.phone-notch { width: 80px; height: 6px; background: var(--border); border-radius: 3px; margin: 0 auto 20px; }
-.mock-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #a855f7); margin: 0 auto 10px; }
-.mock-name { text-align: center; font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-.mock-bio { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-.mock-link {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 10px; padding: 11px 14px; margin-bottom: 8px;
-  font-size: 13px;
-}
-.mock-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-/* features */
-.features {
-  padding: 80px 24px; max-width: 1000px; margin: 0 auto;
-  position: relative; z-index: 1;
-}
-.section-title { text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-.section-sub { text-align: center; color: var(--muted); margin-bottom: 48px; }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-.feature-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px; transition: border-color .2s;
-}
-.feature-card:hover { border-color: var(--accent); }
-.feature-icon {
-  width: 48px; height: 48px; border-radius: 12px;
-  background: rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 16px; color: var(--accent2);
-}
-.feature-card h3 { font-size: 16px; margin-bottom: 8px; }
-.feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-footer {
-  text-align: center; padding: 32px;
-  border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
-  position: relative; z-index: 1;
-}
+body{display:flex;flex-direction:column;overflow-x:hidden}
+.blob{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.blob1{width:500px;height:500px;background:rgba(99,102,241,.14);top:-120px;right:-120px}
+.blob2{width:400px;height:400px;background:rgba(139,92,246,.1);bottom:-100px;left:-100px}
+.hero{min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;z-index:1}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:var(--accent2);padding:6px 16px;border-radius:50px;font-size:13px;margin-bottom:24px;font-weight:500}
+h1{font-size:clamp(36px,6vw,70px);font-weight:700;line-height:1.1;margin-bottom:18px;background:linear-gradient(135deg,#fff 40%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:36px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:56px}
+.btn-lg{padding:13px 30px;font-size:16px;border-radius:11px}
+.phone-frame{background:var(--bg2);border:1px solid var(--border);border-radius:26px;padding:20px;box-shadow:0 40px 80px rgba(0,0,0,.5),0 0 60px var(--accent-glow);max-width:300px;margin:0 auto}
+.phone-notch{width:70px;height:5px;background:var(--border);border-radius:3px;margin:0 auto 18px}
+.mock-av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a855f7);margin:0 auto 10px}
+.mock-name{text-align:center;font-size:15px;font-weight:600;margin-bottom:3px}
+.mock-bio{text-align:center;font-size:12px;color:var(--muted);margin-bottom:14px}
+.mock-link{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 13px;margin-bottom:7px;font-size:13px}
+.mock-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.features{padding:80px 24px;max-width:1000px;margin:0 auto;position:relative;z-index:1;width:100%}
+.section-title{text-align:center;font-size:28px;font-weight:700;margin-bottom:6px}
+.section-sub{text-align:center;color:var(--muted);margin-bottom:44px;font-size:15px}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:border-color .2s}
+.feature-card:hover{border-color:var(--accent)}
+.feature-icon{width:46px;height:46px;border-radius:11px;background:rgba(99,102,241,.15);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;color:var(--accent2)}
+.feature-card h3{font-size:15px;margin-bottom:7px}
+.feature-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.how{padding:80px 24px;position:relative;z-index:1;max-width:800px;margin:0 auto;width:100%}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--border)}
+.step:last-child{border-bottom:none}
+.step-num{width:40px;height:40px;border-radius:50%;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--accent2);flex-shrink:0;margin-top:2px}
+.step h3{font-size:16px;font-weight:600;margin-bottom:5px}
+.step p{font-size:14px;color:var(--muted);line-height:1.6}
+.cta-section{padding:80px 24px;text-align:center;position:relative;z-index:1;width:100%}
+.cta-box{max-width:540px;margin:0 auto;background:var(--card);border:1px solid rgba(99,102,241,.25);border-radius:20px;padding:48px 32px}
+.cta-box h2{font-size:28px;font-weight:700;margin-bottom:10px}
+.cta-box p{color:var(--muted);margin-bottom:24px;line-height:1.6}
 </style>
 </head>
 <body>
-
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
+<header class="topnav" id="main-nav" data-page="home"></header>
 
-<nav>
-  <div class="logo">⚡ LinkHub</div>
-  <div class="nav-links">
-    <a href="auth.html" class="btn btn-outline">چوونەژوورەوە</a>
-    <a href="auth.html?tab=signup" class="btn btn-primary">تۆمارکردن</a>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="badge"><i class="fa-solid fa-bolt"></i> خێرا · ئاسان · خۆڕایی</div>
-  <h1>هەموو لینکەکانت<br>لە یەک شوێن</h1>
-  <p class="subtitle">لاپەڕەی تایبەتی خۆت دروست بکە و هەموو سۆشیال مێدیاکانت لەسەر بنێ — یەک لینک هەمووی لێی دادێت.</p>
+<section class="hero">
+  <div class="badge"><i class="fa-solid fa-bolt"></i> Fast · Free · Simple</div>
+  <h1>All Your Links,<br>One Place</h1>
+  <p class="subtitle">Create your personal link page and share all your social media profiles with a single link — perfect for your bio.</p>
   <div class="hero-btns">
-    <a href="auth.html?tab=signup" class="btn btn-primary btn-lg">
-      <i class="fa-solid fa-rocket"></i> دەستپێکردن — خۆڕایییە
-    </a>
-    <a href="auth.html" class="btn btn-outline btn-lg">
-      <i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە
-    </a>
+    <a href="auth.html?tab=signup" class="btn btn-primary btn-lg"><i class="fa-solid fa-rocket"></i> Get Started Free</a>
+    <a href="auth.html" class="btn btn-outline btn-lg">Sign In</a>
   </div>
-
-  <!-- Phone mockup -->
-  <div class="preview-wrap">
-    <div class="phone-frame">
-      <div class="phone-notch"></div>
-      <div class="mock-avatar"></div>
-      <div class="mock-name">کاروان ئەحمەد</div>
-      <div class="mock-bio">گەشەپێدەری وێب · دیزاینەر</div>
-      <div class="mock-link"><div class="mock-dot" style="background:#e1306c"></div> Instagram</div>
-      <div class="mock-link"><div class="mock-dot" style="background:#229ed9"></div> Telegram</div>
-      <div class="mock-link"><div class="mock-dot" style="background:#f0f6fc"></div> GitHub</div>
-      <div class="mock-link"><div class="mock-dot" style="background:#ff0000"></div> YouTube</div>
-    </div>
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="mock-av"></div>
+    <div class="mock-name">Alex Johnson</div>
+    <div class="mock-bio">Web Developer · Designer</div>
+    <div class="mock-link"><div class="mock-dot" style="background:#e1306c"></div>Instagram</div>
+    <div class="mock-link"><div class="mock-dot" style="background:#229ed9"></div>Telegram</div>
+    <div class="mock-link"><div class="mock-dot" style="background:#f0f6fc"></div>GitHub</div>
+    <div class="mock-link"><div class="mock-dot" style="background:#ff0000"></div>YouTube</div>
   </div>
-</div>
+</section>
 
-<div class="features">
-  <h2 class="section-title">بۆچی LinkHub؟</h2>
-  <p class="section-sub">هەموو ئەوەی پێویستت هەیە — هیچ زیادەیی نییە</p>
+<section class="features">
+  <h2 class="section-title">Why LinkHub?</h2>
+  <p class="section-sub">Everything you need — nothing you don't</p>
   <div class="feature-grid">
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-brands fa-instagram"></i></div>
-      <h3>هەموو سۆشیالەکان</h3>
-      <p>Instagram, Telegram, TikTok, YouTube, GitHub و زیاتر — هەمووی زیاد بکە</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-      <h3>ئاسان و خێرا</h3>
-      <p>لە ٢ خولەک تۆمار بکە و لاپەڕەکەت ئامادەیە بۆ هاوبەشکردن</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-link"></i></div>
-      <h3>لینکی تایبەتت</h3>
-      <p>ئادرەسی تایبەتت بەم شێوەیە: linkhub.app/ناوت</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-      <h3>موبایل فرێندلی</h3>
-      <p>لاپەڕەکەت لەسەر هەموو موبایل و کۆمپیوتەرێک باش دەردەکەوێت</p>
-    </div>
+    <div class="feature-card"><div class="feature-icon"><i class="fa-brands fa-instagram"></i></div><h3>All Platforms</h3><p>Instagram, Telegram, TikTok, YouTube, GitHub, LinkedIn and more</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h3>Ready in 2 Minutes</h3><p>Sign up, add your links, share. No technical knowledge required.</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-link"></i></div><h3>Custom URL</h3><p>Your own address: linkhub.app/yourname</p></div>
+    <div class="feature-card"><div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div><h3>Mobile Friendly</h3><p>Looks great on every phone, tablet and desktop.</p></div>
   </div>
-</div>
+</section>
 
-<footer style="border-top:1px solid var(--border);background:var(--bg2);position:relative;z-index:1">
-  <div style="max-width:900px;margin:0 auto;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:16px">
-    <div style="font-size:20px;font-weight:700;color:#818cf8">⚡ LinkHub</div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 24px">
-      <a href="about.html" style="color:#94a3b8;text-decoration:none;font-size:13px">About Us</a>
-      <a href="contact.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Contact Us</a>
-      <a href="privacy.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Privacy Policy</a>
-      <a href="terms.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Terms &amp; Conditions</a>
-    </div>
-    <div style="color:#64748b;font-size:12px;text-align:center">
-      دروستکراوە بە ❤️ — LinkHub © 2025 · <a href="mailto:linkcreatorapp@gmail.com" style="color:#64748b;text-decoration:none">linkcreatorapp@gmail.com</a>
-    </div>
+<!-- AdSense 300x250 — uncomment after approval
+<div style="display:flex;justify-content:center;padding:20px 0;position:relative;z-index:1">
+  <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX"></ins>
+  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+</div> -->
+
+<section class="how">
+  <h2 class="section-title">How It Works</h2>
+  <p class="section-sub">Three simple steps</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><h3>Create Your Account</h3><p>Sign up with email or Google — completely free, takes under a minute.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div><h3>Add Your Links</h3><p>Choose your platforms and paste your profile URLs. Reorder them however you like.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div><h3>Share Everywhere</h3><p>Copy your unique LinkHub URL and put it in your Instagram bio, email signature, or anywhere.</p></div></div>
   </div>
-</footer>
+</section>
+
+<section class="cta-section">
+  <div class="cta-box">
+    <h2>Ready to Get Started?</h2>
+    <p>Join thousands of creators, freelancers and brands who use LinkHub.</p>
+    <a href="auth.html?tab=signup" class="btn btn-primary btn-lg"><i class="fa-solid fa-rocket"></i> Create Your Page — Free</a>
+  </div>
+</section>
+
+<footer class="site-footer" id="main-footer"></footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="js/config.js"></script>
-<script>
-  // ئەگەر لۆگین بوو و ڤێریفای بکراو → داشبۆرد
-  auth.onAuthStateChanged(user => {
-    if (user && user.emailVerified) window.location.href = 'dashboard.html';
-  });
-</script>
+<script src="js/layout.js"></script>
+<script>auth.onAuthStateChanged(u=>{if(u&&u.emailVerified)window.location.href='dashboard.html'});</script>
 </body>
 </html>
