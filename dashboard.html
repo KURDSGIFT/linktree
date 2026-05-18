@@ -1,146 +1,318 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ku" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkHub — Dashboard</title>
+<title>LinkHub - داشبۆرد</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body{padding-bottom:60px}
-.page{max-width:680px;margin:0 auto;padding:32px 16px}
-.section-head{margin-bottom:18px}
-.section-head h2{font-size:17px;font-weight:600}
-.section-head p{color:var(--muted);font-size:13px;margin-top:3px}
-.mb-section{margin-bottom:32px}
-.photo-row{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-.photo-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a855f7);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;overflow:hidden;flex-shrink:0;border:2px solid var(--border);cursor:pointer;position:relative}
-.photo-circle img{width:100%;height:100%;object-fit:cover}
-.photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%}
-.photo-circle:hover .photo-overlay{opacity:1}
-#photo-input{display:none}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-@media(max-width:500px){.form-row{grid-template-columns:1fr}}
-.form-group{margin-bottom:12px}
-.platforms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:18px}
-.plat-chip{display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 6px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:all .2s;font-size:11px;color:var(--muted)}
-.plat-chip i{font-size:18px}
-.plat-chip:hover,.plat-chip.selected{border-color:var(--accent);background:rgba(99,102,241,.1);color:var(--text)}
-#links-list{display:flex;flex-direction:column;gap:9px}
-.link-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 14px}
-.link-icon{font-size:20px;width:26px;text-align:center;flex-shrink:0}
-.link-info{flex:1;min-width:0}
-.link-title{font-size:14px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.link-url{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.link-del{color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .2s;border:none;background:transparent;font-size:13px}
-.link-del:hover{color:var(--danger);background:rgba(239,68,68,.1)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
-.modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:26px;width:100%;max-width:440px}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.modal-head h3{font-size:16px;font-weight:600}
-.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px}
-.modal-close:hover{color:var(--text);background:var(--card)}
-.share-box{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
-.share-box a{color:var(--accent2);text-decoration:none;font-size:14px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.share-box a:hover{text-decoration:underline}
-.copy-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px;flex-shrink:0}
-.copy-btn:hover{color:var(--text)}
-.empty-state{text-align:center;padding:36px 20px;color:var(--muted);font-size:14px}
-.empty-state i{font-size:32px;display:block;margin-bottom:10px;opacity:.4}
-.nav-user{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#a855f7);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;overflow:hidden;cursor:pointer}
-.nav-user img{width:100%;height:100%;object-fit:cover}
+body { padding-bottom: 60px; }
+
+/* Nav */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(7,7,15,0.9); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-size: 20px; font-weight: 700; color: var(--accent2); }
+.topnav-right { display: flex; align-items: center; gap: 10px; }
+.user-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; cursor: pointer; overflow: hidden;
+}
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Layout */
+.page { max-width: 680px; margin: 0 auto; padding: 32px 16px; }
+.section-head { margin-bottom: 20px; }
+.section-head h2 { font-size: 18px; font-weight: 600; }
+.section-head p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.mb-section { margin-bottom: 36px; }
+
+/* Themes Selection */
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.theme-card { 
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; 
+  cursor: pointer; text-align: center; transition: all 0.2s;
+}
+.theme-card:hover, .theme-card.selected { border-color: var(--accent); background: rgba(99,102,241,0.1); }
+.theme-preview { height: 80px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; }
+.theme-card span { font-size: 13px; font-weight: 500; }
+
+/* Profile photo */
+.photo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.photo-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #a855f7);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 600; overflow: hidden; flex-shrink: 0;
+  border: 2px solid var(--border); cursor: pointer; position: relative;
+}
+.photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+.photo-circle .overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .2s; border-radius: 50%;
+}
+.photo-circle:hover .overlay { opacity: 1; }
+#photo-input { display: none; }
+
+/* Profile grid */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media(max-width:500px) { .form-row { grid-template-columns: 1fr; } }
+.form-group { margin-bottom: 12px; }
+
+/* Platforms */
+.platforms-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px; margin-bottom: 20px;
+}
+.plat-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; border-radius: 10px;
+  border: 1px solid var(--border); background: var(--card);
+  cursor: pointer; transition: all .2s; font-size: 11px; color: var(--muted);
+}
+.plat-chip i { font-size: 20px; }
+.plat-chip:hover, .plat-chip.selected { border-color: var(--accent); background: rgba(99,102,241,0.1); color: var(--text); }
+
+/* Links list */
+#links-list { display: flex; flex-direction: column; gap: 10px; }
+.link-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+}
+.link-icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+.link-info { flex: 1; min-width: 0; }
+.link-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.link-url { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: left; }
+.link-del { color: var(--muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all .2s; border: none; background: transparent; font-size: 14px; }
+.link-del:hover { color: var(--danger); background: rgba(239,68,68,.1); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px; width: 100%; max-width: 440px;
+}
+.modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.modal-head h3 { font-size: 17px; font-weight: 600; }
+.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+.modal-close:hover { color: var(--text); background: var(--card); }
+
+/* Preview link */
+.preview-url {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+}
+.preview-url a { color: var(--accent2); text-decoration: none; font-size: 14px; flex: 1; direction: ltr; }
+.preview-url a:hover { text-decoration: underline; }
+.copy-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; padding: 4px; }
+.copy-btn:hover { color: var(--text); }
+
+.empty-state {
+  text-align: center; padding: 40px 20px;
+  color: var(--muted); font-size: 14px;
+}
+.empty-state i { font-size: 36px; display: block; margin-bottom: 12px; opacity: .4; }
+
+/* Initial Theme Picker Overlay */
+#theme-picker-overlay {
+    position: fixed; inset: 0; background: var(--bg); z-index: 1000;
+    display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+}
+#theme-picker-overlay.show { display: flex; }
 </style>
 </head>
 <body>
 <div id="toast"></div>
 
-<header class="topnav">
-  <a href="index.html" class="nav-logo">⚡ LinkHub</a>
-  <div style="display:flex;align-items:center;gap:8px">
-    <a id="preview-btn" href="#" target="_blank" class="btn btn-outline btn-sm"><i class="fa-solid fa-eye"></i> View Page</a>
-    <div class="nav-user" id="nav-avatar"></div>
-    <button class="btn btn-outline btn-sm" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+<!-- Theme Picker for New Users -->
+<div id="theme-picker-overlay">
+    <div style="max-width: 500px; width: 100%; text-align: center;">
+        <h1 style="font-size: 24px; margin-bottom: 12px;">بەخێربێیت بۆ LinkHub! ⚡</h1>
+        <p style="color: var(--muted); margin-bottom: 32px;">سەرەتا دیزاینێکی دڵخواز بۆ لاپەڕەکەت هەڵبژێرە</p>
+        
+        <div class="theme-grid">
+            <div class="theme-card" onclick="selectInitialTheme('classic')" id="init-theme-classic">
+                <div class="theme-preview" style="background: linear-gradient(135deg, #07070f, #16162a); border: 1px solid var(--border);">
+                    <div style="width:30px; height:30px; border-radius:50%; background:var(--accent);"></div>
+                </div>
+                <span>کلاسیک</span>
+            </div>
+            <div class="theme-card" onclick="selectInitialTheme('glow')" id="init-theme-glow">
+                <div class="theme-preview" style="background: #0a0a1a; border: 1px solid #6366f1; box-shadow: 0 0 10px rgba(99,102,241,0.3);">
+                    <div style="width:30px; height:30px; border-radius:50%; background:#6366f1; box-shadow: 0 0 15px #6366f1;"></div>
+                </div>
+                <span>درەوشاوە</span>
+            </div>
+            <div class="theme-card" onclick="selectInitialTheme('light')" id="init-theme-light">
+                <div class="theme-preview" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:#0f172a;"></div>
+                </div>
+                <span>ڕوون</span>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary btn-full" id="btn-confirm-theme" style="margin-top: 20px;" onclick="confirmInitialTheme()" disabled>
+            بەردەوامبە <i class="fa-solid fa-arrow-left"></i>
+        </button>
+    </div>
+</div>
+
+<div class="topnav">
+  <div class="logo">⚡ LinkHub</div>
+  <div class="topnav-right">
+    <a id="preview-link" href="#" target="_blank" class="btn btn-outline" style="font-size:13px; padding:8px 16px;">
+      <i class="fa-solid fa-eye"></i> بینینی لاپەڕە
+    </a>
+    <div class="user-avatar" id="nav-avatar"></div>
+    <button class="btn btn-outline" style="font-size:13px; padding:8px 14px;" onclick="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
   </div>
-</header>
+</div>
 
 <div class="page">
 
-  <!-- Profile -->
+  <!-- ── Theme Section ── -->
   <div class="mb-section">
-    <div class="section-head"><h2>Profile</h2><p>Update your display information</p></div>
+    <div class="section-head">
+      <h2>دیزاینی لاپەڕە</h2>
+      <p>شێوازی لاپەڕەکەت بگۆڕە</p>
+    </div>
+    <div class="theme-grid">
+        <div class="theme-card" onclick="setTheme('classic')" id="theme-classic">
+            <div class="theme-preview" style="background: linear-gradient(135deg, #07070f, #16162a); border: 1px solid var(--border);">
+                <div style="width:30px; height:30px; border-radius:50%; background:var(--accent);"></div>
+            </div>
+            <span>کلاسیک</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('glow')" id="theme-glow">
+            <div class="theme-preview" style="background: #0a0a1a; border: 1px solid #6366f1; box-shadow: 0 0 10px rgba(99,102,241,0.3);">
+                <div style="width:30px; height:30px; border-radius:50%; background:#6366f1; box-shadow: 0 0 15px #6366f1;"></div>
+            </div>
+            <span>درەوشاوە</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('light')" id="theme-light">
+            <div class="theme-preview" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+                <div style="width:30px; height:30px; border-radius:50%; background:#0f172a;"></div>
+            </div>
+            <span>ڕوون</span>
+        </div>
+    </div>
+  </div>
+
+  <!-- ── Profile Section ── -->
+  <div class="mb-section">
+    <div class="section-head">
+      <h2>پرۆفایل</h2>
+      <p>زانیارییەکانت دیاری بکە</p>
+    </div>
     <div class="card">
       <div class="photo-row">
         <div class="photo-circle" onclick="document.getElementById('photo-input').click()">
           <div id="photo-display"></div>
-          <div class="photo-overlay"><i class="fa-solid fa-camera" style="color:#fff;font-size:18px"></i></div>
+          <div class="overlay"><i class="fa-solid fa-camera" style="color:#fff;font-size:20px"></i></div>
         </div>
         <div>
-          <div style="font-size:14px;font-weight:500;margin-bottom:3px">Profile Photo</div>
-          <div style="font-size:12px;color:var(--muted)">Click to change</div>
+          <div style="font-size:14px; font-weight:500; margin-bottom:4px;">وێنەی پرۆفایل</div>
+          <div style="font-size:12px; color:var(--muted)">کلیک بکە بۆ گۆڕین</div>
         </div>
       </div>
       <input type="file" id="photo-input" accept="image/*" onchange="uploadPhoto(this)">
+      
       <div class="form-row">
         <div class="form-group">
-          <label>Display Name</label>
-          <input type="text" id="f-name" class="input" placeholder="Alex Johnson">
+          <label>ناوی نمایش</label>
+          <input type="text" id="f-name" class="input" placeholder="کاروان ئەحمەد">
         </div>
         <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="f-username" class="input" readonly style="opacity:.6;cursor:not-allowed" title="Username cannot be changed">
+          <label>یوزەرنەیم</label>
+          <input type="text" id="f-username" class="input" placeholder="karwan" dir="ltr" readonly
+            style="opacity:.6; cursor:not-allowed;" title="یوزەرنەیم نادەگۆڕدرێت">
         </div>
       </div>
       <div class="form-group">
-        <label>Bio</label>
-        <textarea id="f-bio" class="input" rows="2" placeholder="Web Developer · Designer · ..."></textarea>
+        <label>بیو (خۆت باس بکە)</label>
+        <textarea id="f-bio" class="input" rows="2" placeholder="گەشەپێدەری وێب · دیزاینەر · ..."></textarea>
       </div>
-      <button class="btn btn-primary" onclick="saveProfile()" id="btn-save"><i class="fa-solid fa-check"></i> Save Changes</button>
+      <button class="btn btn-primary" onclick="saveProfile()" id="btn-save">
+        <i class="fa-solid fa-check"></i> پاشەکەوتکردن
+      </button>
     </div>
   </div>
 
-  <!-- Links -->
+  <!-- ── Links Section ── -->
   <div class="mb-section">
-    <div class="section-head"><h2>Links</h2><p>Add your social media and websites</p></div>
-    <button class="btn btn-primary" onclick="openModal()" style="margin-bottom:14px"><i class="fa-solid fa-plus"></i> Add New Link</button>
+    <div class="section-head">
+      <h2>لینکەکان</h2>
+      <p>سۆشیال مێدیا و ماڵپەرەکانت زیاد بکە</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="openModal()" style="margin-bottom:16px;">
+      <i class="fa-solid fa-plus"></i> زیادکردنی لینکی نوێ
+    </button>
+
     <div id="links-list"></div>
   </div>
 
-  <!-- Share -->
+  <!-- ── Share Section ── -->
   <div>
-    <div class="section-head"><h2>Share Your Page</h2><p>Send this link to anyone</p></div>
+    <div class="section-head">
+      <h2>هاوبەشکردن</h2>
+      <p>ئەم لینکە بنێرە بە کەسانی دیکە</p>
+    </div>
     <div class="card">
-      <div class="share-box">
-        <i class="fa-solid fa-link" style="color:var(--accent2);flex-shrink:0"></i>
+      <div class="preview-url">
+        <i class="fa-solid fa-link" style="color:var(--accent2)"></i>
         <a id="share-url" href="#" target="_blank"></a>
-        <button class="copy-btn" onclick="copyUrl()"><i class="fa-regular fa-copy"></i></button>
+        <button class="copy-btn" onclick="copyUrl()" title="کۆپی">
+          <i class="fa-regular fa-copy"></i>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Add Link Modal -->
+<!-- ── Add Link Modal ── -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-head">
-      <h3>Add New Link</h3>
+      <h3>زیادکردنی لینکی نوێ</h3>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
+
     <div class="form-group">
-      <label>Choose Platform</label>
+      <label>پلاتفۆرم هەڵبژێرە</label>
       <div class="platforms-grid" id="plat-grid"></div>
     </div>
+
     <div class="form-group">
-      <label>Title</label>
-      <input type="text" id="m-title" class="input" placeholder="My Website">
+      <label>سەردێڕ / ناو</label>
+      <input type="text" id="m-title" class="input" placeholder="وێبسایتی من">
     </div>
     <div class="form-group">
-      <label>URL</label>
-      <input type="url" id="m-url" class="input" placeholder="https://...">
+      <label>لینک (URL)</label>
+      <input type="url" id="m-url" class="input" placeholder="https://..." dir="ltr">
     </div>
-    <div style="display:flex;gap:10px;margin-top:4px">
-      <button class="btn btn-primary" style="flex:1" onclick="addLink()"><i class="fa-solid fa-plus"></i> Add Link</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+    <div style="display:flex; gap:10px; margin-top:4px;">
+      <button class="btn btn-primary" style="flex:1" onclick="addLink()">
+        <i class="fa-solid fa-plus"></i> زیادکردن
+      </button>
+      <button class="btn btn-outline" onclick="closeModal()">هەڵوەشاندنەوە</button>
     </div>
   </div>
 </div>
@@ -150,160 +322,254 @@ body{padding-bottom:60px}
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="js/config.js"></script>
 <script>
-const PLATFORMS=[
-  {id:'instagram',name:'Instagram',icon:'fa-brands fa-instagram',color:'#e1306c',prefix:'https://instagram.com/'},
-  {id:'telegram',name:'Telegram',icon:'fa-brands fa-telegram',color:'#229ed9',prefix:'https://t.me/'},
-  {id:'tiktok',name:'TikTok',icon:'fa-brands fa-tiktok',color:'#ff0050',prefix:'https://tiktok.com/@'},
-  {id:'youtube',name:'YouTube',icon:'fa-brands fa-youtube',color:'#ff0000',prefix:'https://youtube.com/'},
-  {id:'github',name:'GitHub',icon:'fa-brands fa-github',color:'#f0f6fc',prefix:'https://github.com/'},
-  {id:'twitter',name:'X / Twitter',icon:'fa-brands fa-x-twitter',color:'#1da1f2',prefix:'https://x.com/'},
-  {id:'linkedin',name:'LinkedIn',icon:'fa-brands fa-linkedin',color:'#0a66c2',prefix:'https://linkedin.com/in/'},
-  {id:'snapchat',name:'Snapchat',icon:'fa-brands fa-snapchat',color:'#fffc00',prefix:'https://snapchat.com/add/'},
-  {id:'facebook',name:'Facebook',icon:'fa-brands fa-facebook',color:'#1877f2',prefix:'https://facebook.com/'},
-  {id:'whatsapp',name:'WhatsApp',icon:'fa-brands fa-whatsapp',color:'#25d366',prefix:'https://wa.me/'},
-  {id:'website',name:'Website',icon:'fa-solid fa-globe',color:'#818cf8',prefix:'https://'},
+const PLATFORMS = [
+  { id:'instagram', name:'Instagram', icon:'fa-brands fa-instagram', color:'#e1306c', prefix:'https://instagram.com/' },
+  { id:'telegram',  name:'Telegram',  icon:'fa-brands fa-telegram',  color:'#229ed9', prefix:'https://t.me/' },
+  { id:'tiktok',    name:'TikTok',    icon:'fa-brands fa-tiktok',    color:'#ff0050', prefix:'https://tiktok.com/@' },
+  { id:'youtube',   name:'YouTube',   icon:'fa-brands fa-youtube',   color:'#ff0000', prefix:'https://youtube.com/' },
+  { id:'github',    name:'GitHub',    icon:'fa-brands fa-github',    color:'#f0f6fc', prefix:'https://github.com/' },
+  { id:'twitter',   name:'X / Twitter',icon:'fa-brands fa-x-twitter',color:'#1da1f2', prefix:'https://x.com/' },
+  { id:'linkedin',  name:'LinkedIn',  icon:'fa-brands fa-linkedin',  color:'#0a66c2', prefix:'https://linkedin.com/in/' },
+  { id:'snapchat',  name:'Snapchat',  icon:'fa-brands fa-snapchat',  color:'#fffc00', prefix:'https://snapchat.com/add/' },
+  { id:'facebook',  name:'Facebook',  icon:'fa-brands fa-facebook',  color:'#1877f2', prefix:'https://facebook.com/' },
+  { id:'whatsapp',  name:'WhatsApp',  icon:'fa-brands fa-whatsapp',  color:'#25d366', prefix:'https://wa.me/' },
+  { id:'website',   name:'ماڵپەر',   icon:'fa-solid fa-globe',      color:'#818cf8', prefix:'https://' },
 ];
 
-let userData=null, currentUser=null, selectedPlat=null;
+let userData = null;
+let currentUser = null;
+let selectedPlat = null;
+let tempTheme = null;
 
-auth.onAuthStateChanged(async user=>{
-  if(!user){window.location.href='auth.html';return;}
-  if(!user.emailVerified&&user.providerData[0]?.providerId==='password'){
-    document.body.innerHTML=`<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Inter',sans-serif;color:#fff;text-align:center;padding:24px;background:#07070f"><div><div style="font-size:56px;margin-bottom:18px">📧</div><h2 style="font-size:22px;margin-bottom:10px">Email Not Verified</h2><p style="color:#94a3b8;margin-bottom:22px;line-height:1.6">Please check your inbox and click the verification link.</p><button onclick="location.reload()" style="padding:10px 22px;background:#6366f1;border:none;border-radius:9px;color:#fff;cursor:pointer;font-size:14px;font-family:inherit;margin-right:8px">I've Verified</button><button onclick="firebase.auth().signOut().then(()=>location.href='auth.html')" style="padding:10px 22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;cursor:pointer;font-size:14px;font-family:inherit">Sign Out</button></div></div>`;
-    return;
-  }
-  currentUser=user;
-  try{
-    const snap=await db.collection('users').doc(user.uid).get();
-    if(!snap.exists){
-      setTimeout(async()=>{
-        const s2=await db.collection('users').doc(user.uid).get();
-        if(!s2.exists){
-          const usn=(user.email||user.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20)||'user';
-          await db.collection('usernames').doc(usn).set({uid:user.uid}).catch(()=>{});
-          await db.collection('users').doc(user.uid).set({uid:user.uid,username:usn,name:user.displayName||usn,bio:'',photo:user.photoURL||'',links:[],createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-          userData=(await db.collection('users').doc(user.uid).get()).data();
-        }else userData=s2.data();
-        init();
-      },1500);return;
+auth.onAuthStateChanged(async user => {
+  if (!user) { window.location.href = 'auth.html'; return; }
+  currentUser = user;
+  
+  try {
+    const snap = await db.collection('users').doc(user.uid).get();
+    if (!snap.exists) {
+        // Show theme picker for new user
+        document.getElementById('theme-picker-overlay').classList.add('show');
+        return;
     }
-    userData=snap.data(); init();
-  }catch(e){
-    if(e.code==='permission-denied') showToast('Firestore Rules error — check Firebase Console');
-  }
+    userData = snap.data();
+    if (!userData.theme) {
+        document.getElementById('theme-picker-overlay').classList.add('show');
+    } else {
+        initDashboard();
+    }
+  } catch(e) { console.error(e); }
 });
 
-function init(){loadProfile();renderLinks();setupShare();buildPlatGrid();}
+function initDashboard() {
+    loadProfile(); 
+    renderLinks(); 
+    setupShareUrl(); 
+    buildPlatGrid();
+    highlightTheme(userData.theme || 'classic');
+}
 
-function loadProfile(){
-  document.getElementById('f-name').value=userData.name||'';
-  document.getElementById('f-username').value=userData.username||'';
-  document.getElementById('f-bio').value=userData.bio||'';
-  const d=document.getElementById('photo-display'), nav=document.getElementById('nav-avatar');
-  if(userData.photo){
-    d.innerHTML=`<img src="${userData.photo}" alt="photo">`;
-    nav.innerHTML=`<img src="${userData.photo}" alt="photo">`;
-  }else{
-    const i=(userData.name||'U').charAt(0).toUpperCase();
-    d.innerHTML=i; nav.innerHTML=i;
+function selectInitialTheme(theme) {
+    tempTheme = theme;
+    document.querySelectorAll('#theme-picker-overlay .theme-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('init-theme-' + theme).classList.add('selected');
+    document.getElementById('btn-confirm-theme').disabled = false;
+}
+
+async function confirmInitialTheme() {
+    if (!tempTheme) return;
+    const btn = document.getElementById('btn-confirm-theme');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+    
+    const usn = (currentUser.email||currentUser.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20)||'user';
+    
+    try {
+        await db.collection('usernames').doc(usn).set({ uid: currentUser.uid }).catch(()=>{});
+        await db.collection('users').doc(currentUser.uid).set({
+            uid: currentUser.uid, username: usn,
+            name: currentUser.displayName || usn,
+            bio: '', photo: currentUser.photoURL || '',
+            links: [], theme: tempTheme,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        userData = (await db.collection('users').doc(currentUser.uid).get()).data();
+        document.getElementById('theme-picker-overlay').classList.remove('show');
+        initDashboard();
+    } catch(e) { showToast('هەڵەیەک ڕووی دا'); btn.disabled = false; btn.innerHTML = 'بەردەوامبە'; }
+}
+
+async function setTheme(theme) {
+    try {
+        await db.collection('users').doc(currentUser.uid).update({ theme });
+        userData.theme = theme;
+        highlightTheme(theme);
+        showToast('✅ دیزاینەکە گۆڕدرا');
+    } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
+}
+
+function highlightTheme(theme) {
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+    if(document.getElementById('theme-' + theme))
+        document.getElementById('theme-' + theme).classList.add('selected');
+}
+
+function loadProfile() {
+  document.getElementById('f-name').value = userData.name || '';
+  document.getElementById('f-username').value = userData.username || '';
+  document.getElementById('f-bio').value = userData.bio || '';
+  const display = document.getElementById('photo-display');
+  const navAv   = document.getElementById('nav-avatar');
+  if (userData.photo) {
+    display.innerHTML = `<img src="${userData.photo}" alt="photo" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    navAv.innerHTML   = `<img src="${userData.photo}" alt="photo">`;
+  } else {
+    const initials = (userData.name || 'U').charAt(0).toUpperCase();
+    display.innerHTML = initials;
+    navAv.innerHTML   = initials;
   }
 }
 
-function setupShare(){
-  const url=`${location.origin}/profile.html?u=${userData.username}`;
-  const el=document.getElementById('share-url'); el.href=url; el.textContent=url.replace('https://','');
-  document.getElementById('preview-btn').href=url;
+function setupShareUrl() {
+  const url = `${location.origin}/profile.html?u=${userData.username}`;
+  const el = document.getElementById('share-url');
+  el.href = url; el.textContent = url.replace('https://', '');
+  document.getElementById('preview-link').href = url;
 }
 
-async function saveProfile(){
-  const name=document.getElementById('f-name').value.trim();
-  const bio=document.getElementById('f-bio').value.trim();
-  if(!name){showToast('Display name is required');return;}
-  const btn=document.getElementById('btn-save'); btn.disabled=true; btn.innerHTML='<div class="spinner"></div>';
-  try{
-    await db.collection('users').doc(currentUser.uid).update({name,bio});
-    userData.name=name; userData.bio=bio; loadProfile(); showToast('✅ Saved!');
-  }catch{showToast('Something went wrong');}
-  btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check"></i> Save Changes';
+async function saveProfile() {
+  const name = document.getElementById('f-name').value.trim();
+  const bio  = document.getElementById('f-bio').value.trim();
+  if (!name) { showToast('ناوی نمایش پڕ بکەرەوە'); return; }
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    await db.collection('users').doc(currentUser.uid).update({ name, bio });
+    userData.name = name; userData.bio = bio;
+    showToast('✅ پاشەکەوتکرا!');
+    loadProfile();
+  } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
+  btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> پاشەکەوتکردن';
 }
 
-async function uploadPhoto(input){
-  const file=input.files[0]; if(!file) return;
-  showToast('⏳ Processing...');
-  try{
-    const base64=await resizeImage(file,150,150,0.5);
-    await db.collection('users').doc(currentUser.uid).update({photo:base64});
-    userData.photo=base64; loadProfile(); showToast('✅ Photo updated!');
-  }catch{showToast('Upload failed');}
+async function uploadPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('تەنها وێنە قبووڵ دەکرێت'); return; }
+  showToast('⏳ پڕۆسێسکردن...');
+  try {
+    const base64 = await resizeAndConvert(file, 150, 150, 0.5);
+    await db.collection('users').doc(currentUser.uid).update({ photo: base64 });
+    userData.photo = base64; loadProfile();
+    showToast('✅ وێنەکە گۆڕدرا!');
+  } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
 }
 
-function resizeImage(file,mw,mh,q){
-  return new Promise((res,rej)=>{
-    const r=new FileReader(); r.onload=e=>{
-      const img=new Image(); img.onload=()=>{
-        let w=img.width,h=img.height;
-        if(w>h){if(w>mw){h=h*(mw/w);w=mw;}}else{if(h>mh){w=w*(mh/h);h=mh;}}
-        const c=document.createElement('canvas'); c.width=w; c.height=h;
-        c.getContext('2d').drawImage(img,0,0,w,h);
-        res(c.toDataURL('image/jpeg',q));
-      }; img.onerror=rej; img.src=e.target.result;
-    }; r.onerror=rej; r.readAsDataURL(file);
+function resizeAndConvert(file, maxW, maxH, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > h) { if (w > maxW) { h = h*(maxW/w); w = maxW; } }
+        else        { if (h > maxH) { w = w*(maxH/h); h = maxH; } }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 
-function renderLinks(){
-  const list=document.getElementById('links-list'), links=userData.links||[];
-  if(!links.length){list.innerHTML=`<div class="empty-state"><i class="fa-solid fa-link"></i>No links yet — add your first one!</div>`;return;}
-  list.innerHTML=links.map((lnk,i)=>{
-    const p=PLATFORMS.find(x=>x.id===lnk.platform)||PLATFORMS[10];
-    return `<div class="link-item"><div class="link-icon"><i class="${p.icon}" style="color:${p.color}"></i></div><div class="link-info"><div class="link-title">${lnk.title}</div><div class="link-url">${lnk.url}</div></div><button class="link-del" onclick="deleteLink(${i})"><i class="fa-solid fa-trash"></i></button></div>`;
+function renderLinks() {
+  const list = document.getElementById('links-list');
+  const links = userData.links || [];
+  if (!links.length) {
+    list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-link"></i>هێشتا لینکت زیاد نەکردووە</div>`;
+    return;
+  }
+  list.innerHTML = links.map((lnk, i) => {
+    const p = PLATFORMS.find(x => x.id === lnk.platform) || PLATFORMS[10];
+    return `<div class="link-item">
+      <div class="link-icon"><i class="${p.icon}" style="color:${p.color}"></i></div>
+      <div class="link-info">
+        <div class="link-title">${lnk.title}</div>
+        <div class="link-url">${lnk.url}</div>
+      </div>
+      <button class="link-del" onclick="deleteLink(${i})" title="سڕینەوە">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>`;
   }).join('');
 }
 
-async function addLink(){
-  const title=document.getElementById('m-title').value.trim();
-  const url=document.getElementById('m-url').value.trim();
-  if(!selectedPlat){showToast('Select a platform');return;}
-  if(!title){showToast('Enter a title');return;}
-  if(!url||!url.startsWith('http')){showToast('Enter a valid URL (https://...)');return;}
-  const links=[...(userData.links||[]),{platform:selectedPlat,title,url}];
-  await db.collection('users').doc(currentUser.uid).update({links});
-  userData.links=links; renderLinks(); closeModal(); showToast('✅ Link added!');
+async function addLink() {
+  const title = document.getElementById('m-title').value.trim();
+  const url   = document.getElementById('m-url').value.trim();
+  if (!selectedPlat) { showToast('پلاتفۆرمێک هەڵبژێرە'); return; }
+  if (!title) { showToast('سەردێڕ پڕ بکەرەوە'); return; }
+  if (!url || !url.startsWith('http')) { showToast('لینکی دروست بنووسە (https://...)'); return; }
+  const newLink = { platform: selectedPlat, title, url };
+  const links = [...(userData.links||[]), newLink];
+  await db.collection('users').doc(currentUser.uid).update({ links });
+  userData.links = links;
+  renderLinks(); closeModal();
+  showToast('✅ لینک زیادکرا!');
 }
 
-async function deleteLink(i){
-  if(!confirm('Remove this link?'))return;
-  const links=userData.links.filter((_,idx)=>idx!==i);
-  await db.collection('users').doc(currentUser.uid).update({links});
-  userData.links=links; renderLinks(); showToast('Removed');
+async function deleteLink(i) {
+  if (!confirm('دڵنیایت؟')) return;
+  const links = userData.links.filter((_,idx) => idx !== i);
+  await db.collection('users').doc(currentUser.uid).update({ links });
+  userData.links = links; renderLinks();
+  showToast('🗑️ سڕایەوە');
 }
 
-function buildPlatGrid(){
-  document.getElementById('plat-grid').innerHTML=PLATFORMS.map(p=>`<div class="plat-chip" id="chip-${p.id}" onclick="selectPlat('${p.id}')"><i class="${p.icon}" style="color:${p.color}"></i><span>${p.name}</span></div>`).join('');
+function buildPlatGrid() {
+  const grid = document.getElementById('plat-grid');
+  grid.innerHTML = PLATFORMS.map(p => `
+    <div class="plat-chip" id="chip-${p.id}" onclick="selectPlat('${p.id}')">
+      <i class="${p.icon}" style="color:${p.color}"></i>
+      <span>${p.name}</span>
+    </div>`).join('');
 }
 
-function selectPlat(id){
-  document.querySelectorAll('.plat-chip').forEach(c=>c.classList.remove('selected'));
+function selectPlat(id) {
+  document.querySelectorAll('.plat-chip').forEach(c => c.classList.remove('selected'));
   document.getElementById('chip-'+id).classList.add('selected');
-  selectedPlat=id;
-  const p=PLATFORMS.find(x=>x.id===id);
-  if(!document.getElementById('m-title').value) document.getElementById('m-title').value=p.name;
-  if(!document.getElementById('m-url').value) document.getElementById('m-url').value=p.prefix;
+  selectedPlat = id;
+  const p = PLATFORMS.find(x => x.id===id);
+  if (!document.getElementById('m-title').value)
+    document.getElementById('m-title').value = p.name;
+  if (!document.getElementById('m-url').value)
+    document.getElementById('m-url').value = p.prefix;
 }
 
-function openModal(){
-  document.getElementById('modal').classList.add('open');
-  selectedPlat=null;
-  document.getElementById('m-title').value='';
-  document.getElementById('m-url').value='';
-  document.querySelectorAll('.plat-chip').forEach(c=>c.classList.remove('selected'));
-}
-function closeModal(){document.getElementById('modal').classList.remove('open');}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+function openModal()  { document.getElementById('modal').classList.add('open'); selectedPlat=null; document.getElementById('m-title').value=''; document.getElementById('m-url').value=''; document.querySelectorAll('.plat-chip').forEach(c=>c.classList.remove('selected')); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if(e.target===document.getElementById('modal')) closeModal(); });
 
-function copyUrl(){navigator.clipboard.writeText(document.getElementById('share-url').href).then(()=>showToast('✅ Copied!'));}
-async function logout(){await auth.signOut();window.location.href='index.html';}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function copyUrl() {
+  const url = document.getElementById('share-url').href;
+  navigator.clipboard.writeText(url).then(() => showToast('✅ کۆپیکرا!'));
+}
+
+async function logout() {
+  await auth.signOut();
+  window.location.href = 'index.html';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 </script>
 </body>
 </html>

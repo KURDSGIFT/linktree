@@ -1,69 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ku" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkHub — Privacy Policy</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>body{display:flex;flex-direction:column;min-height:100vh}</style>
+<style>
+body { display:flex;flex-direction:column;min-height:100vh; }
+.topnav { position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(7,7,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border); }
+.nav-links { display:flex;gap:10px; }
+.hero-sm { padding:80px 24px 48px;text-align:center;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(99,102,241,.12) 0%,transparent 70%); }
+.hero-sm h1 { font-size:clamp(28px,5vw,48px);font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,#fff 40%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.hero-sm p { color:var(--muted);font-size:14px; }
+.content { max-width:760px;margin:0 auto;padding:48px 24px;flex:1; }
+.policy-section { margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border); }
+.policy-section:last-child { border-bottom:none; }
+.policy-section h2 { font-size:18px;font-weight:700;color:var(--accent2);margin-bottom:14px;display:flex;align-items:center;gap:10px; }
+.policy-section p, .policy-section li { color:#cbd5e1;line-height:1.85;font-size:14px; }
+.policy-section ul { padding-right:20px;margin-top:8px; }
+.policy-section li { margin-bottom:6px; }
+.highlight { background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:14px 18px;margin:12px 0; }
+</style>
 </head>
 <body>
-<header class="topnav" id="main-nav"></header>
-<div class="hero-sm"><h1>Privacy Policy</h1><p>Last updated: 2025</p></div>
-<div style="max-width:760px;margin:0 auto;padding:8px 24px 0">
-  <a href="index.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+<nav class="topnav">
+  <a href="index.html" class="logo">⚡ LinkHub</a>
+  <div class="nav-links" id="nav-auth-links">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 16px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 16px">تۆمارکردن</a>
+  </div>
+</nav>
+
+<div class="hero-sm">
+  <h1>Privacy Policy</h1>
+  <p>دواجار نوێکراوەوە: ٢٠٢٥</p>
 </div>
-<div class="policy-wrap">
+
+<div class="content">
+
   <div class="policy-section">
-    <h2><i class="fa-solid fa-shield-halved"></i> 1. Introduction</h2>
-    <p>LinkHub is committed to protecting your privacy. This policy explains what information we collect, how we use it, and how we keep it safe.</p>
+    <h2><i class="fa-solid fa-shield-halved"></i> ١. پێشەکی</h2>
+    <p>LinkHub گرنگی زۆری بە پارێزگاری لە زانیارییەکانی بەکارهێنەر دەدات. ئەم سیاسەتە ڕوون دەکاتەوە چۆن زانیارییەکانت کۆدەکەینەوە، بەکاریان دەهێنین و پارێزیان دەکەین.</p>
   </div>
+
   <div class="policy-section">
-    <h2><i class="fa-solid fa-database"></i> 2. Information We Collect</h2>
+    <h2><i class="fa-solid fa-database"></i> ٢. چ زانیارییەک کۆدەکەینەوە</h2>
     <ul>
-      <li>Your name and email address provided at sign-up</li>
-      <li>Your username and bio</li>
-      <li>Links you choose to add to your profile</li>
-      <li>Your profile photo (stored as compressed image data)</li>
+      <li>ناو و ئیمەیل کە تۆمارکردنی کات دایدراون</li>
+      <li>یوزەرنەیم و بیۆی پرۆفایل</li>
+      <li>لینکەکانی کە خۆت زیادت کردووون</li>
+      <li>وێنەی پرۆفایل (پاشەکەوتکراوە لە سیستەمەکەمان)</li>
     </ul>
-    <div class="highlight"><strong>We do not collect:</strong> payment details, physical addresses, or any other sensitive personal data.</div>
+    <div class="highlight">
+      <strong>نەکۆیینەوە:</strong> نەمای پارەیی، ناونیشان، یان هیچ زانیارییەکی هەستیار کۆنادەکەینەوە.
+    </div>
   </div>
+
   <div class="policy-section">
-    <h2><i class="fa-solid fa-gears"></i> 3. How We Use Your Information</h2>
+    <h2><i class="fa-solid fa-gears"></i> ٣. بۆچی زانیارییەکان بەکار دێنین</h2>
     <ul>
-      <li>To create and manage your account</li>
-      <li>To display your public profile page to others</li>
-      <li>To improve our service</li>
-      <li>To respond to your support requests</li>
-    </ul>
-  </div>
-  <div class="policy-section">
-    <h2><i class="fa-solid fa-share-nodes"></i> 4. Sharing Your Information</h2>
-    <p>We do not sell or share your personal information with third parties, except:</p>
-    <ul>
-      <li><strong>Google Firebase</strong> — used for authentication and data storage</li>
-      <li>When required by law or a valid legal process</li>
+      <li>دروستکردن و بەڕێوەبردنی هەژمارەکەت</li>
+      <li>پیشاندانی لاپەڕەی گشتیەکەت بۆ ئەوانی دیکە</li>
+      <li>باشترکردنی خزمەتگوزارییەکانمان</li>
+      <li>وەڵامدانەوەی پیامەکانی پشتیوانی</li>
     </ul>
   </div>
+
   <div class="policy-section">
-    <h2><i class="fa-solid fa-lock"></i> 5. Security</h2>
-    <p>Your data is protected through Google Firebase, which uses industry-standard security. Passwords are encrypted and never stored in plain text.</p>
-  </div>
-  <div class="policy-section">
-    <h2><i class="fa-solid fa-user-check"></i> 6. Your Rights</h2>
+    <h2><i class="fa-solid fa-share-nodes"></i> ٤. هاوبەشکردن بە کەسانی دیکە</h2>
+    <p>زانیارییەکانت بە هیچ کۆمپانیایەکی دیکە نافرۆشرێن و نانرێنە دەست کەسانی سێیەم، جگە لە:</p>
     <ul>
-      <li>You may delete your account at any time</li>
-      <li>You can edit your information in your dashboard</li>
-      <li>You can request complete deletion of all your data</li>
+      <li>Google Firebase — کە بۆ پاشەکەوتکردنی زانیاری و چوونەژوورەوە بەکارئێنرێت</li>
+      <li>کاتی داواکراوی دادگا یان دەسەڵاتی یاسایی</li>
     </ul>
   </div>
+
   <div class="policy-section">
-    <h2><i class="fa-solid fa-envelope"></i> 7. Contact</h2>
-    <p>For privacy-related questions, please contact us at <a href="mailto:linkcreatorapp@gmail.com" style="color:var(--accent2)">linkcreatorapp@gmail.com</a></p>
+    <h2><i class="fa-solid fa-lock"></i> ٥. پارێزگاری</h2>
+    <p>زانیارییەکانت لەرێگەی Firebase پارێزراون کە ئامادەییەکانی ئەمنیەتی بەرز بەکاردێنێت. شیفرەکانت ئەبووکرێن و هیچکەس نازانێت.</p>
   </div>
+
+  <div class="policy-section">
+    <h2><i class="fa-solid fa-user-check"></i> ٦. مافەکانت</h2>
+    <ul>
+      <li>مافت هەیە هەژمارەکەت بسڕیتەوە لە هەر کاتێکدا</li>
+      <li>دەتوانیت زانیارییەکانت بگۆڕیت لە داشبۆرد</li>
+      <li>دەتوانیت داوا بکەی زانیارییەکانت تەواو سڕدرێنەوە</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><i class="fa-solid fa-envelope"></i> ٧. پەیوەندی</h2>
+    <p>هەر پرسیارێکت هەبوو دەربارەی پارێزگاری لە زانیاری:</p>
+    <p><a href="mailto:linkcreatorapp@gmail.com" style="color:var(--accent2)">linkcreatorapp@gmail.com</a></p>
+  </div>
+
 </div>
-<footer class="site-footer" id="main-footer"></footer>
+
+<footer id="main-footer"></footer>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="js/config.js"></script>

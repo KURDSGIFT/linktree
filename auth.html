@@ -1,154 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ku" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LinkHub — Sign In</title>
+<title>LinkHub - چوونەژوورەوە</title>
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
-.blob{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none}
-.blob1{width:400px;height:400px;background:rgba(99,102,241,.15);top:-100px;right:-100px}
-.blob2{width:300px;height:300px;background:rgba(139,92,246,.12);bottom:-80px;left:-80px}
-.auth-box{width:100%;max-width:420px;position:relative;z-index:1}
-.auth-logo{text-align:center;margin-bottom:28px}
-.auth-logo a{font-size:26px;font-weight:700;color:var(--accent2);text-decoration:none}
-.auth-logo p{font-size:13px;color:var(--muted);margin-top:4px}
-.tabs{display:flex;background:var(--bg2);border-radius:10px;padding:4px;margin-bottom:22px}
-.tab-btn{flex:1;padding:9px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-size:14px;font-family:inherit;cursor:pointer;transition:all .2s}
-.tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 0 15px var(--accent-glow)}
-.form-panel{display:none}
-.form-panel.active{display:block}
-.form-group{margin-bottom:15px}
-.username-wrap{position:relative}
-.username-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
-.username-input{padding-left:90px!important}
-.avail-check{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px}
-.helper{font-size:12px;color:var(--muted);margin-top:4px}
-.agree-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:16px}
-.agree-row input{margin-top:3px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0}
-.agree-row label{font-size:12px;color:var(--muted);margin:0;cursor:pointer;line-height:1.5}
-.agree-row a{color:var(--accent2)}
-.back-link{display:block;text-align:center;margin-top:18px;color:var(--muted);font-size:13px;text-decoration:none}
-.back-link:hover{color:var(--text)}
-/* verify panel */
-.verify-box{text-align:center;padding:8px 0}
-.verify-icon{font-size:52px;margin-bottom:16px}
-.verify-box h3{font-size:19px;font-weight:700;margin-bottom:8px}
-.verify-box p{color:var(--muted);font-size:13px;line-height:1.65;margin-bottom:6px}
-.verify-email{color:var(--accent2);font-weight:600}
-.resend-btn{background:none;border:none;color:var(--accent2);font-size:13px;cursor:pointer;font-family:inherit;text-decoration:underline;margin-top:6px}
-.resend-btn:disabled{color:var(--muted);text-decoration:none;cursor:not-allowed}
+body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+.blob { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+.blob1 { width: 400px; height: 400px; background: rgba(99,102,241,0.15); top: -100px; right: -100px; }
+.blob2 { width: 300px; height: 300px; background: rgba(139,92,246,0.12); bottom: -80px; left: -80px; }
+
+.auth-box { width: 100%; max-width: 420px; position: relative; z-index: 1; }
+.logo { text-align: center; font-size: 28px; font-weight: 700; color: var(--accent2); margin-bottom: 32px; }
+.logo span { font-size: 13px; color: var(--muted); display: block; font-weight: 400; margin-top: 4px; }
+
+/* Tabs */
+.tabs { display: flex; background: var(--bg2); border-radius: 10px; padding: 4px; margin-bottom: 24px; }
+.tab-btn {
+  flex: 1; padding: 9px; border-radius: 8px; border: none; background: transparent;
+  color: var(--muted); font-size: 14px; font-family: inherit; cursor: pointer; transition: all .2s;
+}
+.tab-btn.active { background: var(--accent); color: #fff; box-shadow: 0 0 15px var(--accent-glow); }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { margin-bottom: 6px; }
+
+.form-panel { display: none; }
+.form-panel.active { display: block; }
+
+.helper { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.username-wrap { position: relative; }
+.username-prefix {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 13px; pointer-events: none;
+}
+.username-input { padding-right: 100px !important; direction: ltr; text-align: left; }
+.avail-check { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; }
+
+.sep { margin: 20px 0; }
+
+.back-home { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; text-decoration: none; }
+.back-home:hover { color: var(--text); }
+
+/* Verify panel */
+.verify-box { text-align:center; padding: 8px 0; }
+.verify-icon { font-size: 48px; margin-bottom: 16px; }
+.verify-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.verify-box p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+.verify-email-show { color: var(--accent2); font-weight: 600; }
+.resend-btn { background: none; border: none; color: var(--accent2); font-size: 13px; cursor: pointer; font-family: inherit; text-decoration: underline; }
+.resend-btn:disabled { color: var(--muted); text-decoration: none; cursor: not-allowed; }
 </style>
 </head>
 <body>
+
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
 <div id="toast"></div>
 
 <div class="auth-box">
-  <div class="auth-logo">
-    <a href="index.html">⚡ LinkHub</a>
-    <p>Create your link page in minutes</p>
+  <div class="logo">
+    ⚡ LinkHub
+    <span>لاپەڕەی لینکەکانت دروست بکە</span>
   </div>
 
   <div class="card">
+    <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
-      <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">چوونەژوورەوە</button>
+      <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">تۆمارکردن</button>
     </div>
 
     <div id="alert" class="alert alert-error"></div>
 
-    <!-- LOGIN -->
+    <!-- ─── LOGIN ─── -->
     <div class="form-panel active" id="panel-login">
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="login-email" class="input" placeholder="you@example.com">
+        <label>ئیمەیل</label>
+        <input type="email" id="login-email" class="input" placeholder="name@example.com" dir="ltr">
       </div>
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="login-pass" class="input" placeholder="••••••••">
+        <label>پاسۆرد</label>
+        <input type="password" id="login-pass" class="input" placeholder="••••••••" dir="ltr">
       </div>
       <button class="btn btn-primary btn-full" onclick="loginEmail()" id="btn-login">
-        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە
       </button>
-      <div class="divider" style="margin:18px 0"><span>or</span></div>
+
+      <div class="divider sep"><span>یان</span></div>
+
       <button class="btn btn-google" onclick="loginGoogle()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G">
-        Continue with Google
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        چوونەژوورەوە بە Google
       </button>
     </div>
 
-    <!-- SIGNUP -->
+    <!-- ─── SIGNUP ─── -->
     <div class="form-panel" id="panel-signup">
       <div class="form-group">
-        <label>Display Name</label>
-        <input type="text" id="su-name" class="input" placeholder="Alex Johnson">
+        <label>ناوی نمایش</label>
+        <input type="text" id="su-name" class="input" placeholder="کاروان ئەحمەد">
       </div>
       <div class="form-group">
-        <label>Username (your link)</label>
+        <label>یوزەرنەیم (ناوی لینکت)</label>
         <div class="username-wrap">
           <span class="username-prefix">linkhub/</span>
-          <input type="text" id="su-username" class="input username-input" placeholder="alexj" oninput="checkUsername(this.value)">
+          <input type="text" id="su-username" class="input username-input"
+            placeholder="karwan" oninput="checkUsername(this.value)" dir="ltr">
           <span class="avail-check" id="avail-icon"></span>
         </div>
-        <div class="helper" id="avail-msg">Letters, numbers and hyphens only</div>
+        <div class="helper" id="avail-msg">تەنها پیت، ژمارە و - بەکاربێت</div>
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="su-email" class="input" placeholder="you@example.com">
+        <label>ئیمەیل</label>
+        <input type="email" id="su-email" class="input" placeholder="name@example.com" dir="ltr">
       </div>
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="su-pass" class="input" placeholder="At least 6 characters">
+        <label>پاسۆرد</label>
+        <input type="password" id="su-pass" class="input" placeholder="لانیکەم ٦ پیت" dir="ltr">
       </div>
-      <div class="agree-row">
-        <input type="checkbox" id="agree-terms">
-        <label for="agree-terms">I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a></label>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
+        <input type="checkbox" id="agree-terms" style="margin-top:3px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0">
+        <label for="agree-terms" style="font-size:12px;color:var(--muted);margin:0;cursor:pointer;line-height:1.5">
+          ڕازیم لەگەڵ <a href="terms.html" target="_blank" style="color:var(--accent2)">مەرج و مەرزەکان</a> و <a href="privacy.html" target="_blank" style="color:var(--accent2)">سیاسەتی پارێزگاری</a>
+        </label>
       </div>
       <button class="btn btn-primary btn-full" onclick="signupEmail()" id="btn-signup">
-        <i class="fa-solid fa-user-plus"></i> Create Account
+        <i class="fa-solid fa-user-plus"></i> دروستکردنی هەژمار
       </button>
-      <div class="divider" style="margin:18px 0"><span>or</span></div>
+
+      <div class="divider sep"><span>یان</span></div>
+
       <button class="btn btn-google" onclick="loginGoogle()">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G">
-        Continue with Google
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
+        تۆمارکردن بە Google
       </button>
     </div>
 
-    <!-- VERIFY -->
+    <!-- ─── VERIFY EMAIL ─── -->
     <div class="form-panel" id="panel-verify">
       <div class="verify-box">
         <div class="verify-icon">📧</div>
-        <h3>Check Your Email</h3>
-        <p>We sent a verification link to</p>
-        <p><span class="verify-email" id="verify-email-addr"></span></p>
-        <p style="margin-top:10px;font-size:12px">Click the link in the email, then come back and press the button below.</p>
-        <button class="btn btn-primary btn-full" onclick="checkVerified()" style="margin:18px 0 10px">
-          <i class="fa-solid fa-rotate-right"></i> I've Verified — Continue
+        <h3>ئیمەیلەکەت پشکنە</h3>
+        <p>لینکی پشکنینمان نارد بۆ<br><span class="verify-email-show" id="verify-email-addr"></span></p>
+        <p style="font-size:12px">کلیک بکە لەسەر لینکەکە لە ئیمەیلەکەت، دواتر دووبارە هەوڵبدەرەوە</p>
+        <button class="btn btn-primary btn-full" onclick="checkVerified()" style="margin-bottom:12px">
+          <i class="fa-solid fa-rotate-right"></i> پشکنینی ڤێریفای
         </button>
-        <div><button class="resend-btn" id="resend-btn" onclick="resendVerification()">Resend email</button></div>
-        <div style="margin-top:14px">
-          <button class="btn btn-outline btn-sm" onclick="auth.signOut();showPanels()">
-            <i class="fa-solid fa-arrow-left"></i> Back
+        <div>
+          <button class="resend-btn" id="resend-btn" onclick="resendVerification()">
+            دووبارە ناردنی ئیمەیل
+          </button>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-outline" onclick="auth.signOut();showPanels()" style="font-size:12px;padding:7px 14px">
+            <i class="fa-solid fa-arrow-right"></i> گەڕانەوە
           </button>
         </div>
       </div>
     </div>
   </div>
 
-  <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
+  <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-right"></i> گەڕانەوە بۆ ماڵپەر</a>
 </div>
 
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="js/config.js"></script>
 <script>
 const params = new URLSearchParams(location.search);
-if (params.get('tab')==='signup') switchTab('signup');
+if (params.get('tab') === 'signup') switchTab('signup');
 
 function switchTab(t) {
   ['login','signup'].forEach(x => {
@@ -157,140 +182,239 @@ function switchTab(t) {
   });
   clearAlert();
 }
-function showAlert(msg){ const e=document.getElementById('alert'); e.textContent=msg; e.style.display='block'; }
-function clearAlert(){ document.getElementById('alert').style.display='none'; }
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
-function setLoading(id, on){
-  const b=document.getElementById(id); b.disabled=on;
-  const labels={
-    'btn-login':'<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In',
-    'btn-signup':'<i class="fa-solid fa-user-plus"></i> Create Account'
-  };
-  b.innerHTML=on?'<div class="spinner"></div>':labels[id];
+
+function showAlert(msg) {
+  const el = document.getElementById('alert');
+  el.textContent = msg; el.style.display = 'block';
+}
+function clearAlert() {
+  document.getElementById('alert').style.display = 'none';
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  btn.disabled = loading;
+  btn.innerHTML = loading
+    ? '<div class="spinner"></div>'
+    : (btnId === 'btn-login'
+        ? '<i class="fa-solid fa-arrow-right-to-bracket"></i> چوونەژوورەوە'
+        : '<i class="fa-solid fa-user-plus"></i> دروستکردنی هەژمار');
 }
 
-// Username check
-let usnTimer;
-function checkUsername(val){
-  clearTimeout(usnTimer);
-  val=val.toLowerCase().replace(/[^a-z0-9\-]/g,'');
-  document.getElementById('su-username').value=val;
-  const icon=document.getElementById('avail-icon'), msg=document.getElementById('avail-msg');
-  if(!val){ icon.textContent=''; msg.textContent='Letters, numbers and hyphens only'; msg.style.color=''; return; }
-  if(val.length<3){ icon.textContent='⚠️'; msg.textContent='At least 3 characters'; msg.style.color='#fca5a5'; return; }
-  icon.textContent='⏳'; msg.textContent='Checking...'; msg.style.color='';
-  usnTimer=setTimeout(async()=>{
-    try{
-      const s=await db.collection('usernames').doc(val).get();
-      if(s.exists){ icon.textContent='❌'; msg.textContent='Already taken'; msg.style.color='#fca5a5'; }
-      else{ icon.textContent='✅'; msg.textContent='Available!'; msg.style.color='#86efac'; }
-    }catch{ icon.textContent=''; }
-  },600);
+// ── Username availability check ──
+let usernameTimeout;
+function checkUsername(val) {
+  clearTimeout(usernameTimeout);
+  const icon = document.getElementById('avail-icon');
+  const msg = document.getElementById('avail-msg');
+  val = val.toLowerCase().replace(/[^a-z0-9\-]/g,'');
+  document.getElementById('su-username').value = val;
+  if (!val) { icon.textContent=''; msg.textContent='تەنها پیت، ژمارە و - بەکاربێت'; msg.style.color=''; return; }
+  if (val.length < 3) { icon.textContent='⚠️'; msg.textContent='لانیکەم ٣ پیت'; msg.style.color='#fca5a5'; return; }
+  icon.textContent='⏳'; msg.textContent='پشکنین...'; msg.style.color='';
+  usernameTimeout = setTimeout(async () => {
+    try {
+      const snap = await db.collection('usernames').doc(val).get();
+      if (snap.exists) {
+        icon.textContent='❌'; msg.textContent='ئەم ناوە پێشتر هەبووە'; msg.style.color='#fca5a5';
+      } else {
+        icon.textContent='✅'; msg.textContent='بەردەستە!'; msg.style.color='#86efac';
+      }
+    } catch { icon.textContent=''; }
+  }, 600);
 }
 
-// After auth: save to Firestore
-async function afterAuth(user, extra={}){
-  try{
-    const ref=db.collection('users').doc(user.uid);
-    const snap=await ref.get();
-    if(!snap.exists){
-      let usn=extra.username||(user.email||user.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20)||'user';
-      let u=usn, i=1;
-      while((await db.collection('usernames').doc(u).get()).exists) u=usn+(i++);
-      await db.collection('usernames').doc(u).set({uid:user.uid});
-      await ref.set({ uid:user.uid, username:u, name:extra.name||user.displayName||u, bio:'', photo:user.photoURL||'', links:[], createdAt:firebase.firestore.FieldValue.serverTimestamp() });
+// ── After login: save user data to Firestore ──
+async function afterAuth(user, extraData={}) {
+  try {
+    const ref  = db.collection('users').doc(user.uid);
+    const snap = await ref.get();
+    if (!snap.exists) {
+      let username = extraData.username ||
+        (user.email || user.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20) || 'user';
+      // make sure username is unique
+      let usn = username, i = 1;
+      while ((await db.collection('usernames').doc(usn).get()).exists) usn = username + (i++);
+      await db.collection('usernames').doc(usn).set({ uid: user.uid });
+      await ref.set({
+        uid: user.uid,
+        username: usn,
+        name: extraData.name || user.displayName || usn,
+        bio: '',
+        photo: user.photoURL || '',
+        links: [],
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
     }
-    window.location.href='dashboard.html';
-  }catch(e){
-    console.error('afterAuth:',e);
-    if(auth.currentUser) window.location.href='dashboard.html';
+    window.location.href = 'dashboard.html';
+  } catch(e) {
+    console.error('afterAuth error:', e);
+    // ئەگەر Firestore rules کێشەی هەبوو
+    if (e.code === 'permission-denied') {
+      showAlert('❌ Firestore Rules کێشەی هەیە — تکایە rules ەکە لە Firebase Console دابنێ (تێبینی خوارەوە ببینە)');
+    } else {
+      showAlert('هەڵە لە پاشەکەوتکردنی زانیاری: ' + e.message);
+    }
+    // ئەگەر auth ئامادەبوو بەڵام firestore شکست هێنا، باشە — بخاتە dashboard
+    if (auth.currentUser) window.location.href = 'dashboard.html';
   }
 }
 
-// Login
-async function loginEmail(){
+// ── Email Login ──
+async function loginEmail() {
   clearAlert();
-  const email=document.getElementById('login-email').value.trim();
-  const pass=document.getElementById('login-pass').value;
-  if(!email||!pass){ showAlert('Please fill in all fields'); return; }
-  setLoading('btn-login',true);
-  try{
-    const c=await auth.signInWithEmailAndPassword(email,pass);
-    if(!c.user.emailVerified){ setLoading('btn-login',false); showAlert('Please verify your email first — check your inbox'); return; }
-    await afterAuth(c.user);
-  }catch(e){ setLoading('btn-login',false); showAlert(errMsg(e.code)); }
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  if (!email || !pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
+  setLoading('btn-login', true);
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    await afterAuth(cred.user);
+  } catch(e) {
+    console.error('login error:', e.code, e.message);
+    setLoading('btn-login', false);
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
+  }
 }
 
-// Signup
-async function signupEmail(){
+// ── Email Signup ──
+async function signupEmail() {
   clearAlert();
-  const name=document.getElementById('su-name').value.trim();
-  const username=document.getElementById('su-username').value.trim();
-  const email=document.getElementById('su-email').value.trim();
-  const pass=document.getElementById('su-pass').value;
-  const agreed=document.getElementById('agree-terms').checked;
-  if(!name||!username||!email||!pass){ showAlert('Please fill in all fields'); return; }
-  if(!agreed){ showAlert('Please accept the Terms & Conditions'); return; }
-  if(username.length<3){ showAlert('Username must be at least 3 characters'); return; }
-  if(pass.length<6){ showAlert('Password must be at least 6 characters'); return; }
-  setLoading('btn-signup',true);
-  try{
-    const us=await db.collection('usernames').doc(username).get().catch(()=>({exists:false}));
-    if(us.exists){ setLoading('btn-signup',false); showAlert('Username already taken'); return; }
-    const c=await auth.createUserWithEmailAndPassword(email,pass);
-    await c.user.sendEmailVerification();
-    await afterAuth(c.user,{name,username});
+  const name     = document.getElementById('su-name').value.trim();
+  const username = document.getElementById('su-username').value.trim();
+  const email    = document.getElementById('su-email').value.trim();
+  const pass     = document.getElementById('su-pass').value;
+  const agreed   = document.getElementById('agree-terms').checked;
+
+  if (!name||!username||!email||!pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
+  if (!agreed) { showAlert('تکایە مەرج و مەرزەکان قبووڵ بکە'); return; }
+  if (username.length < 3) { showAlert('یوزەرنەیم لانیکەم ٣ پیت'); return; }
+  if (pass.length < 6) { showAlert('پاسۆرد لانیکەم ٦ پیت'); return; }
+  setLoading('btn-signup', true);
+  try {
+    const usnSnap = await db.collection('usernames').doc(username).get().catch(() => ({ exists: false }));
+    if (usnSnap.exists) { setLoading('btn-signup', false); showAlert('ئەم یوزەرنەیمە پێشتر هەبووە'); return; }
+
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+
+    // ناردنی ئیمەیلی ڤێریفای
+    await cred.user.sendEmailVerification();
+
+    // پاشەکەوتکردنی زانیارییەکان لە Firestore
+    await afterAuth(cred.user, { name, username });
+
+    // نیشاندانی پانێلی ڤێریفای
     showVerifyPanel(email);
-  }catch(e){ setLoading('btn-signup',false); showAlert(errMsg(e.code)); }
+
+  } catch(e) {
+    console.error('signup error:', e.code, e.message);
+    setLoading('btn-signup', false);
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
+  }
 }
 
-// Google
-async function loginGoogle(){
-  clearAlert();
-  try{ await auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); }
-  catch(e){ showAlert(errMsg(e.code)); }
-}
-
-// Handle redirect result
-auth.getRedirectResult().then(async r=>{ if(r&&r.user) await afterAuth(r.user); }).catch(e=>{ if(e.code) showAlert(errMsg(e.code)); });
-
-// Verify panel
-function showVerifyPanel(email){
-  document.querySelector('.tabs').style.display='none';
-  document.getElementById('alert').style.display='none';
-  ['login','signup'].forEach(x=>document.getElementById('panel-'+x).classList.remove('active'));
+// ── نیشاندانی پانێلی ڤێریفای ──
+function showVerifyPanel(email) {
+  document.querySelector('.tabs').style.display = 'none';
+  document.getElementById('alert').style.display = 'none';
+  ['login','signup'].forEach(x => document.getElementById('panel-'+x).classList.remove('active'));
   document.getElementById('panel-verify').classList.add('active');
-  document.getElementById('verify-email-addr').textContent=email;
+  document.getElementById('verify-email-addr').textContent = email;
 }
-function showPanels(){
-  document.querySelector('.tabs').style.display='flex';
+
+function showPanels() {
+  document.querySelector('.tabs').style.display = 'flex';
   document.getElementById('panel-verify').classList.remove('active');
   switchTab('login');
 }
-async function checkVerified(){
-  const u=auth.currentUser; if(!u){ showPanels(); return; }
-  await u.reload();
-  if(u.emailVerified) window.location.href='dashboard.html';
-  else showToast('⚠️ Not verified yet — check your inbox');
-}
-async function resendVerification(){
-  const u=auth.currentUser; if(!u) return;
-  const btn=document.getElementById('resend-btn'); btn.disabled=true;
-  try{
-    await u.sendEmailVerification();
-    showToast('✅ Email sent!');
-    let s=60; const t=setInterval(()=>{ btn.textContent=`Wait (${s}s)`; if(--s<0){ clearInterval(t); btn.disabled=false; btn.textContent='Resend email'; } },1000);
-  }catch{ btn.disabled=false; showToast('Something went wrong'); }
+
+// ── پشکنینی ڤێریفای ──
+async function checkVerified() {
+  const user = auth.currentUser;
+  if (!user) { showPanels(); return; }
+  await user.reload();
+  if (user.emailVerified) {
+    window.location.href = 'dashboard.html';
+  } else {
+    showToast('⚠️ هێشتا ڤێریفای نەکراوە — ئیمەیلەکەت پشکنە');
+  }
 }
 
-function errMsg(code){
-  const m={'auth/user-not-found':'No account found with that email','auth/wrong-password':'Incorrect password','auth/invalid-credential':'Incorrect email or password','auth/email-already-in-use':'Email already in use','auth/invalid-email':'Invalid email address','auth/weak-password':'Password is too weak — use at least 6 characters','auth/network-request-failed':'Network error — check your connection','auth/too-many-requests':'Too many attempts — please wait a moment','auth/operation-not-allowed':'This sign-in method is not enabled'};
-  return m[code]||'Something went wrong, please try again';
+// ── دووبارە ناردنی ئیمەیل ──
+async function resendVerification() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const btn = document.getElementById('resend-btn');
+  btn.disabled = true;
+  try {
+    await user.sendEmailVerification();
+    showToast('✅ ئیمەیلەکە دووبارە نێردرا!');
+    let s = 60;
+    const t = setInterval(() => {
+      btn.textContent = `چاوەڕێ بکە (${s}s)`;
+      if (--s < 0) { clearInterval(t); btn.disabled = false; btn.textContent = 'دووبارە ناردنی ئیمەیل'; }
+    }, 1000);
+  } catch(e) {
+    btn.disabled = false;
+    showToast('هەڵەیەک ڕووی دا');
+  }
 }
 
-let redirectHandled=false;
-auth.onAuthStateChanged(user=>{
-  if(user&&user.emailVerified&&!redirectHandled){ redirectHandled=true; setTimeout(()=>{ if(location.pathname.includes('auth.html')) window.location.href='dashboard.html'; },400); }
+// ── Google Login/Signup (redirect — پاپئەپ کێشەی نییە) ──
+async function loginGoogle() {
+  clearAlert();
+  try {
+    await auth.signInWithRedirect(googleProvider);
+  } catch(e) {
+    console.error('google error:', e.code, e.message);
+    showAlert(translateError(e.code) + ' [' + e.code + ']');
+  }
+}
+
+function translateError(code) {
+  const map = {
+    'auth/user-not-found':        'ئەم ئیمەیلە نەدۆزرایەوە',
+    'auth/wrong-password':        'پاسۆردی هەڵە',
+    'auth/invalid-credential':    'ئیمەیل یان پاسۆردی هەڵە',
+    'auth/email-already-in-use':  'ئەم ئیمەیلە پێشتر تۆمارکراوە',
+    'auth/invalid-email':         'ئیمەیلی نادروست',
+    'auth/weak-password':         'پاسۆرد زۆر سووک — لانیکەم ٦ پیت',
+    'auth/network-request-failed':'کێشەی ئینتەرنێت',
+    'auth/too-many-requests':     'زۆر جار هەوڵت دا — کەمێ چاوەڕێ بکە',
+    'auth/operation-not-allowed': '❌ ئەم جۆرە چوونەژوورەوەیە چالاک نەکراوە لە Firebase Console',
+    'auth/popup-blocked':         'پاپئەپ بلۆک کراوە — تکایە پاپئەپ ڕێگەپێبدە',
+    'permission-denied':          'Firestore Rules ڕێگە نەدا',
+  };
+  return map[code] || 'هەڵەیەک ڕووی دا';
+}
+
+// ── گەڕانەوە لە Google Redirect ──
+auth.getRedirectResult().then(async result => {
+  if (result && result.user) {
+    await afterAuth(result.user);
+  }
+}).catch(e => {
+  console.error('redirect result error:', e.code, e.message);
+  if (e.code) showAlert(translateError(e.code) + ' [' + e.code + ']');
+});
+
+// ── ئەگەر چووبووەتەژوورەوە بتبرێت بۆ داشبۆرد ──
+// بەڵام تەنها ئەگەر redirect result چارەسەر نەکرد (هەڵەی نەبوو)
+let redirectHandled = false;
+auth.onAuthStateChanged(user => {
+  if (user && !redirectHandled) {
+    redirectHandled = true;
+    // کەمێک چاوەڕێ بکە بۆ ئەوەی redirect result تەواو ببێت
+    setTimeout(() => {
+      if (window.location.pathname.includes('auth.html')) {
+        window.location.href = 'dashboard.html';
+      }
+    }, 500);
+  }
 });
 </script>
 </body>
