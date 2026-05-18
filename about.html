@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub — About Us</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { display:flex; flex-direction:column; min-height:100vh; }
+.topnav { position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(7,7,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border); }
+.nav-links { display:flex; gap:10px; }
+.hero-sm { padding:80px 24px 48px;text-align:center;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(99,102,241,.12) 0%,transparent 70%); }
+.hero-sm h1 { font-size:clamp(28px,5vw,48px);font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,#fff 40%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.hero-sm p { color:var(--muted);font-size:16px;max-width:500px;margin:0 auto; }
+.content { max-width:760px;margin:0 auto;padding:48px 24px;flex:1; }
+.section { margin-bottom:48px; }
+.section h2 { font-size:22px;font-weight:700;margin-bottom:16px;color:var(--accent2); }
+.section p { color:#cbd5e1;line-height:1.8;font-size:15px;margin-bottom:12px; }
+.values-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:20px; }
+.value-card { background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px; }
+.value-card i { font-size:24px;color:var(--accent2);margin-bottom:10px;display:block; }
+.value-card h3 { font-size:15px;font-weight:600;margin-bottom:6px; }
+.value-card p { font-size:13px;color:var(--muted);line-height:1.6;margin:0; }
+.cta-box { background:var(--card);border:1px solid rgba(99,102,241,.3);border-radius:16px;padding:32px;text-align:center;margin-top:48px; }
+.cta-box h3 { font-size:20px;margin-bottom:8px; }
+.cta-box p { color:var(--muted);margin-bottom:20px; }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="logo">⚡ LinkHub</a>
+  <div class="nav-links" id="nav-auth-links">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 16px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 16px">تۆمارکردن</a>
+  </div>
+</nav>
+
+<div class="hero-sm">
+  <h1>About Us</h1>
+  <p>کێین و بۆچی LinkHub دروستمان کرد</p>
+</div>
+
+<div class="content">
+  <div class="section">
+    <h2>🚀 چیین ئێمە؟</h2>
+    <p>LinkHub پلاتفۆرمێکی خۆڕایییە کە بە بەکارهێنەرەکانی ڕێگەدەدات یەک لاپەڕەی تایبەت بۆ خۆیان دروست بکەن — کەینا هەموو سۆشیال مێدیا و لینکی پێویستیان لەسەری دابنێن.</p>
+    <p>ئامانجمان سادەیە: بەکارهێنەر پێویست نەبێت ١٠ لینکی جیاواز لە بایۆی خۆیاندا بنێن. یەک لینک — هەمووی لێی دادێت.</p>
+  </div>
+
+  <div class="section">
+    <h2>💡 بیری ئێمە</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <i class="fa-solid fa-bolt"></i>
+        <h3>خێرا</h3>
+        <p>لە کەمتر لە ٢ خولەک لاپەڕەکەت ئامادەیە</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-heart"></i>
+        <h3>ئاسان</h3>
+        <p>پێویست بە زانستی تەکنیکی نییە</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>پارێزراو</h3>
+        <p>زانیارییەکانت لەلایمانەوە پارێزراون</p>
+      </div>
+      <div class="value-card">
+        <i class="fa-solid fa-gift"></i>
+        <h3>خۆڕایی</h3>
+        <p>هیچ تێچووێک نییە — تەواو خۆڕایییە</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📬 پەیوەندی</h2>
+    <p>هەر پرسیارێکت هەبوو یان پێشنیارێکت هەیە، خۆشحاڵ دەبین بیبیستین لێت:</p>
+    <p><i class="fa-solid fa-envelope" style="color:var(--accent2)"></i> &nbsp;<a href="mailto:linkcreatorapp@gmail.com" style="color:var(--accent2)">linkcreatorapp@gmail.com</a></p>
+  </div>
+
+  <div class="cta-box">
+    <h3>ئامادەیت دەستپێ بکەیت؟</h3>
+    <p>هەژمارێکی خۆڕایی دروست بکە و لاپەڕەکەت لە چرکەیەکدا ئامادە بکە</p>
+    <a href="auth.html?tab=signup" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> دەستپێکردن — خۆڕایییە</a>
+  </div>
+</div>
+
+<footer id="main-footer"></footer>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/layout.js"></script>
+</body>
+</html>

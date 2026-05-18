@@ -43,6 +43,15 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
 
 .back-home { display: block; text-align: center; margin-top: 20px; color: var(--muted); font-size: 13px; text-decoration: none; }
 .back-home:hover { color: var(--text); }
+
+/* Verify panel */
+.verify-box { text-align:center; padding: 8px 0; }
+.verify-icon { font-size: 48px; margin-bottom: 16px; }
+.verify-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.verify-box p { color: var(--muted); font-size: 13px; line-height: 1.6; margin-bottom: 20px; }
+.verify-email-show { color: var(--accent2); font-weight: 600; }
+.resend-btn { background: none; border: none; color: var(--accent2); font-size: 13px; cursor: pointer; font-family: inherit; text-decoration: underline; }
+.resend-btn:disabled { color: var(--muted); text-decoration: none; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -112,6 +121,12 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
         <label>پاسۆرد</label>
         <input type="password" id="su-pass" class="input" placeholder="لانیکەم ٦ پیت" dir="ltr">
       </div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
+        <input type="checkbox" id="agree-terms" style="margin-top:3px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0">
+        <label for="agree-terms" style="font-size:12px;color:var(--muted);margin:0;cursor:pointer;line-height:1.5">
+          ڕازیم لەگەڵ <a href="terms.html" target="_blank" style="color:var(--accent2)">مەرج و مەرزەکان</a> و <a href="privacy.html" target="_blank" style="color:var(--accent2)">سیاسەتی پارێزگاری</a>
+        </label>
+      </div>
       <button class="btn btn-primary btn-full" onclick="signupEmail()" id="btn-signup">
         <i class="fa-solid fa-user-plus"></i> دروستکردنی هەژمار
       </button>
@@ -122,6 +137,29 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="Google">
         تۆمارکردن بە Google
       </button>
+    </div>
+
+    <!-- ─── VERIFY EMAIL ─── -->
+    <div class="form-panel" id="panel-verify">
+      <div class="verify-box">
+        <div class="verify-icon">📧</div>
+        <h3>ئیمەیلەکەت پشکنە</h3>
+        <p>لینکی پشکنینمان نارد بۆ<br><span class="verify-email-show" id="verify-email-addr"></span></p>
+        <p style="font-size:12px">کلیک بکە لەسەر لینکەکە لە ئیمەیلەکەت، دواتر دووبارە هەوڵبدەرەوە</p>
+        <button class="btn btn-primary btn-full" onclick="checkVerified()" style="margin-bottom:12px">
+          <i class="fa-solid fa-rotate-right"></i> پشکنینی ڤێریفای
+        </button>
+        <div>
+          <button class="resend-btn" id="resend-btn" onclick="resendVerification()">
+            دووبارە ناردنی ئیمەیل
+          </button>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-outline" onclick="auth.signOut();showPanels()" style="font-size:12px;padding:7px 14px">
+            <i class="fa-solid fa-arrow-right"></i> گەڕانەوە
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -250,24 +288,79 @@ async function signupEmail() {
   const username = document.getElementById('su-username').value.trim();
   const email    = document.getElementById('su-email').value.trim();
   const pass     = document.getElementById('su-pass').value;
+  const agreed   = document.getElementById('agree-terms').checked;
+
   if (!name||!username||!email||!pass) { showAlert('تکایە هەموو خانەکان پڕ بکەرەوە'); return; }
+  if (!agreed) { showAlert('تکایە مەرج و مەرزەکان قبووڵ بکە'); return; }
   if (username.length < 3) { showAlert('یوزەرنەیم لانیکەم ٣ پیت'); return; }
   if (pass.length < 6) { showAlert('پاسۆرد لانیکەم ٦ پیت'); return; }
   setLoading('btn-signup', true);
   try {
-    // پشکنینی یوزەرنەیم
     const usnSnap = await db.collection('usernames').doc(username).get().catch(() => ({ exists: false }));
-    if (usnSnap.exists) {
-      setLoading('btn-signup', false);
-      showAlert('ئەم یوزەرنەیمە پێشتر هەبووە');
-      return;
-    }
+    if (usnSnap.exists) { setLoading('btn-signup', false); showAlert('ئەم یوزەرنەیمە پێشتر هەبووە'); return; }
+
     const cred = await auth.createUserWithEmailAndPassword(email, pass);
+
+    // ناردنی ئیمەیلی ڤێریفای
+    await cred.user.sendEmailVerification();
+
+    // پاشەکەوتکردنی زانیارییەکان لە Firestore
     await afterAuth(cred.user, { name, username });
+
+    // نیشاندانی پانێلی ڤێریفای
+    showVerifyPanel(email);
+
   } catch(e) {
     console.error('signup error:', e.code, e.message);
     setLoading('btn-signup', false);
     showAlert(translateError(e.code) + ' [' + e.code + ']');
+  }
+}
+
+// ── نیشاندانی پانێلی ڤێریفای ──
+function showVerifyPanel(email) {
+  document.querySelector('.tabs').style.display = 'none';
+  document.getElementById('alert').style.display = 'none';
+  ['login','signup'].forEach(x => document.getElementById('panel-'+x).classList.remove('active'));
+  document.getElementById('panel-verify').classList.add('active');
+  document.getElementById('verify-email-addr').textContent = email;
+}
+
+function showPanels() {
+  document.querySelector('.tabs').style.display = 'flex';
+  document.getElementById('panel-verify').classList.remove('active');
+  switchTab('login');
+}
+
+// ── پشکنینی ڤێریفای ──
+async function checkVerified() {
+  const user = auth.currentUser;
+  if (!user) { showPanels(); return; }
+  await user.reload();
+  if (user.emailVerified) {
+    window.location.href = 'dashboard.html';
+  } else {
+    showToast('⚠️ هێشتا ڤێریفای نەکراوە — ئیمەیلەکەت پشکنە');
+  }
+}
+
+// ── دووبارە ناردنی ئیمەیل ──
+async function resendVerification() {
+  const user = auth.currentUser;
+  if (!user) return;
+  const btn = document.getElementById('resend-btn');
+  btn.disabled = true;
+  try {
+    await user.sendEmailVerification();
+    showToast('✅ ئیمەیلەکە دووبارە نێردرا!');
+    let s = 60;
+    const t = setInterval(() => {
+      btn.textContent = `چاوەڕێ بکە (${s}s)`;
+      if (--s < 0) { clearInterval(t); btn.disabled = false; btn.textContent = 'دووبارە ناردنی ئیمەیل'; }
+    }, 1000);
+  } catch(e) {
+    btn.disabled = false;
+    showToast('هەڵەیەک ڕووی دا');
   }
 }
 

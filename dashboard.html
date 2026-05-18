@@ -265,15 +265,34 @@ let selectedPlat = null;
 // ── Auth guard ──
 auth.onAuthStateChanged(async user => {
   if (!user) { window.location.href = 'auth.html'; return; }
+
+  // پشکنینی ڤێریفای — Google بەخۆی ڤێریفایکراوە
+  if (!user.emailVerified && user.providerData[0]?.providerId === 'password') {
+    document.body.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Vazirmatn',sans-serif;color:#fff;text-align:center;padding:24px;background:#07070f;direction:rtl">
+        <div>
+          <div style="font-size:64px;margin-bottom:20px">📧</div>
+          <h2 style="font-size:22px;margin-bottom:10px">ئیمەیلەکەت ڤێریفای نەکراوە</h2>
+          <p style="color:#94a3b8;margin-bottom:24px;line-height:1.6">تکایە ئیمەیلەکەت بپشکنە و لینکی پشکنینەکە کلیک بکە</p>
+          <button onclick="resendAndWait()" style="padding:11px 24px;background:#6366f1;border:none;border-radius:10px;color:#fff;cursor:pointer;font-size:14px;font-family:inherit;margin-left:8px">
+            دووبارە ناردنی ئیمەیل
+          </button>
+          <button onclick="firebase.auth().signOut().then(()=>location.href='auth.html')" style="padding:11px 24px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;cursor:pointer;font-size:14px;font-family:inherit">
+            دەرچوون
+          </button>
+          <div id="resend-msg" style="margin-top:16px;font-size:13px;color:#86efac"></div>
+        </div>
+      </div>`;
+    return;
+  }
+
   currentUser = user;
   try {
     const snap = await db.collection('users').doc(user.uid).get();
     if (!snap.exists) {
-      // داکیومێنتەکە هێشتا نەنووسراوە — کەمێ چاوەڕێ بکە دواتر دووبارە هەوڵ بدە
       setTimeout(async () => {
         const snap2 = await db.collection('users').doc(user.uid).get();
         if (!snap2.exists) {
-          // دروست بکە بە زانیاری سەرەتایی
           const usn = (user.email||user.uid).split('@')[0].replace(/[^a-z0-9]/gi,'').toLowerCase().slice(0,20)||'user';
           await db.collection('usernames').doc(usn).set({ uid: user.uid }).catch(()=>{});
           await db.collection('users').doc(user.uid).set({
@@ -283,9 +302,7 @@ auth.onAuthStateChanged(async user => {
             links: [], createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
           userData = (await db.collection('users').doc(user.uid).get()).data();
-        } else {
-          userData = snap2.data();
-        }
+        } else { userData = snap2.data(); }
         loadProfile(); renderLinks(); setupShareUrl(); buildPlatGrid();
       }, 1500);
       return;
@@ -294,19 +311,25 @@ auth.onAuthStateChanged(async user => {
     loadProfile(); renderLinks(); setupShareUrl(); buildPlatGrid();
   } catch(e) {
     console.error('dashboard auth error:', e);
-    // Firestore کێشەی هەیە بەڵام user چووەتەژوورەوە — بمێنینەوە
     if (e.code === 'permission-denied') {
       document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;color:#fff;text-align:center;padding:24px;background:#07070f">
-        <div>
-          <div style="font-size:48px;margin-bottom:16px">⚠️</div>
-          <h2>Firestore Rules کێشەی هەیە</h2>
-          <p style="color:#94a3b8;margin:12px 0 24px">تکایە Rules ەکانی Firestore لە Firebase Console دابنێ</p>
-          <button onclick="auth.signOut().then(()=>location.href='auth.html')" style="padding:10px 24px;background:#6366f1;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:14px">دەرچوون</button>
-        </div>
-      </div>`;
+        <div><div style="font-size:48px;margin-bottom:16px">⚠️</div>
+        <h2>Firestore Rules کێشەی هەیە</h2>
+        <p style="color:#94a3b8;margin:12px 0 24px">تکایە Rules ەکانی Firestore لە Firebase Console دابنێ</p>
+        <button onclick="firebase.auth().signOut().then(()=>location.href='auth.html')" style="padding:10px 24px;background:#6366f1;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:14px">دەرچوون</button></div></div>`;
     }
   }
 });
+
+function resendAndWait() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+  user.sendEmailVerification().then(() => {
+    document.getElementById('resend-msg').textContent = '✅ ئیمەیلەکە نێردرا! پاشان پەڕینەوە کلیک بکە';
+  }).catch(() => {
+    document.getElementById('resend-msg').textContent = 'هەڵەیەک ڕووی دا';
+  });
+}
 
 function loadProfile() {
   document.getElementById('f-name').value = userData.name || '';
@@ -357,7 +380,7 @@ async function uploadPhoto(input) {
   showToast('⏳ پڕۆسێسکردن...');
   try {
     // کەمکردنەوەی قەبارەی وێنە بۆ 200x200 و Base64
-    const base64 = await resizeAndConvert(file, 200, 200, 0.75);
+    const base64 = await resizeAndConvert(file, 150, 150, 0.5);
     await db.collection('users').doc(currentUser.uid).update({ photo: base64 });
     userData.photo = base64; loadProfile();
     showToast('✅ وێنەکە گۆڕدرا!');

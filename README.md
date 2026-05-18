@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/27900249/README.md)
 # ⚡ LinkHub — ڕێنمایی دامەزراندن
 
 ## فایلەکان

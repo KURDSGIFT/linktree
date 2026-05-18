@@ -172,17 +172,28 @@ footer {
   </div>
 </div>
 
-<footer>
-  دروستکراوە بە ❤️ — LinkHub © 2025
+<footer style="border-top:1px solid var(--border);background:var(--bg2);position:relative;z-index:1">
+  <div style="max-width:900px;margin:0 auto;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:16px">
+    <div style="font-size:20px;font-weight:700;color:#818cf8">⚡ LinkHub</div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 24px">
+      <a href="about.html" style="color:#94a3b8;text-decoration:none;font-size:13px">About Us</a>
+      <a href="contact.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Contact Us</a>
+      <a href="privacy.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Privacy Policy</a>
+      <a href="terms.html" style="color:#94a3b8;text-decoration:none;font-size:13px">Terms &amp; Conditions</a>
+    </div>
+    <div style="color:#64748b;font-size:12px;text-align:center">
+      دروستکراوە بە ❤️ — LinkHub © 2025 · <a href="mailto:linkcreatorapp@gmail.com" style="color:#64748b;text-decoration:none">linkcreatorapp@gmail.com</a>
+    </div>
+  </div>
 </footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="js/config.js"></script>
 <script>
-  // ئەگەر چووبووەتەژوورەوە، ببەیتەوە بۆ داشبۆرد
+  // ئەگەر لۆگین بوو و ڤێریفای بکراو → داشبۆرد
   auth.onAuthStateChanged(user => {
-    if (user) window.location.href = 'dashboard.html';
+    if (user && user.emailVerified) window.location.href = 'dashboard.html';
   });
 </script>
 </body>

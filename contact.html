@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub — Contact Us</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { display:flex;flex-direction:column;min-height:100vh; }
+.topnav { position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(7,7,15,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border); }
+.nav-links { display:flex;gap:10px; }
+.hero-sm { padding:80px 24px 48px;text-align:center;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(99,102,241,.12) 0%,transparent 70%); }
+.hero-sm h1 { font-size:clamp(28px,5vw,48px);font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,#fff 40%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.hero-sm p { color:var(--muted);font-size:16px; }
+.content { max-width:760px;margin:0 auto;padding:48px 24px;flex:1; }
+.contact-grid { display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px; }
+@media(max-width:560px) { .contact-grid { grid-template-columns:1fr; } }
+.contact-card { background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;text-align:center; }
+.contact-card i { font-size:32px;color:var(--accent2);margin-bottom:14px;display:block; }
+.contact-card h3 { font-size:16px;font-weight:600;margin-bottom:8px; }
+.contact-card p { color:var(--muted);font-size:13px;line-height:1.6; }
+.contact-card a { color:var(--accent2);text-decoration:none;font-size:14px;font-weight:500; }
+.contact-card a:hover { text-decoration:underline; }
+
+/* form */
+.contact-form { background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px; }
+.contact-form h2 { font-size:20px;margin-bottom:24px; }
+.form-group { margin-bottom:16px; }
+.form-row-2 { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+@media(max-width:480px) { .form-row-2 { grid-template-columns:1fr; } }
+#send-result { display:none; }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="index.html" class="logo">⚡ LinkHub</a>
+  <div class="nav-links" id="nav-auth-links">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 16px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 16px">تۆمارکردن</a>
+  </div>
+</nav>
+
+<div class="hero-sm">
+  <h1>Contact Us</h1>
+  <p>کێشەیەکت هەیە؟ خۆشحاڵ دەبین یارمەتیت بدەین</p>
+</div>
+
+<div class="content">
+  <div class="contact-grid">
+    <div class="contact-card">
+      <i class="fa-solid fa-envelope"></i>
+      <h3>ئیمەیل</h3>
+      <p>بۆ هەر کێشەیەک یان پرسیارێک</p>
+      <a href="mailto:linkcreatorapp@gmail.com">linkcreatorapp@gmail.com</a>
+    </div>
+    <div class="contact-card">
+      <i class="fa-solid fa-clock"></i>
+      <h3>کاتی وەڵاملێدانەوە</h3>
+      <p>بەزوویی وەڵامت دەدەینەوە لە ماوەی</p>
+      <span style="color:var(--accent2);font-weight:600">٢٤-٤٨ کاتژمێر</span>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="contact-form">
+    <h2><i class="fa-solid fa-paper-plane" style="color:var(--accent2);margin-left:8px"></i> نامە بنێرە</h2>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>ناو</label>
+        <input type="text" id="c-name" class="input" placeholder="ناوت بنووسە">
+      </div>
+      <div class="form-group">
+        <label>ئیمەیل</label>
+        <input type="email" id="c-email" class="input" placeholder="name@example.com" dir="ltr">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>بابەت</label>
+      <input type="text" id="c-subject" class="input" placeholder="بابەتی نامەکە">
+    </div>
+    <div class="form-group">
+      <label>نامە</label>
+      <textarea id="c-message" class="input" rows="5" placeholder="نامەکەت بنووسە..."></textarea>
+    </div>
+
+    <div id="send-result" class="alert"></div>
+
+    <button class="btn btn-primary" onclick="sendMessage()">
+      <i class="fa-solid fa-paper-plane"></i> ناردن
+    </button>
+  </div>
+</div>
+
+<footer id="main-footer"></footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/layout.js"></script>
+<script>
+// نامەکانی Contact لە Firestore پاشەکەوت دەکرێن — دواتر لە داشبۆردی ئەدمین دەبینرێن
+async function sendMessage() {
+  const name    = document.getElementById('c-name').value.trim();
+  const email   = document.getElementById('c-email').value.trim();
+  const subject = document.getElementById('c-subject').value.trim();
+  const message = document.getElementById('c-message').value.trim();
+  const result  = document.getElementById('send-result');
+
+  if (!name || !email || !subject || !message) {
+    result.className = 'alert alert-error';
+    result.textContent = 'تکایە هەموو خانەکان پڕ بکەرەوە';
+    result.style.display = 'block'; return;
+  }
+  try {
+    await db.collection('messages').add({
+      name, email, subject, message,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      read: false
+    });
+    result.className = 'alert alert-success';
+    result.textContent = '✅ نامەکەت گەیشت! بەزوویی وەڵامت دەدەینەوە';
+    result.style.display = 'block';
+    ['c-name','c-email','c-subject','c-message'].forEach(id => document.getElementById(id).value = '');
+  } catch(e) {
+    result.className = 'alert alert-error';
+    result.textContent = 'هەڵەیەک ڕووی دا، دووبارە هەوڵ بدەرەوە';
+    result.style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
