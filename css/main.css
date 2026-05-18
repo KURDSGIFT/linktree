@@ -97,7 +97,33 @@ label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Link Platform Colors ── */
+
+/* ── Footer ── */
+#main-footer {
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  margin-top: auto;
+}
+.footer-inner {
+  max-width: 900px; margin: 0 auto;
+  padding: 40px 24px 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.footer-brand { text-align: center; }
+.footer-brand p { color: var(--muted); font-size: 13px; margin-top: 6px; }
+.footer-links {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px;
+}
+.footer-links a {
+  color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s;
+}
+.footer-links a:hover { color: var(--accent2); }
+.footer-copy {
+  font-size: 12px; color: var(--muted); text-align: center;
+}
+.footer-copy a { color: var(--muted); text-decoration: none; }
+.footer-copy a:hover { color: var(--accent2); }
+
 .plat-instagram { color: #e1306c; }
 .plat-twitter { color: #1da1f2; }
 .plat-tiktok { color: #ff0050; }
