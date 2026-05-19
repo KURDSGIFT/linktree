@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkHub - ڕێکخستنەکان</title>
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body { overflow-x: hidden; display: flex; min-height: 100vh; }
+
+/* Vertical Sidebar Navigation */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background: rgba(7, 7, 15, 0.95);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 24px;
+  margin-bottom: 32px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-nav {
+  list-style: none;
+  flex: 1;
+}
+
+.sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.2s;
+  border-right: 3px solid transparent;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--accent2);
+  background: rgba(99, 102, 241, 0.1);
+  border-right-color: var(--accent2);
+}
+
+.sidebar-nav i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-footer a {
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.sidebar-footer .btn-primary {
+  width: 100%;
+}
+
+.sidebar-footer .btn-outline {
+  width: 100%;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* background blobs */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(99, 102, 241, 0.15);
+  top: -100px;
+  right: -100px;
+}
+
+.blob2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(139, 92, 246, 0.1);
+  bottom: -100px;
+  left: -100px;
+}
+
+/* Settings Section */
+.settings-section {
+  padding: 60px 40px;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.settings-header {
+  margin-bottom: 48px;
+}
+
+.settings-header h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 40%, var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.settings-header p {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* Settings Grid */
+.settings-container {
+  max-width: 700px;
+}
+
+.settings-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.settings-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-card i {
+  color: var(--accent2);
+  font-size: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
+.form-group input[type="checkbox"],
+.form-group input[type="radio"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.checkbox-group label {
+  margin: 0;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.form-actions .btn {
+  flex: 1;
+}
+
+.divider-line {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+.danger-zone {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.danger-zone h4 {
+  color: var(--danger);
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.danger-zone p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.danger-zone .btn {
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+  }
+
+  .settings-section {
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    transition: left 0.3s;
+    z-index: 200;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .settings-section {
+    padding: 40px 20px;
+  }
+
+  .settings-header h1 {
+    font-size: 28px;
+  }
+
+  .settings-container {
+    max-width: 100%;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-section {
+    padding: 24px 16px;
+  }
+
+  .settings-header h1 {
+    font-size: 24px;
+  }
+
+  .settings-card {
+    padding: 16px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 150;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.success-message {
+  display: none;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.success-message.show {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobile-menu-btn">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Vertical Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <i class="fa-solid fa-bolt"></i> LinkHub
+  </a>
+  
+  <ul class="sidebar-nav">
+    <li><a href="index.html" data-page="home"><i class="fa-solid fa-home"></i> سەرەکی</a></li>
+    <li><a href="template.html" data-page="template"><i class="fa-solid fa-palette"></i> قاڵب</a></li>
+    <li><a href="news.html" data-page="news"><i class="fa-solid fa-newspaper"></i> هەواڵ</a></li>
+    <li><a href="settings.html" class="active" data-page="settings"><i class="fa-solid fa-gear"></i> ڕێکخستنەکان</a></li>
+    <li><a href="about.html" data-page="about"><i class="fa-solid fa-circle-info"></i> دەربارە</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 12px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 12px">تۆمارکردن</a>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <section class="settings-section">
+    <div class="settings-header">
+      <h1>ڕێکخستنەکان</h1>
+      <p>هەژمارەکەت ڕێکبخە و زانیاریەکانت بگۆڕە</p>
+    </div>
+
+    <div class="settings-container">
+      <!-- Account Settings -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-user"></i> ڕێکخستنی هەژمار</h3>
+        
+        <div class="success-message" id="successMessage">
+          <i class="fa-solid fa-check"></i> گۆڕانکاریەکان بە سەرکەوتوویی پاشەکەوت کران!
+        </div>
+
+        <form id="accountForm">
+          <div class="form-group">
+            <label>ناو</label>
+            <input type="text" placeholder="ناوی تایبەتت" value="بەکارهێنەر" required>
+          </div>
+
+          <div class="form-group">
+            <label>ئیمێیل</label>
+            <input type="email" placeholder="ئیمێیلت" value="user@example.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>ناوی بەکارهێنەر</label>
+            <input type="text" placeholder="ناوی بەکارهێنەرت" value="username" required>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" onclick="resetForm('accountForm')">پاشگەز</button>
+            <button type="submit" class="btn btn-primary">پاشەکەوت کردن</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Password Settings -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-lock"></i> گۆڕینی پاسۆرد</h3>
+
+        <form id="passwordForm">
+          <div class="form-group">
+            <label>پاسۆردی ئێستا</label>
+            <input type="password" placeholder="پاسۆردی ئێستات" required>
+          </div>
+
+          <div class="form-group">
+            <label>پاسۆردی نوێ</label>
+            <input type="password" placeholder="پاسۆردی نوێت" required>
+          </div>
+
+          <div class="form-group">
+            <label>پاسۆردی نوێ (دووبارە)</label>
+            <input type="password" placeholder="پاسۆردی نوێت دووبارە" required>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" onclick="resetForm('passwordForm')">پاشگەز</button>
+            <button type="submit" class="btn btn-primary">پاسۆرد گۆڕین</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Privacy Settings -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-shield-halved"></i> تایبەتمەندی</h3>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="publicProfile" checked>
+          <label for="publicProfile">لاپەڕەکەم گشتی بکە</label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="showEmail" checked>
+          <label for="showEmail">ئیمێیلم نیشان بدە</label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="allowMessages" checked>
+          <label for="allowMessages">پەیامی تێدابنێ</label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="newsletter" checked>
+          <label for="newsletter">نیوزلێتەر وەربگرە</label>
+        </div>
+
+        <div class="form-actions" style="margin-top: 20px;">
+          <button type="button" class="btn btn-primary" onclick="savePrivacySettings()">پاشەکەوت کردن</button>
+        </div>
+      </div>
+
+      <!-- Notification Settings -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-bell"></i> ئاگاداریەکان</h3>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="emailNotif" checked>
+          <label for="emailNotif">ئاگاداری بە ئیمێیل</label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="pushNotif" checked>
+          <label for="pushNotif">ئاگاداری Push</label>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="newsNotif" checked>
+          <label for="newsNotif">ئاگاداری هەواڵ</label>
+        </div>
+
+        <div class="form-actions" style="margin-top: 20px;">
+          <button type="button" class="btn btn-primary" onclick="saveNotificationSettings()">پاشەکەوت کردن</button>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-card">
+        <h3><i class="fa-solid fa-exclamation-triangle"></i> ناوچەی خەتەرناک</h3>
+
+        <div class="danger-zone">
+          <h4>سڕینەوەی هەژمار</h4>
+          <p>ئەگەر هەژمارەکەت سڕیت، هەموو زانیاریەکانت بە جێهێڵدەرێت. ئەم کردارە نیکراوە!</p>
+          <button type="button" class="btn btn-danger" onclick="deleteAccount()">
+            <i class="fa-solid fa-trash"></i> سڕینەوەی هەژمار
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="js/config.js"></script>
+<script src="js/layout.js"></script>
+
+<script>
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.getElementById('sidebar');
+
+mobileMenuBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('active');
+});
+
+// Close sidebar when clicking on a link
+document.querySelectorAll('.sidebar-nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+  });
+});
+
+// Close sidebar when clicking outside
+document.addEventListener('click', (e) => {
+  if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+    sidebar.classList.remove('active');
+  }
+});
+
+// Form Functions
+function resetForm(formId) {
+  document.getElementById(formId).reset();
+}
+
+function showSuccessMessage() {
+  const msg = document.getElementById('successMessage');
+  msg.classList.add('show');
+  setTimeout(() => {
+    msg.classList.remove('show');
+  }, 3000);
+}
+
+// Account Form
+document.getElementById('accountForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  showSuccessMessage();
+});
+
+// Password Form
+document.getElementById('passwordForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newPass = e.target[1].value;
+  const confirmPass = e.target[2].value;
+  
+  if (newPass !== confirmPass) {
+    alert('پاسۆردەکان یەکسان نین!');
+    return;
+  }
+  
+  alert('پاسۆرد بە سەرکەوتوویی گۆڕدرا!');
+  resetForm('passwordForm');
+});
+
+// Privacy Settings
+function savePrivacySettings() {
+  alert('ڕێکخستنی تایبەتمەندی پاشەکەوت کران!');
+}
+
+// Notification Settings
+function saveNotificationSettings() {
+  alert('ڕێکخستنی ئاگاداریەکان پاشەکەوت کران!');
+}
+
+// Delete Account
+function deleteAccount() {
+  if (confirm('ئایا دڵنیایت کە دەتەوێت هەژمارەکەت سڕیت؟ ئەم کردارە نیکراوە!')) {
+    if (confirm('ئەم کردارە هەمووی سڕیدەکات. دڵنیایت؟')) {
+      alert('هەژمارەکەت سڕدرا.');
+      // Redirect to home
+      window.location.href = 'index.html';
+    }
+  }
+}
+</script>
+</body>
+</html>
