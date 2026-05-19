@@ -164,6 +164,30 @@ body { padding-bottom: 60px; }
                 </div>
                 <span>ڕوون</span>
             </div>
+            <div class="theme-card" onclick="selectInitialTheme('glassmorphism')" id="init-theme-glassmorphism">
+                <div class="theme-preview" style="background: linear-gradient(135deg, #0f0f1f, #1a1a3f); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+                    <div style="width:30px; height:30px; border-radius:50%; background:rgba(168,85,247,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);"></div>
+                </div>
+                <span>شووشەیی</span>
+            </div>
+            <div class="theme-card" onclick="selectInitialTheme('neo-brutalism')" id="init-theme-neo-brutalism">
+                <div class="theme-preview" style="background: #1a1a1a; border: 3px solid #f1f5f9;">
+                    <div style="width:30px; height:30px; border-radius:0; background:#f1f5f9; border: 2px solid #1a1a1a;"></div>
+                </div>
+                <span>بوێر</span>
+            </div>
+            <div class="theme-card" onclick="selectInitialTheme('aurora')" id="init-theme-aurora">
+                <div class="theme-preview" style="background: linear-gradient(135deg, #0a0e27, #1a0a3f, #2d0a3f); border: 1px solid rgba(168,85,247,0.3);">
+                    <div style="width:30px; height:30px; border-radius:50%; background:rgba(168,85,247,0.8); box-shadow: 0 0 15px rgba(168,85,247,0.6);"></div>
+                </div>
+                <span>کەژاوە</span>
+            </div>
+            <div class="theme-card" onclick="selectInitialTheme('minimalist')" id="init-theme-minimalist">
+                <div class="theme-preview" style="background: #ffffff; border: 1px solid #e0e0e0;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:#1a1a1a; border: 1px solid #e0e0e0;"></div>
+                </div>
+                <span>سادە</span>
+            </div>
         </div>
         
         <button class="btn btn-primary btn-full" id="btn-confirm-theme" style="margin-top: 20px;" onclick="confirmInitialTheme()" disabled>
@@ -211,6 +235,30 @@ body { padding-bottom: 60px; }
                 <div style="width:30px; height:30px; border-radius:50%; background:#0f172a;"></div>
             </div>
             <span>ڕوون</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('glassmorphism')" id="theme-glassmorphism">
+            <div class="theme-preview" style="background: linear-gradient(135deg, #0f0f1f, #1a1a3f); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px);">
+                <div style="width:30px; height:30px; border-radius:50%; background:rgba(168,85,247,0.6); box-shadow: 0 0 10px rgba(168,85,247,0.4);"></div>
+            </div>
+            <span>شووشەیی</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('neo-brutalism')" id="theme-neo-brutalism">
+            <div class="theme-preview" style="background: #1a1a1a; border: 3px solid #f1f5f9;">
+                <div style="width:30px; height:30px; border-radius:0; background:#f1f5f9; border: 2px solid #1a1a1a;"></div>
+            </div>
+            <span>بوێر</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('aurora')" id="theme-aurora">
+            <div class="theme-preview" style="background: linear-gradient(135deg, #0a0e27, #1a0a3f, #2d0a3f); border: 1px solid rgba(168,85,247,0.3);">
+                <div style="width:30px; height:30px; border-radius:50%; background:rgba(168,85,247,0.8); box-shadow: 0 0 15px rgba(168,85,247,0.6);"></div>
+            </div>
+            <span>کەژاوە</span>
+        </div>
+        <div class="theme-card" onclick="setTheme('minimalist')" id="theme-minimalist">
+            <div class="theme-preview" style="background: #ffffff; border: 1px solid #e0e0e0;">
+                <div style="width:30px; height:30px; border-radius:50%; background:#1a1a1a; border: 1px solid #e0e0e0;"></div>
+            </div>
+            <span>سادە</span>
         </div>
     </div>
   </div>

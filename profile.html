@@ -100,6 +100,81 @@ body {
 .theme-light .link-arrow { color: #cbd5e1; }
 .theme-light .powered-by { background: #fff; color: #64748b; }
 
+/* Theme: Glassmorphism */
+.theme-glassmorphism { background: linear-gradient(135deg, #0f0f1f, #1a1a3f); color: #f1f5f9; }
+.theme-glassmorphism .bg-blob1 { background: rgba(168,85,247,0.15); }
+.theme-glassmorphism .bg-blob2 { background: rgba(99,102,241,0.1); }
+.theme-glassmorphism .profile-name { color: #f1f5f9; }
+.theme-glassmorphism .profile-bio { color: #cbd5e1; }
+.theme-glassmorphism .link-btn { 
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px); color: #f1f5f9;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+}
+.theme-glassmorphism .link-btn:hover { 
+  background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 8px 32px 0 rgba(99,102,241,0.5);
+}
+.theme-glassmorphism .link-icon-wrap { background: rgba(255,255,255,0.1); }
+.theme-glassmorphism .link-arrow { color: rgba(255,255,255,0.3); }
+.theme-glassmorphism .powered-by { background: rgba(255,255,255,0.05); color: #cbd5e1; border-color: rgba(255,255,255,0.1); }
+
+/* Theme: Neo-Brutalism */
+.theme-neo-brutalism { background: #1a1a1a; color: #f1f5f9; }
+.theme-neo-brutalism .bg-blob { display: none; }
+.theme-neo-brutalism .profile-name { color: #f1f5f9; font-weight: 900; letter-spacing: -1px; }
+.theme-neo-brutalism .profile-bio { color: #a0a0a0; }
+.theme-neo-brutalism .link-btn { 
+  background: #000000; border: 3px solid #f1f5f9; color: #f1f5f9;
+  border-radius: 0; padding: 16px 20px; font-weight: 600;
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+}
+.theme-neo-brutalism .link-btn:hover { 
+  background: #f1f5f9; color: #000000;
+  box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+  transform: translate(-2px, -2px);
+}
+.theme-neo-brutalism .link-icon-wrap { background: transparent; border: 2px solid #f1f5f9; }
+.theme-neo-brutalism .link-arrow { color: #f1f5f9; }
+.theme-neo-brutalism .powered-by { background: #000000; color: #f1f5f9; border: 2px solid #f1f5f9; }
+
+/* Theme: Aurora */
+.theme-aurora { background: linear-gradient(135deg, #0a0e27, #1a0a3f, #2d0a3f, #0a2a3f); color: #f1f5f9; }
+.theme-aurora .bg-blob1 { background: rgba(168,85,247,0.2); animation: drift 15s ease-in-out infinite; }
+.theme-aurora .bg-blob2 { background: rgba(99,102,241,0.15); animation: drift 20s ease-in-out infinite reverse; }
+.theme-aurora .profile-name { color: #f1f5f9; }
+.theme-aurora .profile-bio { color: #cbd5e1; }
+.theme-aurora .link-btn { 
+  background: linear-gradient(135deg, rgba(168,85,247,0.2), rgba(99,102,241,0.2));
+  border: 1px solid rgba(168,85,247,0.4); color: #f1f5f9;
+  box-shadow: 0 0 20px rgba(168,85,247,0.2);
+}
+.theme-aurora .link-btn:hover { 
+  background: linear-gradient(135deg, rgba(168,85,247,0.3), rgba(99,102,241,0.3));
+  border-color: rgba(168,85,247,0.6);
+  box-shadow: 0 0 30px rgba(168,85,247,0.4);
+}
+.theme-aurora .link-icon-wrap { background: rgba(168,85,247,0.15); }
+.theme-aurora .link-arrow { color: rgba(168,85,247,0.6); }
+.theme-aurora .powered-by { background: rgba(168,85,247,0.1); color: #cbd5e1; border-color: rgba(168,85,247,0.3); }
+
+/* Theme: Minimalist */
+.theme-minimalist { background: #ffffff; color: #1a1a1a; }
+.theme-minimalist .bg-blob { display: none; }
+.theme-minimalist .profile-name { color: #1a1a1a; font-weight: 600; }
+.theme-minimalist .profile-bio { color: #666666; }
+.theme-minimalist .link-btn { 
+  background: transparent; border: 1px solid #e0e0e0; color: #1a1a1a;
+  box-shadow: none; border-radius: 8px;
+}
+.theme-minimalist .link-btn:hover { 
+  background: #f5f5f5; border-color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.theme-minimalist .link-icon-wrap { background: #f5f5f5; border-radius: 8px; }
+.theme-minimalist .link-arrow { color: #999999; }
+.theme-minimalist .powered-by { background: transparent; color: #666666; border: 1px solid #e0e0e0; }
+
 /* Footer */
 .profile-footer {
   margin-top: 40px; text-align: center;
@@ -201,7 +276,7 @@ function applyTheme(theme) {
   const bgWrap = document.getElementById('bg-wrap');
   
   body.className = `theme-${theme}`;
-  if (theme === 'light' || theme === 'glow') {
+  if (theme === 'light' || theme === 'glow' || theme === 'neo-brutalism' || theme === 'minimalist') {
     bgWrap.style.display = 'none';
   } else {
     bgWrap.style.display = 'block';
