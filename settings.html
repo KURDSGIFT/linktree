@@ -5,10 +5,128 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LinkHub - ڕێکخستنەکان</title>
 <link rel="stylesheet" href="css/main.css">
-<link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
+body { overflow-x: hidden; display: flex; min-height: 100vh; }
 
+/* Vertical Sidebar Navigation */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background: rgba(7, 7, 15, 0.95);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 24px;
+  margin-bottom: 32px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-nav {
+  list-style: none;
+  flex: 1;
+}
+
+.sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.2s;
+  border-right: 3px solid transparent;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--accent2);
+  background: rgba(99, 102, 241, 0.1);
+  border-right-color: var(--accent2);
+}
+
+.sidebar-nav i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-footer a {
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.sidebar-footer .btn-primary {
+  width: 100%;
+}
+
+.sidebar-footer .btn-outline {
+  width: 100%;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* background blobs */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(99, 102, 241, 0.15);
+  top: -100px;
+  right: -100px;
+}
+
+.blob2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(139, 92, 246, 0.1);
+  bottom: -100px;
+  left: -100px;
+}
 
 /* Settings Section */
 .settings-section {
@@ -88,6 +206,7 @@
   font-family: inherit;
   font-size: 14px;
   transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
@@ -119,10 +238,12 @@
   display: flex;
   gap: 12px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .form-actions .btn {
   flex: 1;
+  min-width: 120px;
 }
 
 .divider-line {
@@ -155,6 +276,42 @@
   width: 100%;
 }
 
+.success-message {
+  display: none;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.success-message.show {
+  display: block;
+}
+
+.info-text {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 150;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .sidebar {
@@ -171,6 +328,23 @@
 }
 
 @media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    transition: left 0.3s;
+    z-index: 200;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
   .settings-section {
     padding: 40px 20px;
   }
@@ -181,6 +355,18 @@
 
   .settings-container {
     max-width: 100%;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn {
+    width: 100%;
   }
 }
 
@@ -197,30 +383,56 @@
     padding: 16px;
   }
 
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px;
+    font-size: 16px;
+  }
+
   .form-actions {
     flex-direction: column;
+    gap: 8px;
   }
-}
 
-.success-message {
-  display: none;
-  background: rgba(34, 197, 94, 0.1);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #86efac;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-.success-message.show {
-  display: block;
+  .settings-card h3 {
+    font-size: 16px;
+  }
 }
 </style>
 </head>
 <body>
 
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
 
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobile-menu-btn">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Vertical Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <i class="fa-solid fa-bolt"></i> LinkHub
+  </a>
+  
+  <ul class="sidebar-nav">
+    <li><a href="index.html" data-page="home"><i class="fa-solid fa-home"></i> سەرەکی</a></li>
+    <li><a href="template.html" data-page="template"><i class="fa-solid fa-palette"></i> قاڵب</a></li>
+    <li><a href="news.html" data-page="news"><i class="fa-solid fa-newspaper"></i> هەواڵ</a></li>
+    <li><a href="settings.html" class="active" data-page="settings"><i class="fa-solid fa-gear"></i> ڕێکخستنەکان</a></li>
+    <li><a href="about.html" data-page="about"><i class="fa-solid fa-circle-info"></i> دەربارە</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 12px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 12px">تۆمارکردن</a>
+  </div>
+</aside>
 
 <!-- Main Content -->
 <main class="main-content">
@@ -239,25 +451,27 @@
           <i class="fa-solid fa-check"></i> گۆڕانکاریەکان بە سەرکەوتوویی پاشەکەوت کران!
         </div>
 
-        <form id="accountForm">
+        <form id="accountForm" onsubmit="saveAccountSettings(event)">
           <div class="form-group">
             <label>ناو</label>
-            <input type="text" placeholder="ناوی تایبەتت" value="بەکارهێنەر" required>
+            <input type="text" id="settingsName" placeholder="ناوی تایبەتت" required>
           </div>
 
           <div class="form-group">
             <label>ئیمێیل</label>
-            <input type="email" placeholder="ئیمێیلت" value="user@example.com" required>
+            <input type="email" id="settingsEmail" placeholder="ئیمێیلت" readonly style="opacity:0.6;cursor:not-allowed;">
+            <div class="info-text">ئیمێیل نادەگۆڕدرێت</div>
           </div>
 
           <div class="form-group">
             <label>ناوی بەکارهێنەر</label>
-            <input type="text" placeholder="ناوی بەکارهێنەرت" value="username" required>
+            <input type="text" id="settingsUsername" placeholder="ناوی بەکارهێنەرت" readonly style="opacity:0.6;cursor:not-allowed;">
+            <div class="info-text">یوزەرنەیم نادەگۆڕدرێت</div>
           </div>
 
           <div class="form-actions">
             <button type="button" class="btn btn-outline" onclick="resetForm('accountForm')">پاشگەز</button>
-            <button type="submit" class="btn btn-primary">پاشەکەوت کردن</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveAccount">پاشەکەوت کردن</button>
           </div>
         </form>
       </div>
@@ -266,25 +480,25 @@
       <div class="settings-card">
         <h3><i class="fa-solid fa-lock"></i> گۆڕینی پاسۆرد</h3>
 
-        <form id="passwordForm">
+        <form id="passwordForm" onsubmit="changePassword(event)">
           <div class="form-group">
             <label>پاسۆردی ئێستا</label>
-            <input type="password" placeholder="پاسۆردی ئێستات" required>
+            <input type="password" id="currentPass" placeholder="پاسۆردی ئێستات" required>
           </div>
 
           <div class="form-group">
             <label>پاسۆردی نوێ</label>
-            <input type="password" placeholder="پاسۆردی نوێت" required>
+            <input type="password" id="newPass" placeholder="پاسۆردی نوێت (لانیکەم ٦ پیت)" required>
           </div>
 
           <div class="form-group">
             <label>پاسۆردی نوێ (دووبارە)</label>
-            <input type="password" placeholder="پاسۆردی نوێت دووبارە" required>
+            <input type="password" id="confirmPass" placeholder="پاسۆردی نوێت دووبارە" required>
           </div>
 
           <div class="form-actions">
             <button type="button" class="btn btn-outline" onclick="resetForm('passwordForm')">پاشگەز</button>
-            <button type="submit" class="btn btn-primary">پاسۆرد گۆڕین</button>
+            <button type="submit" class="btn btn-primary" id="btnChangePass">پاسۆرد گۆڕین</button>
           </div>
         </form>
       </div>
@@ -314,43 +528,17 @@
         </div>
 
         <div class="form-actions" style="margin-top: 20px;">
-          <button type="button" class="btn btn-primary" onclick="savePrivacySettings()">پاشەکەوت کردن</button>
-        </div>
-      </div>
-
-      <!-- Notification Settings -->
-      <div class="settings-card">
-        <h3><i class="fa-solid fa-bell"></i> ئاگاداریەکان</h3>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="emailNotif" checked>
-          <label for="emailNotif">ئاگاداری بە ئیمێیل</label>
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="pushNotif" checked>
-          <label for="pushNotif">ئاگاداری Push</label>
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="newsNotif" checked>
-          <label for="newsNotif">ئاگاداری هەواڵ</label>
-        </div>
-
-        <div class="form-actions" style="margin-top: 20px;">
-          <button type="button" class="btn btn-primary" onclick="saveNotificationSettings()">پاشەکەوت کردن</button>
+          <button type="button" class="btn btn-primary" onclick="savePrivacySettings()" id="btnSavePrivacy">پاشەکەوت کردن</button>
         </div>
       </div>
 
       <!-- Danger Zone -->
       <div class="settings-card">
-        <h3><i class="fa-solid fa-exclamation-triangle"></i> ناوچەی خەتەرناک</h3>
-
         <div class="danger-zone">
-          <h4>سڕینەوەی هەژمار</h4>
-          <p>ئەگەر هەژمارەکەت سڕیت، هەموو زانیاریەکانت بە جێهێڵدەرێت. ئەم کردارە نیکراوە!</p>
-          <button type="button" class="btn btn-danger" onclick="deleteAccount()">
-            <i class="fa-solid fa-trash"></i> سڕینەوەی هەژمار
+          <h4><i class="fa-solid fa-triangle-exclamation"></i> ناوچەی مەترسیدار</h4>
+          <p>سەرچاوە بە! ئەم چالاکی نابووە و هەمیشە نابوو بەدەستهێنانە.</p>
+          <button type="button" class="btn btn-danger" onclick="deleteAccount()" id="btnDeleteAccount">
+            <i class="fa-solid fa-trash"></i> سەرچاوە سەربەزە بکە
           </button>
         </div>
       </div>
@@ -360,9 +548,9 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="js/config.js"></script>
-<script src="js/navbar.js"></script>
-<script src="js/back-button.js"></script>
+<script src="js/layout.js"></script>
 
 <script>
 // Mobile Menu Toggle
@@ -387,59 +575,187 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Form Functions
+// Check authentication
+let currentUser = null;
+let userData = null;
+
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = 'auth.html';
+    return;
+  }
+  
+  currentUser = user;
+  loadUserSettings();
+});
+
+async function loadUserSettings() {
+  try {
+    const snap = await db.collection('users').doc(currentUser.uid).get();
+    if (snap.exists) {
+      userData = snap.data();
+      document.getElementById('settingsName').value = userData.name || '';
+      document.getElementById('settingsEmail').value = currentUser.email || '';
+      document.getElementById('settingsUsername').value = userData.username || '';
+    }
+  } catch(e) {
+    console.error('Error loading settings:', e);
+    showToast('هەڵەیەک ڕووی دا لە بارکردنی ڕێکخستنەکان');
+  }
+}
+
+async function saveAccountSettings(e) {
+  e.preventDefault();
+  const name = document.getElementById('settingsName').value.trim();
+  
+  if (!name) {
+    showToast('تکایە ناو پڕ بکەرەوە');
+    return;
+  }
+  
+  const btn = document.getElementById('btnSaveAccount');
+  btn.disabled = true;
+  btn.textContent = 'چاوەڕێ بکە...';
+  
+  try {
+    await db.collection('users').doc(currentUser.uid).update({ name });
+    userData.name = name;
+    showToast('✅ ناو گۆڕدرا!');
+    document.getElementById('successMessage').classList.add('show');
+    setTimeout(() => {
+      document.getElementById('successMessage').classList.remove('show');
+    }, 3000);
+  } catch(e) {
+    console.error('Error:', e);
+    showToast('هەڵەیەک ڕووی دا');
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'پاشەکەوت کردن';
+}
+
+async function changePassword(e) {
+  e.preventDefault();
+  const currentPass = document.getElementById('currentPass').value;
+  const newPass = document.getElementById('newPass').value;
+  const confirmPass = document.getElementById('confirmPass').value;
+  
+  if (newPass !== confirmPass) {
+    showToast('پاسۆردەکان یەکسان نین');
+    return;
+  }
+  
+  if (newPass.length < 6) {
+    showToast('پاسۆرد لانیکەم ٦ پیت');
+    return;
+  }
+  
+  const btn = document.getElementById('btnChangePass');
+  btn.disabled = true;
+  btn.textContent = 'چاوەڕێ بکە...';
+  
+  try {
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      currentUser.email,
+      currentPass
+    );
+    await currentUser.reauthenticateWithCredential(credential);
+    await currentUser.updatePassword(newPass);
+    showToast('✅ پاسۆرد گۆڕدرا!');
+    document.getElementById('passwordForm').reset();
+  } catch(e) {
+    console.error('Error:', e);
+    if (e.code === 'auth/wrong-password') {
+      showToast('پاسۆردی ئێستا هەڵەیە');
+    } else {
+      showToast('هەڵەیەک ڕووی دا');
+    }
+  }
+  
+  btn.disabled = false;
+  btn.textContent = 'پاسۆرد گۆڕین';
+}
+
+function savePrivacySettings() {
+  const publicProfile = document.getElementById('publicProfile').checked;
+  const showEmail = document.getElementById('showEmail').checked;
+  const allowMessages = document.getElementById('allowMessages').checked;
+  const newsletter = document.getElementById('newsletter').checked;
+  
+  localStorage.setItem('privacySettings', JSON.stringify({
+    publicProfile,
+    showEmail,
+    allowMessages,
+    newsletter
+  }));
+  
+  showToast('✅ ڕێکخستنەکان پاشەکەوت کران!');
+}
+
+async function deleteAccount() {
+  if (!confirm('دڵنیایت؟ ئەم کاری نابووە!')) {
+    return;
+  }
+  
+  if (!confirm('سەرچاوە بکە! ئەم کاری هەمی زانیاریەکانت دەسڕێتەوە!')) {
+    return;
+  }
+  
+  const btn = document.getElementById('btnDeleteAccount');
+  btn.disabled = true;
+  btn.textContent = 'چاوەڕێ بکە...';
+  
+  try {
+    await db.collection('users').doc(currentUser.uid).delete();
+    
+    if (userData && userData.username) {
+      await db.collection('usernames').doc(userData.username).delete();
+    }
+    
+    await currentUser.delete();
+    
+    showToast('✅ هەژمار سڕایەوە');
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+  } catch(e) {
+    console.error('Error:', e);
+    showToast('هەڵەیەک ڕووی دا');
+    btn.disabled = false;
+    btn.textContent = 'سەرچاوە سەربەزە بکە';
+  }
+}
+
 function resetForm(formId) {
   document.getElementById(formId).reset();
 }
 
-function showSuccessMessage() {
-  const msg = document.getElementById('successMessage');
-  msg.classList.add('show');
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    const toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 8px;
+      z-index: 1000;
+      font-size: 14px;
+      max-width: 90%;
+    `;
+    document.body.appendChild(toast);
+    t = toast;
+  }
+  t.textContent = msg;
+  t.style.display = 'block';
   setTimeout(() => {
-    msg.classList.remove('show');
+    t.style.display = 'none';
   }, 3000);
-}
-
-// Account Form
-document.getElementById('accountForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  showSuccessMessage();
-});
-
-// Password Form
-document.getElementById('passwordForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const newPass = e.target[1].value;
-  const confirmPass = e.target[2].value;
-  
-  if (newPass !== confirmPass) {
-    alert('پاسۆردەکان یەکسان نین!');
-    return;
-  }
-  
-  alert('پاسۆرد بە سەرکەوتوویی گۆڕدرا!');
-  resetForm('passwordForm');
-});
-
-// Privacy Settings
-function savePrivacySettings() {
-  alert('ڕێکخستنی تایبەتمەندی پاشەکەوت کران!');
-}
-
-// Notification Settings
-function saveNotificationSettings() {
-  alert('ڕێکخستنی ئاگاداریەکان پاشەکەوت کران!');
-}
-
-// Delete Account
-function deleteAccount() {
-  if (confirm('ئایا دڵنیایت کە دەتەوێت هەژمارەکەت سڕیت؟ ئەم کردارە نیکراوە!')) {
-    if (confirm('ئەم کردارە هەمووی سڕیدەکات. دڵنیایت؟')) {
-      alert('هەژمارەکەت سڕدرا.');
-      // Redirect to home
-      window.location.href = 'index.html';
-    }
-  }
 }
 </script>
 </body>

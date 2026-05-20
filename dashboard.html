@@ -27,74 +27,12 @@ body { padding-bottom: 60px; }
 }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Back Button */
-.back-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.back-btn:hover {
-  background: rgba(99, 102, 241, 0.1);
-  border-color: var(--accent);
-  color: var(--accent2);
-}
-
 /* Layout */
 .page { max-width: 680px; margin: 0 auto; padding: 32px 16px; }
 .section-head { margin-bottom: 20px; }
 .section-head h2 { font-size: 18px; font-weight: 600; }
 .section-head p { color: var(--muted); font-size: 13px; margin-top: 4px; }
 .mb-section { margin-bottom: 36px; }
-
-/* Design Display Card */
-.design-display-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.design-preview-small {
-  width: 100px;
-  height: 100px;
-  border-radius: 12px;
-  background: var(--bg3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.design-info-text h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.design-info-text p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.design-edit-btn {
-  padding: 6px 14px;
-  font-size: 12px;
-}
 
 /* Themes Selection */
 .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
@@ -196,29 +134,6 @@ body { padding-bottom: 60px; }
     display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
 }
 #theme-picker-overlay.show { display: flex; }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .design-display-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .design-preview-small {
-    width: 80px;
-    height: 80px;
-  }
-
-  .topnav {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .topnav-right {
-    width: 100%;
-    justify-content: flex-end;
-  }
-}
 </style>
 </head>
 <body>
@@ -295,17 +210,6 @@ body { padding-bottom: 60px; }
 </div>
 
 <div class="page">
-
-  <!-- ── Design Display Section ── -->
-  <div class="mb-section">
-    <div class="section-head">
-      <h2>دیزاینی هەڵبژاردبوو</h2>
-      <p>دیزاینی لاپەڕەکەت</p>
-    </div>
-    <div class="design-display-card" id="design-display">
-      <!-- This will be populated by JavaScript -->
-    </div>
-  </div>
 
   <!-- ── Theme Section ── -->
   <div class="mb-section">
@@ -465,38 +369,7 @@ body { padding-bottom: 60px; }
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="js/config.js"></script>
-<script src="js/back-button.js"></script>
 <script>
-const THEME_NAMES = {
-  'classic': 'دیزاینی کلاسیک',
-  'glow': 'دیزاینی گەشاوە',
-  'light': 'دیزاینی ڕوون',
-  'glassmorphism': 'دیزاینی شووشەیی',
-  'neo-brutalism': 'دیزاینی بوێر',
-  'aurora': 'دیزاینی کەژاوە',
-  'minimalist': 'دیزاینی سادە'
-};
-
-const THEME_DESCRIPTIONS = {
-  'classic': 'دیزاینێکی سادە و مۆدێرن',
-  'glow': 'ڕەنگی زیندوو و درەوشاوە',
-  'light': 'دیزاینی سپی و پاک',
-  'glassmorphism': 'شووشەیی و مۆدێرن',
-  'neo-brutalism': 'سێبەری بەهێز و تۆخ',
-  'aurora': 'باکگراوندی جوڵاو',
-  'minimalist': 'پاک و شیک'
-};
-
-const THEME_COLORS = {
-  'classic': 'linear-gradient(135deg, #07070f, #16162a)',
-  'glow': 'linear-gradient(135deg, #1e1b4b, #312e81)',
-  'light': '#f8fafc',
-  'glassmorphism': 'linear-gradient(135deg, #0f0f1f, #1a1a3f)',
-  'neo-brutalism': '#1a1a1a',
-  'aurora': 'linear-gradient(135deg, #0a0e27, #1a0a3f, #2d0a3f)',
-  'minimalist': '#ffffff'
-};
-
 const PLATFORMS = [
   { id:'instagram', name:'Instagram', icon:'fa-brands fa-instagram', color:'#e1306c', prefix:'https://instagram.com/' },
   { id:'telegram',  name:'Telegram',  icon:'fa-brands fa-telegram',  color:'#229ed9', prefix:'https://t.me/' },
@@ -542,25 +415,6 @@ function initDashboard() {
     setupShareUrl(); 
     buildPlatGrid();
     highlightTheme(userData.theme || 'classic');
-    displaySelectedDesign();
-}
-
-function displaySelectedDesign() {
-  const theme = userData.theme || 'classic';
-  const displayCard = document.getElementById('design-display');
-  
-  displayCard.innerHTML = `
-    <div class="design-preview-small" style="background: ${THEME_COLORS[theme]}; border: 1px solid var(--border);">
-      <div style="width:20px; height:20px; border-radius:50%; background:var(--accent); opacity:0.8;"></div>
-    </div>
-    <div class="design-info-text">
-      <h3>${THEME_NAMES[theme]}</h3>
-      <p>${THEME_DESCRIPTIONS[theme]}</p>
-      <button class="btn btn-outline design-edit-btn" onclick="document.getElementById('theme-' + '${theme}').scrollIntoView({ behavior: 'smooth' })">
-        <i class="fa-solid fa-edit"></i> دەستکاری
-      </button>
-    </div>
-  `;
 }
 
 function selectInitialTheme(theme) {
@@ -598,7 +452,6 @@ async function setTheme(theme) {
         await db.collection('users').doc(currentUser.uid).update({ theme });
         userData.theme = theme;
         highlightTheme(theme);
-        displaySelectedDesign();
         showToast('✅ دیزاینەکە گۆڕدرا');
     } catch(e) { showToast('هەڵەیەک ڕووی دا'); }
 }
@@ -760,11 +613,41 @@ async function logout() {
   window.location.href = 'index.html';
 }
 
+// Check for pending design from template.html
+function checkPendingDesign() {
+  const pending = localStorage.getItem('pendingDesign');
+  if (pending) {
+    const design = JSON.parse(pending);
+    userData.theme = design.theme;
+    userData.name = design.name;
+    userData.bio = design.bio;
+    
+    // Save to Firebase
+    db.collection('users').doc(currentUser.uid).update({
+      theme: design.theme,
+      name: design.name,
+      bio: design.bio
+    }).catch(e => console.error('Error saving design:', e));
+    
+    localStorage.removeItem('pendingDesign');
+    loadProfile();
+    renderThemes();
+    showToast('✅ دیزاین هەڵبژێردرا!');
+  }
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+// Initialize
+window.addEventListener('load', () => {
+  if (currentUser) {
+    checkPendingDesign();
+  }
+});
 </script>
 </body>
 </html>
