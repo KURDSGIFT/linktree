@@ -7,102 +7,295 @@
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-body { overflow-x: hidden; }
+body { overflow-x: hidden; display: flex; min-height: 100vh; }
+
+/* Vertical Sidebar Navigation */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 250px;
+  height: 100vh;
+  background: rgba(7, 7, 15, 0.95);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 24px;
+  margin-bottom: 32px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent2);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-nav {
+  list-style: none;
+  flex: 1;
+}
+
+.sidebar-nav li {
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: all 0.2s;
+  border-right: 3px solid transparent;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  color: var(--accent2);
+  background: rgba(99, 102, 241, 0.1);
+  border-right-color: var(--accent2);
+}
+
+.sidebar-nav i {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-footer a {
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.sidebar-footer .btn-primary {
+  width: 100%;
+}
+
+.sidebar-footer .btn-outline {
+  width: 100%;
+}
+
+/* Main Content Area */
+.main-content {
+  margin-left: 250px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 /* background blobs */
 .blob {
-  position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0;
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
 }
-.blob1 { width: 500px; height: 500px; background: rgba(99,102,241,0.15); top: -100px; right: -100px; }
-.blob2 { width: 400px; height: 400px; background: rgba(139,92,246,0.1); bottom: -100px; left: -100px; }
 
-nav {
-  position: fixed; top: 0; width: 100%; z-index: 100;
-  padding: 16px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(7,7,15,0.8); backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+.blob1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(99, 102, 241, 0.15);
+  top: -100px;
+  right: -100px;
 }
-.logo { font-size: 22px; font-weight: 700; color: var(--accent2); letter-spacing: -0.5px; text-decoration: none; }
-.nav-menu { display: flex; gap: 24px; list-style: none; }
-.nav-menu a { color: var(--text); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-.nav-menu a:hover { color: var(--accent2); }
-.nav-links { display: flex; gap: 12px; }
+
+.blob2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(139, 92, 246, 0.1);
+  bottom: -100px;
+  left: -100px;
+}
+
+/* Home Section */
+.home-section {
+  padding: 60px 40px;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+}
+
+.home-header {
+  margin-bottom: 48px;
+}
+
+.home-header h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fff 40%, var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.home-header p {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.info-card:hover {
+  border-color: var(--accent);
+  background: rgba(99, 102, 241, 0.08);
+  transform: translateY(-4px);
+}
+
+.info-card i {
+  font-size: 32px;
+  color: var(--accent2);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.home-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-lg {
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 200px;
+  }
+
+  .home-section {
+    padding: 40px 24px;
+  }
+}
 
 @media (max-width: 768px) {
-  .nav-menu { display: none; }
-  nav { padding: 16px 20px; }
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    transition: left 0.3s;
+    z-index: 200;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .home-section {
+    padding: 40px 20px;
+  }
+
+  .home-header h1 {
+    font-size: 28px;
+  }
+
+  .home-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+  }
 }
 
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 120px 24px 60px;
-  position: relative; z-index: 1;
+@media (max-width: 480px) {
+  .home-section {
+    padding: 24px 16px;
+  }
+
+  .home-header h1 {
+    font-size: 24px;
+  }
+
+  .btn-lg {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .home-cta {
+    flex-direction: column;
+  }
+
+  .home-cta .btn {
+    width: 100%;
+  }
 }
 
-.badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
-  color: var(--accent2); padding: 6px 16px; border-radius: 50px;
-  font-size: 13px; margin-bottom: 24px;
-}
-.badge i { font-size: 11px; }
-
-h1 {
-  font-size: clamp(36px, 6vw, 72px); font-weight: 700;
-  line-height: 1.1; margin-bottom: 20px;
-  background: linear-gradient(135deg, #fff 40%, var(--accent2));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-
-.subtitle {
-  font-size: clamp(16px, 2vw, 20px); color: var(--muted);
-  max-width: 560px; line-height: 1.6; margin-bottom: 40px;
-}
-
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
-.btn-lg { padding: 14px 32px; font-size: 16px; border-radius: 12px; }
-
-/* designs section */
-.designs { padding: 80px 24px; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-.design-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-.design-card { 
-  background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; 
-  transition: transform 0.3s, border-color 0.3s; cursor: pointer;
-}
-.design-card:hover { transform: translateY(-10px); border-color: var(--accent); }
-.design-preview { height: 200px; background: var(--bg3); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-.design-preview img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
-.design-info { padding: 20px; text-align: center; }
-.design-info h3 { font-size: 18px; margin-bottom: 8px; }
-.design-info p { font-size: 13px; color: var(--muted); }
-
-/* features */
-.features {
-  padding: 80px 24px; max-width: 1000px; margin: 0 auto;
-  position: relative; z-index: 1;
-}
-.section-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 8px; }
-.section-sub { text-align: center; color: var(--muted); margin-bottom: 48px; }
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-.feature-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 28px; transition: border-color .2s;
-}
-.feature-card:hover { border-color: var(--accent); }
-.feature-icon {
-  width: 48px; height: 48px; border-radius: 12px;
-  background: rgba(99,102,241,0.15); display: flex; align-items: center; justify-content: center;
-  font-size: 20px; margin-bottom: 16px; color: var(--accent2);
-}
-.feature-card h3 { font-size: 16px; margin-bottom: 8px; }
-.feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-footer {
-  text-align: center; padding: 32px;
-  border-top: 1px solid var(--border); color: var(--muted); font-size: 13px;
-  position: relative; z-index: 1;
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 150;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
 }
 </style>
 </head>
@@ -111,189 +304,123 @@ footer {
 <div class="blob blob1"></div>
 <div class="blob blob2"></div>
 
-<nav>
-  <a href="index.html" class="logo">⚡ LinkHub</a>
-  <ul class="nav-menu">
-    <li><a href="index.html">سەرەکی</a></li>
-    <li><a href="#designs">دیزاینەکان</a></li>
-    <li><a href="about.html">دەربارە</a></li>
-    <li><a href="contact.html">پەیوەندی</a></li>
+<!-- Mobile Menu Button -->
+<button class="mobile-menu-btn" id="mobile-menu-btn">
+  <i class="fa-solid fa-bars"></i>
+</button>
+
+<!-- Vertical Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <i class="fa-solid fa-bolt"></i> LinkHub
+  </a>
+  
+  <ul class="sidebar-nav">
+    <li><a href="index.html" class="active" data-page="home"><i class="fa-solid fa-home"></i> سەرەکی</a></li>
+    <li><a href="template.html" data-page="template"><i class="fa-solid fa-palette"></i> قاڵب</a></li>
+    <li><a href="news.html" data-page="news"><i class="fa-solid fa-newspaper"></i> هەواڵ</a></li>
+    <li><a href="settings.html" data-page="settings"><i class="fa-solid fa-gear"></i> ڕێکخستنەکان</a></li>
+    <li><a href="about.html" data-page="about"><i class="fa-solid fa-circle-info"></i> دەربارە</a></li>
   </ul>
-  <div class="nav-links">
-    <a href="auth.html" class="btn btn-outline">چوونەژوورەوە</a>
-    <a href="auth.html?tab=signup" class="btn btn-primary">تۆمارکردن</a>
-  </div>
-</nav>
 
-<div class="hero">
-  <div class="badge"><i class="fa-solid fa-bolt"></i> خێرا · ئاسان · خۆڕایی</div>
-  <h1>هەموو لینکەکانت<br>لە یەک شوێن</h1>
-  <p class="subtitle">لاپەڕەی تایبەتی خۆت دروست بکە و هەموو سۆشیال مێدیاکانت لەسەر بنێ — یەک لینک هەمووی لێی دادێت.</p>
-  <div class="hero-btns">
-    <a href="auth.html?tab=signup" class="btn btn-primary btn-lg">
-      <i class="fa-solid fa-rocket"></i> دەستپێکردن — خۆڕایییە
-    </a>
-    <a href="#designs" class="btn btn-outline btn-lg">
-      <i class="fa-solid fa-palette"></i> بینینی دیزاینەکان
-    </a>
+  <div class="sidebar-footer">
+    <a href="auth.html" class="btn btn-outline" style="font-size:13px;padding:8px 12px">چوونەژوورەوە</a>
+    <a href="auth.html?tab=signup" class="btn btn-primary" style="font-size:13px;padding:8px 12px">تۆمارکردن</a>
   </div>
-</div>
+</aside>
 
-<div class="designs" id="designs">
-  <h2 class="section-title">دیزاینە ئامادەکراوەکان</h2>
-  <p class="section-sub">یەکێک لەم دیزاینە مۆدێرنانە هەڵبژێرە بۆ لاپەڕەکەت</p>
-  <div class="design-grid">
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: linear-gradient(135deg, #07070f, #16162a); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:50%; background:var(--accent);"></div>
-            <div style="width:120px; height:10px; background:rgba(255,255,255,0.1); border-radius:5px;"></div>
-            <div style="width:180px; height:30px; background:rgba(255,255,255,0.05); border-radius:8px;"></div>
-            <div style="width:180px; height:30px; background:rgba(255,255,255,0.05); border-radius:8px;"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی کلاسیک</h3>
-        <p>دیزاینێکی سادە و مۆدێرن بۆ هەموو مەبەستێک</p>
-      </div>
+<!-- Main Content -->
+<main class="main-content">
+  <section class="home-section">
+    <div class="home-header">
+      <h1>بەخێربێن بۆ LinkHub</h1>
+      <p>لاپەڕەی تایبەتی خۆت دروست بکە و هەموو سۆشیال مێدیاکانت لەسەر بنێ — یەک لینک هەمووی لێی دادێت. ئاسان، خێرا، و تەواو خۆڕایی.</p>
     </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: linear-gradient(135deg, #1e1b4b, #312e81); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:12px; background:#fbbf24; transform: rotate(45deg);"></div>
-            <div style="width:120px; height:10px; background:rgba(255,255,255,0.1); border-radius:5px; margin-top:10px;"></div>
-            <div style="width:180px; height:35px; background:rgba(251,191,36,0.1); border:1px solid #fbbf24; border-radius:15px;"></div>
-            <div style="width:180px; height:35px; background:rgba(251,191,36,0.1); border:1px solid #fbbf24; border-radius:15px;"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی گەشاوە (Glow)</h3>
-        <p>ڕەنگی زیندوو و کاریگەری درەوشاوە بۆ سەرنجڕاکێشان</p>
-      </div>
-    </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: #f8fafc; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:50%; background:#0f172a;"></div>
-            <div style="width:120px; height:10px; background:#e2e8f0; border-radius:5px;"></div>
-            <div style="width:180px; height:30px; background:#fff; border:1px solid #e2e8f0; border-radius:4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"></div>
-            <div style="width:180px; height:30px; background:#fff; border:1px solid #e2e8f0; border-radius:4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی ڕوون (Light)</h3>
-        <p>دیزاینێکی سپی و پاک بۆ ئەوانەی حەزیان بە ڕوونییە</p>
-      </div>
-    </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: linear-gradient(135deg, #0f0f1f, #1a1a3f); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:50%; background:rgba(168,85,247,0.6); box-shadow: 0 0 15px rgba(168,85,247,0.4);"></div>
-            <div style="width:120px; height:10px; background:rgba(255,255,255,0.1); border-radius:5px;"></div>
-            <div style="width:180px; height:30px; background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.3); border-radius:8px; backdrop-filter: blur(5px);"></div>
-            <div style="width:180px; height:30px; background:rgba(255,255,255,0.05); border:1px solid rgba(168,85,247,0.3); border-radius:8px; backdrop-filter: blur(5px);"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی شووشەیی (Glassmorphism)</h3>
-        <p>دیزاینێکی مۆدێرن بە کاریگەری شووشەیی و لێڵ</p>
-      </div>
-    </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: #1a1a1a; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:0; background:#f1f5f9; border: 3px solid #f1f5f9;"></div>
-            <div style="width:120px; height:10px; background:#f1f5f9; border-radius:0;"></div>
-            <div style="width:180px; height:30px; background:transparent; border:3px solid #f1f5f9; border-radius:0;"></div>
-            <div style="width:180px; height:30px; background:transparent; border:3px solid #f1f5f9; border-radius:0;"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی بوێر (Neo-Brutalism)</h3>
-        <p>دیزاینێکی جیاواز بە سێبەری بەهێز و ڕەنگی تۆخ</p>
-      </div>
-    </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: linear-gradient(135deg, #0a0e27, #1a0a3f, #2d0a3f); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:50%; background:rgba(168,85,247,0.8); box-shadow: 0 0 20px rgba(168,85,247,0.6);"></div>
-            <div style="width:120px; height:10px; background:rgba(168,85,247,0.2); border-radius:5px;"></div>
-            <div style="width:180px; height:30px; background:rgba(168,85,247,0.1); border:1px solid rgba(168,85,247,0.4); border-radius:8px;"></div>
-            <div style="width:180px; height:30px; background:rgba(168,85,247,0.1); border:1px solid rgba(168,85,247,0.4); border-radius:8px;"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی کەژاوە (Aurora)</h3>
-        <p>باکگراوندێکی جوڵاو بە ڕەنگە تێکەڵەکانی ئاسمان</p>
-      </div>
-    </div>
-    <div class="design-card">
-      <div class="design-preview">
-        <div style="width:100%; height:100%; background: #ffffff; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <div style="width:50px; height:50px; border-radius:50%; background:#1a1a1a;"></div>
-            <div style="width:120px; height:10px; background:#e0e0e0; border-radius:5px;"></div>
-            <div style="width:180px; height:30px; background:transparent; border:1px solid #e0e0e0; border-radius:4px;"></div>
-            <div style="width:180px; height:30px; background:transparent; border:1px solid #e0e0e0; border-radius:4px;"></div>
-        </div>
-      </div>
-      <div class="design-info">
-        <h3>دیزاینی سادە (Minimalist)</h3>
-        <p>دیزاینێکی زۆر پاک و شیک بۆ ئەوانەی حەزیان بە سادەییە</p>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="features">
-  <h2 class="section-title">بۆچی LinkHub؟</h2>
-  <p class="section-sub">هەموو ئەوەی پێویستت هەیە — هیچ زیادەیی نییە</p>
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-brands fa-instagram"></i></div>
-      <h3>هەموو سۆشیالەکان</h3>
-      <p>Instagram, Telegram, TikTok, YouTube, GitHub و زیاتر — هەمووی زیاد بکە</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-      <h3>ئاسان و خێرا</h3>
-      <p>لە ٢ خولەک تۆمار بکە و لاپەڕەکەت ئامادەیە بۆ هاوبەشکردن</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-link"></i></div>
-      <h3>لینکی تایبەتت</h3>
-      <p>ئادرەسی تایبەتت بەم شێوەیە: linkhub.app/ناوت</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-      <h3>موبایل فرێندلی</h3>
-      <p>لاپەڕەکەت لەسەر هەموو موبایل و کۆمپیوتەرێک باش دەردەکەوێت</p>
-    </div>
-  </div>
-</div>
+    <div class="home-cards">
+      <div class="info-card">
+        <i class="fa-solid fa-rocket"></i>
+        <h3>دەستپێکردن</h3>
+        <p>لە کەمتر لە ٢ خولەک لاپەڕەکەت ئامادە بکە و شروع بکە بە هاوبەشکردنی لینکەکانت.</p>
+      </div>
 
-<footer style="border-top:1px solid var(--border);background:var(--bg2);position:relative;z-index:1">
-  <div style="max-width:900px;margin:0 auto;padding:32px 24px;display:flex;flex-direction:column;align-items:center;gap:16px">
-    <div style="font-size:20px;font-weight:700;color:#818cf8">⚡ LinkHub</div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px 24px">
-      <a href="about.html" style="color:#94a3b8;text-decoration:none;font-size:13px">دەربارە</a>
-      <a href="contact.html" style="color:#94a3b8;text-decoration:none;font-size:13px">پەیوەندی</a>
-      <a href="privacy.html" style="color:#94a3b8;text-decoration:none;font-size:13px">پاراستنی زانیاری</a>
-      <a href="terms.html" style="color:#94a3b8;text-decoration:none;font-size:13px">مەرجەکان</a>
+      <div class="info-card">
+        <i class="fa-solid fa-palette"></i>
+        <h3>دیزاینە جوان</h3>
+        <p>یەکێک لە دیزاینە مۆدێرنانە هەڵبژێرە یان خۆت ڕێکبخە بە شێوەی تایبەتت.</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fa-solid fa-link"></i>
+        <h3>لینکی تایبەتت</h3>
+        <p>ئادرەسی تایبەتت بەم شێوەیە: linkhub.app/ناوت</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fa-solid fa-mobile-screen"></i>
+        <h3>موبایل فرێندلی</h3>
+        <p>لاپەڕەکەت لەسەر هەموو موبایل و کۆمپیوتەرێک باش دەردەکەوێت.</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>پارێزراو</h3>
+        <p>زانیارییەکانت لەلایمانەوە پارێزراون و بە تێپەڕگری کۆدکراون.</p>
+      </div>
+
+      <div class="info-card">
+        <i class="fa-solid fa-gift"></i>
+        <h3>تەواو خۆڕایی</h3>
+        <p>هیچ تێچووێک نییە. هەموو فیچەرەکان بەخۆڕایی دەستپێ بکە.</p>
+      </div>
     </div>
-    <div style="color:#64748b;font-size:12px;text-align:center">
-      دروستکراوە بە ❤️ — LinkHub © 2025 · <a href="mailto:linkcreatorapp@gmail.com" style="color:#64748b;text-decoration:none">linkcreatorapp@gmail.com</a>
+
+    <div class="home-cta">
+      <a href="auth.html?tab=signup" class="btn btn-primary btn-lg">
+        <i class="fa-solid fa-rocket"></i> دەستپێکردن — خۆڕایییە
+      </a>
+      <a href="template.html" class="btn btn-outline btn-lg">
+        <i class="fa-solid fa-palette"></i> بینینی قاڵبەکان
+      </a>
     </div>
-  </div>
-</footer>
+  </section>
+</main>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="js/config.js"></script>
+<script src="js/layout.js"></script>
+
 <script>
-  // ئەگەر لۆگین بوو و ڤێریفای بکراو → داشبۆرد
-  auth.onAuthStateChanged(user => {
-    if (user && user.emailVerified) window.location.href = 'dashboard.html';
+// Mobile Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.getElementById('sidebar');
+
+mobileMenuBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('active');
+});
+
+// Close sidebar when clicking on a link
+document.querySelectorAll('.sidebar-nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.remove('active');
   });
+});
+
+// Close sidebar when clicking outside
+document.addEventListener('click', (e) => {
+  if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+    sidebar.classList.remove('active');
+  }
+});
+
+// Set active nav link
+document.querySelectorAll('.sidebar-nav a').forEach(link => {
+  if (link.getAttribute('href') === window.location.pathname.split('/').pop() || 
+      (window.location.pathname.endsWith('/') && link.getAttribute('href') === 'index.html')) {
+    link.classList.add('active');
+  }
+});
 </script>
 </body>
 </html>

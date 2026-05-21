@@ -71,6 +71,7 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
     <div class="tabs">
       <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">چوونەژوورەوە</button>
       <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">تۆمارکردن</button>
+      <button class="tab-btn" id="tab-guest" onclick="switchTab('guest')">میوان</button>
     </div>
 
     <div id="alert" class="alert alert-error"></div>
@@ -139,6 +140,24 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
       </button>
     </div>
 
+    <!-- ─── GUEST MODE ─── -->
+    <div class="form-panel" id="panel-guest">
+      <div class="verify-box">
+        <div class="verify-icon">👤</div>
+        <h3>بینینی قاڵبەکان بە شێوەی میوان</h3>
+        <p>تۆ دەتوانیت بەشە جیاوازەکانی LinkHub ببینیت لە بەدوونی ئەکاونت</p>
+        <p style="font-size:12px;color:var(--muted)">بۆ دروستکردنی لاپەڕەی خۆت، تکایە ئەکاونت دروست بکە</p>
+        <button class="btn btn-primary btn-full" onclick="browseAsGuest()" style="margin-bottom:12px">
+          <i class="fa-solid fa-eye"></i> بینین بە شێوەی میوان
+        </button>
+        <div>
+          <button class="btn btn-outline" onclick="switchTab('login')" style="font-size:12px;padding:7px 14px;width:100%">
+            <i class="fa-solid fa-arrow-right"></i> چوونەژوورەوە
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- ─── VERIFY EMAIL ─── -->
     <div class="form-panel" id="panel-verify">
       <div class="verify-box">
@@ -164,6 +183,9 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
   </div>
 
   <a href="index.html" class="back-home"><i class="fa-solid fa-arrow-right"></i> گەڕانەوە بۆ ماڵپەر</a>
+  <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--muted)">
+    <a href="auth.html?tab=guest" style="color:var(--accent2);text-decoration:none">بینین بە شێوەی میوان</a>
+  </div>
 </div>
 
 <!-- Firebase SDKs -->
@@ -174,9 +196,10 @@ body { display: flex; align-items: center; justify-content: center; min-height: 
 <script>
 const params = new URLSearchParams(location.search);
 if (params.get('tab') === 'signup') switchTab('signup');
+if (params.get('tab') === 'guest') switchTab('guest');
 
 function switchTab(t) {
-  ['login','signup'].forEach(x => {
+  ['login','signup','guest'].forEach(x => {
     document.getElementById('tab-'+x).classList.toggle('active', x===t);
     document.getElementById('panel-'+x).classList.toggle('active', x===t);
   });
@@ -401,6 +424,12 @@ auth.getRedirectResult().then(async result => {
   console.error('redirect result error:', e.code, e.message);
   if (e.code) showAlert(translateError(e.code) + ' [' + e.code + ']');
 });
+
+// ── میوان مۆد ──
+function browseAsGuest() {
+  localStorage.setItem('guestMode', 'true');
+  window.location.href = 'index.html';
+}
 
 // ── ئەگەر چووبووەتەژوورەوە بتبرێت بۆ داشبۆرد ──
 // بەڵام تەنها ئەگەر redirect result چارەسەر نەکرد (هەڵەی نەبوو)
