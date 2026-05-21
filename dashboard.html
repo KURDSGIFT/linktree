@@ -613,41 +613,11 @@ async function logout() {
   window.location.href = 'index.html';
 }
 
-// Check for pending design from template.html
-function checkPendingDesign() {
-  const pending = localStorage.getItem('pendingDesign');
-  if (pending) {
-    const design = JSON.parse(pending);
-    userData.theme = design.theme;
-    userData.name = design.name;
-    userData.bio = design.bio;
-    
-    // Save to Firebase
-    db.collection('users').doc(currentUser.uid).update({
-      theme: design.theme,
-      name: design.name,
-      bio: design.bio
-    }).catch(e => console.error('Error saving design:', e));
-    
-    localStorage.removeItem('pendingDesign');
-    loadProfile();
-    renderThemes();
-    showToast('✅ دیزاین هەڵبژێردرا!');
-  }
-}
-
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
-
-// Initialize
-window.addEventListener('load', () => {
-  if (currentUser) {
-    checkPendingDesign();
-  }
-});
 </script>
 </body>
 </html>
