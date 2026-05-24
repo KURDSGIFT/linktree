@@ -124,7 +124,7 @@ label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px
 .footer-copy a { color: var(--muted); text-decoration: none; }
 .footer-copy a:hover { color: var(--accent2); }
 
-.plat-instagram { color: orange; }
+.plat-instagram { color: e1306c; }
 .plat-twitter { color: #1da1f2; }
 .plat-tiktok { color: #ff0050; }
 .plat-youtube { color: #ff0000; }
